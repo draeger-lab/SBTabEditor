@@ -15,7 +15,7 @@ public class SBMLTab {
 		// TODO: Remove example code
 		try {
 			// Get SBML element
-			SBase doc = SBMLReader.read(new File("/home/zakharchuk/Dropbox/SS18/TP/e_coli_core.xml"));
+			SBase doc = SBMLReader.read(new File(args[0]));
 			// Here is an example how you can get a list of Reactions
 			ListOf<Reaction> listOfReactions = doc.getModel().getListOfReactions();
 			// And iterate over it
