@@ -1,12 +1,17 @@
 package de.sbmltab.main;
 
 import java.io.File;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.sbml.jsbml.ListOf;
 import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.SBase;
 
 public class SBMLTab {
+
+	private static final Logger LOGGER = LogManager.getLogger(SBMLTab.class);
 	/**
 	 * args[0] path to SBML file
 	 * 
@@ -22,8 +27,15 @@ public class SBMLTab {
 			for (Reaction reaction : listOfReactions) {
 				System.out.println(reaction.getId() + " + " + reaction.getName() + " + " + reaction.getSBOTerm());
 			}
+			// Example how to use logger
+	        LOGGER.debug("This will be printed on debug");
+	        LOGGER.info("This will be printed on info");
+	        LOGGER.warn("This will be printed on warn");
+	        LOGGER.error("This will be printed on error");
+	        LOGGER.fatal("This will be printed on fatal");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 }
