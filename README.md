@@ -13,7 +13,7 @@ and display them in table form.
 ## Authors
 Franziska Daumueller,
 Granit Guri,
-Melina Maier,
+[Melina Maier](https://github.com/MelinaMaier),
 Anton Rabe ,
 Julian Wanner,
 Mykola Zakharchuk
