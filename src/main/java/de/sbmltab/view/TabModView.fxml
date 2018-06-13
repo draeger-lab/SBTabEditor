@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml/1" hgap="10" vgap="10">
+<padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
+
+<gridLinesVisible>true</gridLinesVisible>
+	<!-- TODO Add Nodes -->
+ 
+    <Label text="current Field:"
+        GridPane.columnIndex="2" GridPane.rowIndex="20"
+        GridPane.columnSpan = "40"/>
+        
+    <TextField 
+        GridPane.columnIndex="5" GridPane.rowIndex="20"
+        GridPane.columnSpan = "40"/>
+ 
+    <TextField 
+        GridPane.columnIndex="1" GridPane.rowIndex="3"
+        GridPane.columnSpan = "2"/>
+</GridPane>
+

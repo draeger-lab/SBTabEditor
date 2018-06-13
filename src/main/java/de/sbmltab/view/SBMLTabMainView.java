@@ -1,25 +1,28 @@
 package de.sbmltab.view;
 
+import java.io.IOException;
+
 import javafx.application.Application;
-import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.Group;
- 
-public class SBMLTabMainView extends Application {
- 
-	// TODO: Remove example code
-    public static void main(String[] args) {
-        launch(args);
-    }
- 
-    @Override
-    public void start(Stage stage) {
-    	// Here is an example how you can create simple window with jfx
-        Scene scene = new Scene(new Group());
-        stage.setTitle("SBMLTab v.0.1");
-        stage.setWidth(1024);
-        stage.setHeight(768);
+import javafx.stage.Stage;
+
+
+
+public class SBMLTabMainView extends Application{
+	
+
+	public void start(Stage stage) throws Exception {
+		Parent root = FXMLLoader.load(getClass().getResource("TabModView.fxml"));
+	    
+        Scene scene = new Scene(root, 800, 600);
+    
+        stage.setTitle("TabMod v1.0");
         stage.setScene(scene);
         stage.show();
-    }
+		
+	
+	}
+
 }
