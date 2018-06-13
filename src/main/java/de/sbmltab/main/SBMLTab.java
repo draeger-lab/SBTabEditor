@@ -33,6 +33,7 @@ public class SBMLTab {
 	        LOGGER.warn("This will be printed on warn");
 	        LOGGER.error("This will be printed on error");
 	        LOGGER.fatal("This will be printed on fatal");
+	       
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
