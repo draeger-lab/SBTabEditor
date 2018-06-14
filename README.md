@@ -14,9 +14,9 @@ and display them in table form.
 Franziska Daumueller,
 Granit Guri,
 [Melina Maier](https://github.com/MelinaMaier),
-Anton Rabe ,
-Julian Wanner,
-Mykola Zakharchuk
+Anton Rabe,
+[Julian Wanner](https://github.com/JuliWanner),
+[Mykola Zakharchuk](https://github.com/zakharc)
 
 Supervisor:
 [Dr. Andreas Draeger](https://github.com/draeger)
