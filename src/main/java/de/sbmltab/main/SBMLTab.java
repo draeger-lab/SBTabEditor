@@ -9,6 +9,8 @@ import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.SBase;
 
+import de.sbmltab.controller.SBMLTabController;
+
 public class SBMLTab {
 
 	private static final Logger LOGGER = LogManager.getLogger(SBMLTab.class);
@@ -20,7 +22,9 @@ public class SBMLTab {
 		// TODO: Remove example code
 		try {
 			// Get SBML element
-			SBase doc = SBMLReader.read(new File(args[0]));
+			String filePath = "";
+			filePath = SBMLTabController.open();
+			SBase doc = SBMLReader.read(new File(filePath));
 			// Here is an example how you can get a list of Reactions
 			ListOf<Reaction> listOfReactions = doc.getModel().getListOfReactions();
 			// And iterate over it
