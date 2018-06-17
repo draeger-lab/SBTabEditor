@@ -14,7 +14,7 @@ and display them in table form.
 Franziska Daumueller,
 Granit Guri,
 [Melina Maier](https://github.com/MelinaMaier),
-Anton Rabe,
+[Anton Rabe](https://github.com/AntonJuliusRabe),
 [Julian Wanner](https://github.com/JuliWanner),
 [Mykola Zakharchuk](https://github.com/zakharc)
 
