@@ -10,9 +10,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+
 import javafx.scene.layout.BorderPane;
 
 public class SBMLTabMainView extends Application {
