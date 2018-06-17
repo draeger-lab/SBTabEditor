@@ -17,6 +17,7 @@ import javafx.scene.input.KeyEvent;
 
 public class MenuController implements Initializable
 {
+    //Generiert eine Menu-Bar, wie im GUI-Konzept besprochen
 	public static MenuBar generateMenuBar (){
 		
         MenuBar menuBar = new MenuBar();
@@ -51,7 +52,6 @@ public class MenuController implements Initializable
         editMenu.getItems().addAll(undoItem, redoItem, copyItem, cutItem, pasteItem);
         viewMenu.getItems().addAll(columnsShownItem, hideColumnsItem, showHiddenColumnsItem);
         
-        // Add Menus to the MenuBar
         menuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
         
         //definiere Tastenkürzel
