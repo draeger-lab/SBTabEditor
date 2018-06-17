@@ -7,7 +7,7 @@
 <?import javafx.scene.text.*?>
 
 <GridPane xmlns:fx="http://javafx.com/fxml/1" hgap="10" vgap="10">
-<padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
+<padding><Insets top="0" right="0" bottom="0" left="0"/></padding>
 
 <gridLinesVisible>true</gridLinesVisible>
 	<!-- TODO Add Nodes -->
