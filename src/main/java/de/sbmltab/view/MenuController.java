@@ -17,18 +17,18 @@ import javafx.scene.input.KeyEvent;
 
 public class MenuController implements Initializable
 {
-    //Generiert eine Menu-Bar, wie im GUI-Konzept besprochen
+    //Generates a MenuBar as discussed in the GUI-Concept
 	public static MenuBar generateMenuBar (){
 		
         MenuBar menuBar = new MenuBar();
         
-        // Benötigte Menus
+        //  Menus needed
         Menu fileMenu = new Menu("File");
         Menu editMenu = new Menu("Edit");
         Menu viewMenu = new Menu("View");
         Menu helpMenu = new Menu("Help");
         
-        // Benötigte Menu-Items
+        // Menu-Items needed
           //file
         MenuItem newItem = new MenuItem("New");
         MenuItem openItem = new MenuItem("Open");
@@ -47,14 +47,14 @@ public class MenuController implements Initializable
         MenuItem hideColumnsItem = new MenuItem("Hide Columns");
         MenuItem showHiddenColumnsItem = new MenuItem("Show hidden columns");
         
-        // Richtige Reihenfolge in den Menus
+        // Arranging Menu-Items in the right order
         fileMenu.getItems().addAll(newItem, openItem, importItem, exportItem, saveItem, exitItem );
         editMenu.getItems().addAll(undoItem, redoItem, copyItem, cutItem, pasteItem);
         viewMenu.getItems().addAll(columnsShownItem, hideColumnsItem, showHiddenColumnsItem);
         
         menuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
         
-        //definiere Tastenkürzel
+        //define Keyboard shortcuts
         newItem.setAccelerator(KeyCombination.keyCombination("Ctrl+N"));
         openItem.setAccelerator(KeyCombination.keyCombination("Ctrl+O"));
         saveItem.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));

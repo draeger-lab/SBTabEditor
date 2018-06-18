@@ -27,7 +27,7 @@ public class SBMLTabMainView extends Application {
 	    root.setCenter(FXMLLoader.load(getClass().getResource("TabModView.fxml")));
         Scene scene = new Scene(root, 800, 600);
         
-        stage.getIcons().add (new Image("File:/Icons/Icon_small.png"));
+        stage.getIcons().add (new Image("File:/Icons/Icon_small.png"));//add image to the IconList
         stage.setTitle("TabMod v1.0");
         stage.setScene(scene);
         stage.show();
