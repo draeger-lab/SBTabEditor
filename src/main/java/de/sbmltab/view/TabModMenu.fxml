@@ -7,17 +7,20 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.MenuBar.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
 
-<MenuBar VBox.vgrow="NEVER">
+
+<MenuBar VBox.vgrow="NEVER" id="menuBar" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.sbmltab.view.MenuController">
     <menus>
         <Menu mnemonicParsing="true" text="_File">
             <items>
-                <MenuItem mnemonicParsing="true" text="_New"/>
-                <MenuItem mnemonicParsing="true" text="_Open"/>
-                <MenuItem mnemonicParsing="true" text="_Save"/>
-                <MenuItem mnemonicParsing="true" text="_Import"/>
-                <MenuItem mnemonicParsing="true" text="_Export"/>
-                <MenuItem mnemonicParsing="true" text="_Quit"/>
+                <MenuItem id="NewItem" mnemonicParsing="true" text="_New"/>
+                <MenuItem fx:id="OpenItem" mnemonicParsing="true" text="_Open"  onAction="#doOpen"/>
+                <MenuItem fx:id="SaveItem" mnemonicParsing="true" text="_Save"  onAction="#doSave"/>
+                <MenuItem id="ImportItem" mnemonicParsing="true" text="_Import"/>
+                <MenuItem id="ExportItem" mnemonicParsing="true" text="_Export"/>
+                <MenuItem fx:id="QuitItem" mnemonicParsing="true" text="_Quit" onAction="#doQuit"/>
             </items>
             </Menu>
         <Menu mnemonicParsing="true" text="_Edit">
