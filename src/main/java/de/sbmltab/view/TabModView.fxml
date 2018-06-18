@@ -13,7 +13,7 @@
 	<!-- TODO Add Nodes -->
  
     <Label text="current Field:"
-        GridPane.columnIndex="2" GridPane.rowIndex="20"
+        GridPane.columnIndex="5" GridPane.rowIndex="19"
         GridPane.columnSpan = "40"/>
         
     <TextField 
@@ -22,6 +22,6 @@
  
     <TextField 
         GridPane.columnIndex="1" GridPane.rowIndex="3"
-        GridPane.columnSpan = "2"/>
+        GridPane.columnSpan = "2" promptText="search"/>
 </GridPane>
 
