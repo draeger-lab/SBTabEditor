@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.MenuBar.*?>
+
+<MenuBar VBox.vgrow="NEVER">
+    <menus>
+        <Menu mnemonicParsing="true" text="_File">
+            <items>
+                <MenuItem mnemonicParsing="true" text="_New"/>
+                <MenuItem mnemonicParsing="true" text="_Open"/>
+                <MenuItem mnemonicParsing="true" text="_Save"/>
+                <MenuItem mnemonicParsing="true" text="_Import"/>
+                <MenuItem mnemonicParsing="true" text="_Export"/>
+                <MenuItem mnemonicParsing="true" text="_Quit"/>
+            </items>
+            </Menu>
+        <Menu mnemonicParsing="true" text="_Edit">
+            <items>
+                <MenuItem mnemonicParsing="true" text="_Undo"/>
+                <MenuItem mnemonicParsing="true" text="_Redo"/>
+                <MenuItem mnemonicParsing="true" text="_Copy"/>
+                <MenuItem mnemonicParsing="true" text="_Cut"/>
+                <MenuItem mnemonicParsing="true" text="_Paste"/>
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="true" text="_View">
+            <items>
+                <MenuItem mnemonicParsing="true" text="_Field size"/>
+                <MenuItem mnemonicParsing="true" text="_Hide columns"/>
+                <MenuItem mnemonicParsing="true" text="_Show hidden columns"/>
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="true" text="_Help">
+           <items>
+                <MenuItem mnemonicParsing="true" text="_Documentation"/>
+                <MenuItem mnemonicParsing="true" text="_Web search"/>
+            </items>
+        </Menu>
+
+   
+                
+    </menus>
+</MenuBar>

@@ -21,9 +21,9 @@ public class SBMLTabMainView extends Application {
 
         MenuBar menuBar = MenuController.generateMenuBar();
         BorderPane root = new BorderPane();
-        root.setTop(menuBar);
+        //root.setTop(menuBar);
 		//Parent root = FXMLLoader.load(getClass().getResource("TabModView.fxml"));
-	    root.setTop(menuBar);
+        root.setTop(FXMLLoader.load(getClass().getResource("TabModMenu.fxml")));
 	    root.setCenter(FXMLLoader.load(getClass().getResource("TabModView.fxml")));
         Scene scene = new Scene(root, 800, 600);
         
