@@ -72,6 +72,54 @@ public class MenuController implements Initializable
 		// TODO Auto-generated method stub
 		
 	}
+	@FXML
+	  private MenuItem OpenItem;
+
+	  @FXML
+	  private MenuItem SaveItem;
+
+	  
+	  @FXML
+	  private MenuItem QuitItem;
+	  
+	  
+	  
+
+
+	  @FXML
+	  void doOpen(ActionEvent event) {
+	    handleOpen();
+	  }
+
+	  @FXML
+	  void doSave(ActionEvent event) {
+
+	    handleSave();
+	  }
+
+	  @FXML
+	  void doQuit(ActionEvent event) {
+	    
+	    //Todo: Check for unsaved changes
+	    
+	    System.exit(0);
+	  }
+
+	  @FXML
+	  void initialize() {}
+	  
+	  
+	  
+	  private void handleOpen() {
+	    
+	    
+	  }
+	  
+
+	  private void handleSave() {
+	    
+	  }
+	
 
 
    
