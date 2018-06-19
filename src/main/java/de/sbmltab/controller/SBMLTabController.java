@@ -7,6 +7,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.SBMLWriter;
@@ -64,5 +65,15 @@ public class SBMLTabController {
 			LOGGER.error("Unable to read sbml file", e);
 		}
 		return doc;
+	}
+	public static boolean validate(SBMLDocument doc) {
+		if(doc.checkConsistencyOffline() == 0) {
+			return true;
+		}else {
+			for(int i = 0; i < doc.checkConsistencyOffline(); i++) {
+				LOGGER.error(doc.getError(i));
+			}
+			return false;
+		}
 	}
 }
