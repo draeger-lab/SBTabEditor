@@ -70,35 +70,18 @@
 	<build>
 		<plugins>
 			<plugin>
-				<!-- compile goal should be added before assembly:single or otherwise 
-					the code on your own project is not included -->
-				<!-- example: mvn clean compile assembly:single -->
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>de.sbmltab.main.SBMLTab</mainClass>
-						</manifest>
-					</archive>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-				</configuration>
-				<executions>
-					<!-- tie this goal to a build phase to execute automatically -->
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.7.0</version>
+			</plugin>
+			<!-- To create your executable file call mvn jfx:jar. The jar-file will be placed at target/jfx/app -->
+			<plugin>
+				<groupId>com.zenjava</groupId>
+				<artifactId>javafx-maven-plugin</artifactId>
+				<version>8.8.3</version>
+				<configuration>
+					<mainClass>de.sbmltab.main.SBMLTab</mainClass>
+				</configuration>
 			</plugin>
 			<!--allows us to run tests that use either the “old” JUnit (3 or 4) or 
 				JUnit 5 -->
