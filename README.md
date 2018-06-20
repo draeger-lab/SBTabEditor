@@ -10,6 +10,24 @@ there is no proper editor designed explicitly for SBtab, the aim of this project
 by developing an extensible editor which can read, write and save SBtab and SBML data
 and display them in table form.
 
+
+## How to start
+In order to run JavaFX application, a valid JRE 8+ needed.
+
+**Packaging into an executable Jar file**
+
+To create executable jar, call `mvn jfx:jar`. Target jar-file will be placed at: target/jfx/app.
+
+To run: `java -jar sbmltab-x.x.x-jfx.jar`
+
+
+**Assembling into platform-specific bundle**
+
+To create os-specific launcher/installer, call `mvn jfx:native`. Target folder: target/jfx/native
+
+Running process is platform specific. Example `./sbmltab-x.x.x` (running on Unix-like system)
+ 
+
 ## Authors
 Franziska Daumueller,
 Granit Guri,
