@@ -13,7 +13,7 @@ import de.sbmltab.controller.SBMLTabController;
 
 public class SBMLTab {
 
-	private static final Logger LOGGER = LogManager.getLogger(SBMLTab.class);
+	private static final transient Logger LOGGER = LogManager.getLogger(SBMLTab.class);
 	/**
 	 * args[0] path to SBML file
 	 * 
