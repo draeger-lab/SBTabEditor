@@ -28,26 +28,11 @@ public class SBMLTabMainView extends Application {
 		root.setLeft(FXMLLoader.load(getClass().getResource("TabModTree.fxml")));
 		Scene scene = new Scene(root, 640, 480);
 
-		stage.getIcons().add(new Image("File:/Icons/Icon_small(16).png"));// add
-																			// image
-																			// to
-																			// the
-																			// IconList
-		stage.getIcons().add(new Image("File:/Icons/Icon_small(32).png"));// add
-																			// image
-																			// to
-																			// the
-																			// IconList
-		stage.getIcons().add(new Image("File:/Icons/Icon_small(48).png"));// add
-																			// image
-																			// to
-																			// the
-																			// IconList
-		stage.getIcons().add(new Image("File:/Icons/Icon_large(256).png"));// add
-																			// image
-																			// to
-																			// the
-																			// IconList
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_32.png")));
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_16.png")));
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_256.png")));
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_48.ico")));
+		
 		stage.setTitle("TabMod 1.0");
 		stage.setScene(scene);
 		stage.sizeToScene();
