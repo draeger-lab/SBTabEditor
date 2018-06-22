@@ -8,7 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
-public class TabModTree implements Initializable {
+public class TreeController implements Initializable {
 
 	@FXML
 	private TreeView<String> treeView;
