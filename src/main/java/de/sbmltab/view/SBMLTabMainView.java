@@ -27,7 +27,8 @@ public class SBMLTabMainView extends Application {
 		root.setCenter(FXMLLoader.load(getClass().getResource("TabModView.fxml")));
 		root.setLeft(FXMLLoader.load(getClass().getResource("TabModTree.fxml")));
 		Scene scene = new Scene(root, 640, 480);
-
+		
+		//Add icons from resources to the Icon-List of this stage.
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_32.png")));
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_16.png")));
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_256.png")));
