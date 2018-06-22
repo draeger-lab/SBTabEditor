@@ -50,6 +50,7 @@ public class SBMLTabMainView extends Application {
 																			// IconList
 		stage.setTitle("TabMod 1.0");
 		stage.setScene(scene);
+		stage.sizeToScene();
 		stage.show();
 
 	}

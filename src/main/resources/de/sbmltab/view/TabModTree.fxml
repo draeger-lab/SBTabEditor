@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -7,9 +8,20 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.HBox?>
 
+<!-- author Franziska Daumueller -->
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.sbmltab.view.TabModTree">
-   <children>
-      <TreeView fx:id="treeView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="200.0" VBox.vgrow="NEVER" />
-   </children>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.sbmltab.view.TreeController">
+	<children>
+		<TextField prefHeight="31.0" prefWidth="170.0" promptText="search">
+         <opaqueInsets>
+            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+         </opaqueInsets></TextField>
+		<TreeView fx:id="treeView" prefHeight="426.0" prefWidth="200.0" />
+	</children>
+   <cursor>
+      <Cursor fx:constant="W_RESIZE" />
+   </cursor>
+   <opaqueInsets>
+      <Insets top="5.0" />
+   </opaqueInsets>
 </VBox>
