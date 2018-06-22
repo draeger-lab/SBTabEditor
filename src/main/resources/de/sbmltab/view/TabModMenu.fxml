@@ -15,34 +15,34 @@
     <menus>
         <Menu mnemonicParsing="true" text="_File">
             <items>
-                <MenuItem id="NewItem" mnemonicParsing="true" text="_New"/>
+                <MenuItem id="NewItem" mnemonicParsing="true" text="_New" onAction="#doNew"/>
                 <MenuItem fx:id="OpenItem" mnemonicParsing="true" text="_Open"  onAction="#doOpen"/>
                 <MenuItem fx:id="SaveItem" mnemonicParsing="true" text="_Save"  onAction="#doSave"/>
-                <MenuItem id="ImportItem" mnemonicParsing="true" text="_Import"/>
-                <MenuItem id="ExportItem" mnemonicParsing="true" text="_Export"/>
+                <MenuItem id="ImportItem" mnemonicParsing="true" text="_Import" onAction="#doImport"/>
+                <MenuItem id="ExportItem" mnemonicParsing="true" text="_Export" onAction="#doExport"/>          
                 <MenuItem fx:id="QuitItem" mnemonicParsing="true" text="_Quit" onAction="#doQuit"/>
             </items>
             </Menu>
         <Menu mnemonicParsing="true" text="_Edit">
             <items>
-                <MenuItem mnemonicParsing="true" text="_Undo"/>
-                <MenuItem mnemonicParsing="true" text="_Redo"/>
-                <MenuItem mnemonicParsing="true" text="_Copy"/>
-                <MenuItem mnemonicParsing="true" text="_Cut"/>
-                <MenuItem mnemonicParsing="true" text="_Paste"/>
+                <MenuItem mnemonicParsing="true" text="_Undo" onAction="#doUndo"/>
+                <MenuItem mnemonicParsing="true" text="_Redo" onAction="#doRedo"/>
+                <MenuItem mnemonicParsing="true" text="_Copy" onAction="#doCopy"/>
+                <MenuItem mnemonicParsing="true" text="_Cut" onAction="#doCut"/>
+                <MenuItem mnemonicParsing="true" text="_Paste" onAction="#doPaste"/>
             </items>
         </Menu>
         <Menu mnemonicParsing="true" text="_View">
             <items>
-                <MenuItem mnemonicParsing="true" text="_Field size"/>
-                <MenuItem mnemonicParsing="true" text="_Hide columns"/>
-                <MenuItem mnemonicParsing="true" text="_Show hidden columns"/>
+                <MenuItem mnemonicParsing="true" text="_Field size" onAction="#doFieldSize"/>
+                <MenuItem mnemonicParsing="true" text="_Hide columns" onAction="#doHideColumns"/>
+                <MenuItem mnemonicParsing="true" text="_Show hidden columns" onAction="#doShowHiddenColumns"/>
             </items>
         </Menu>
         <Menu mnemonicParsing="true" text="_Help">
            <items>
-                <MenuItem mnemonicParsing="true" text="_Documentation"/>
-                <MenuItem mnemonicParsing="true" text="_Web search"/>
+                <MenuItem mnemonicParsing="true" text="_Documentation" onAction="#doDocumentation"/>
+                <MenuItem mnemonicParsing="true" text="_Web search" onAction="#doWebSearch"/>
             </items>
         </Menu>
 

@@ -19,6 +19,10 @@ import de.sbmltab.controller.*;
 
 public class MenuController implements Initializable
 {
+	 @FXML
+	  void initialize() {
+		 
+	 }
     //Generates a MenuBar as discussed in the GUI-Concept
 	public static MenuBar generateMenuBar (){
 		
@@ -74,20 +78,68 @@ public class MenuController implements Initializable
 		// TODO Auto-generated method stub
 		
 	}
+	//file MenuItems:
+
 	@FXML
-	  private MenuItem OpenItem;
+	private MenuItem NewItem; 
+	
+	@FXML
+	private MenuItem OpenItem;
 
+	@FXML  
+	private MenuItem SaveItem;
+	
+	@FXML	  
+	private MenuItem QuitItem;
+	
+	@FXML
+	private MenuItem ImportItem; 
+	
+	@FXML
+	private MenuItem ExportItem; 
+	
+	@FXML
+	private MenuItem ValidateItem;
+	
+//edit MenuItems:
+	@FXML
+	private MenuItem UndoItem; 
+	
+	@FXML
+	private MenuItem RedoItem;
+	
+	@FXML
+	private MenuItem CopyItem; 
+	
+	@FXML
+	private MenuItem PasteItem;
+
+	@FXML  
+	private MenuItem CutItem;
+	
+//view MenuItems:
+	@FXML
+	private MenuItem FieldSizeItem; 
+	
+	@FXML
+	private MenuItem HideColumnsItem;
+	
+	@FXML
+	private MenuItem ShowHiddenColumnsItem; 
+
+//Help MenuItems:
+	@FXML
+	private MenuItem DocumentationItem;
+
+	@FXML
+	private MenuItem WebSearchItem;
+
+      //file menu action Methods:
+	
 	  @FXML
-	  private MenuItem SaveItem;
-
-	  
-	  @FXML
-	  private MenuItem QuitItem;
-	  
-	  
-	  
-
-
+	  void doNew(ActionEvent event) {
+	    handleNew();
+	  }	
 	  @FXML
 	  void doOpen(ActionEvent event) {
 	    handleOpen();
@@ -98,18 +150,75 @@ public class MenuController implements Initializable
 
 	    handleSave();
 	  }
+	  
+	  @FXML
+	  void doImport(ActionEvent event) {
+	  }
+	  
+	  @FXML
+	  void doExport(ActionEvent event) {
+	    
+	  }
 
 	  @FXML
 	  void doQuit(ActionEvent event) {
 	    
-	    //Todo: Check for unsaved changes
+	    //TODO: Check for unsaved changes
 	    
 	    System.exit(0);
 	  }
-
-	  @FXML
-	  void initialize() {}
 	  
+	  //edit menu action methods
+	  @FXML
+	  void doUndo(ActionEvent event) {
+
+	  }
+	  
+	  @FXML
+	  void doRedo(ActionEvent event) {
+
+	  }
+	  
+	  @FXML
+	  void doCopy(ActionEvent event) {
+
+	  }
+	  
+	  @FXML
+	  void doPaste(ActionEvent event) {
+	  }
+	  
+	  @FXML
+	  void doCut(ActionEvent event) {
+	  }
+	  	  
+//View menu action methods:
+	  @FXML
+	  void doFieldSize(ActionEvent event) {
+	  }
+	  
+	  @FXML
+	  void doHideColumns(ActionEvent event) {
+	  }
+	  
+	  @FXML
+	  void doShowHiddenColumns(ActionEvent event) {
+	  }
+//Help menu action methods:
+	  
+	  @FXML
+	  void doDocumentation(ActionEvent event) {
+	  }
+	  
+	  @FXML
+	  void doWebSearch(ActionEvent event) {
+	  }
+
+//Handler methods:
+	  
+	  private void handleNew() {
+		    
+	  }
 	  
 	  
 	  private void handleOpen() {
