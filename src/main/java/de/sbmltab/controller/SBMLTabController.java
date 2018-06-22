@@ -11,10 +11,11 @@ import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.SBMLWriter;
+import org.sbml.jsbml.TidySBMLWriter;
 
 public class SBMLTabController {
 
-	private static final Logger LOGGER = LogManager.getLogger(SBMLTabController.class);
+	private static final transient Logger LOGGER = LogManager.getLogger(SBMLTabController.class);
 
 	/**
 	 * Save SBML document to a {@link File}.
@@ -31,7 +32,7 @@ public class SBMLTabController {
 	 */
 	public static void save(SBMLDocument doc, File path, String name, String version) {
 		try {
-			SBMLWriter.write(doc, path, name, version);
+			TidySBMLWriter.write(doc, path, name, version);
 		} catch (Exception e) {
 			LOGGER.error("Unable to write sbml file", e);
 		}
