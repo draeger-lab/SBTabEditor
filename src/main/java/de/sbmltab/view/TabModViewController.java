@@ -8,16 +8,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 /**
-*
-*@author Franziska Daumueller
-**/
+ *
+ *@author Franziska Daumueller
+ **/
 
 public class TabModViewController implements Initializable {
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		
-	}
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    // TODO Auto-generated method stub
+
+  }
 
 }
