@@ -1,5 +1,6 @@
 package de.sbmltab.view;
 
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -13,6 +14,7 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import de.sbmltab.controller.*;
 
 
 public class MenuController implements Initializable
@@ -111,6 +113,7 @@ public class MenuController implements Initializable
 	  
 	  
 	  private void handleOpen() {
+		  SBMLTabController.open();
 	    
 	    
 	  }
