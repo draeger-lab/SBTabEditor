@@ -3,7 +3,6 @@ package de.sbmltab.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,7 +23,7 @@ public class MenuController implements Initializable
 		 
 	 }
     //Generates a MenuBar as discussed in the GUI-Concept
-	public static MenuBar generateMenuBar (){
+	/*public static MenuBar generateMenuBar (){
 		
         MenuBar menuBar = new MenuBar();
         
@@ -71,7 +70,7 @@ public class MenuController implements Initializable
         pasteItem.setAccelerator(KeyCombination.keyCombination("Ctrl+V"));
 
         return menuBar;
-	}
+	}*/
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
