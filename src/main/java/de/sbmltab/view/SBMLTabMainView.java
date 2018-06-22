@@ -18,14 +18,12 @@ public class SBMLTabMainView extends Application {
 
 	public void start(Stage stage) throws Exception {
 
-		MenuBar menuBar = MenuController.generateMenuBar();
+
 		BorderPane root = new BorderPane();
-		// root.setTop(menuBar);
-		// Parent root =
-		// FXMLLoader.load(getClass().getResource("TabModView.fxml"));
 		root.setTop(FXMLLoader.load(getClass().getResource("TabModMenu.fxml")));
 		root.setCenter(FXMLLoader.load(getClass().getResource("TabModView.fxml")));
 		root.setLeft(FXMLLoader.load(getClass().getResource("TabModTree.fxml")));
+		
 		Scene scene = new Scene(root, 640, 480);
 		
 		//Add icons from resources to the Icon-List of this stage.

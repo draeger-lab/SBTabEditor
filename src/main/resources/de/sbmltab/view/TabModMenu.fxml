@@ -9,33 +9,38 @@
 <?import javafx.scene.MenuBar.*?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 
 
 <MenuBar VBox.vgrow="NEVER" id="menuBar" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.sbmltab.view.MenuController">
     <menus>
         <Menu mnemonicParsing="true" text="_File">
             <items>
-                <MenuItem id="NewItem" mnemonicParsing="true" text="_New" onAction="#doNew"/>
-                <MenuItem fx:id="OpenItem" mnemonicParsing="true" text="_Open"  onAction="#doOpen"/>
-                <MenuItem fx:id="SaveItem" mnemonicParsing="true" text="_Save"  onAction="#doSave"/>
+                <MenuItem id="NewItem" mnemonicParsing="true" text="_New" onAction="#doNew" accelerator="Shortcut+N"/>
+                <MenuItem fx:id="OpenItem" mnemonicParsing="true" text="_Open"  onAction="#doOpen" accelerator="Shortcut+O"/>
+                <MenuItem fx:id="SaveItem" mnemonicParsing="true" text="_Save"  onAction="#doSave" accelerator="Shortcut+S"/>
                 <MenuItem id="ImportItem" mnemonicParsing="true" text="_Import" onAction="#doImport"/>
                 <MenuItem id="ExportItem" mnemonicParsing="true" text="_Export" onAction="#doExport"/> 
-                <MenuItem fx:id="ValidateItem" mnemonicParsing="true" text="_Validate" onAction="#doValidate"/>         
-                <MenuItem fx:id="QuitItem" mnemonicParsing="true" text="_Quit" onAction="#doQuit"/>
+                <SeparatorMenuItem />
+                <MenuItem fx:id="ValidateItem" mnemonicParsing="true" text="_Validate" onAction="#doValidate"/>   
+                <SeparatorMenuItem />      
+                <MenuItem fx:id="QuitItem" mnemonicParsing="true" text="_Quit" onAction="#doQuit" accelerator="Shortcut+Q"/>
             </items>
             </Menu>
         <Menu mnemonicParsing="true" text="_Edit">
             <items>
-                <MenuItem mnemonicParsing="true" text="_Undo" onAction="#doUndo"/>
-                <MenuItem mnemonicParsing="true" text="_Redo" onAction="#doRedo"/>
-                <MenuItem mnemonicParsing="true" text="_Copy" onAction="#doCopy"/>
-                <MenuItem mnemonicParsing="true" text="_Cut" onAction="#doCut"/>
-                <MenuItem mnemonicParsing="true" text="_Paste" onAction="#doPaste"/>
+                <MenuItem mnemonicParsing="true" text="_Undo" onAction="#doUndo" accelerator="Shortcut+Z"/>
+                <MenuItem mnemonicParsing="true" text="_Redo" onAction="#doRedo" accelerator="Shortcut+Y"/>
+                <SeparatorMenuItem />
+                <MenuItem mnemonicParsing="true" text="_Copy" onAction="#doCopy" accelerator="Shortcut+C"/>
+                <MenuItem mnemonicParsing="true" text="_Cut" onAction="#doCut" accelerator="Shortcut+X"/>
+                <MenuItem mnemonicParsing="true" text="_Paste" onAction="#doPaste" accelerator="Shortcut+V"/>
             </items>
         </Menu>
         <Menu mnemonicParsing="true" text="_View">
             <items>
                 <MenuItem mnemonicParsing="true" text="_Field size" onAction="#doFieldSize"/>
+                <SeparatorMenuItem />
                 <MenuItem mnemonicParsing="true" text="_Hide columns" onAction="#doHideColumns"/>
                 <MenuItem mnemonicParsing="true" text="_Show hidden columns" onAction="#doShowHiddenColumns"/>
             </items>
@@ -43,6 +48,7 @@
         <Menu mnemonicParsing="true" text="_Help">
            <items>
                 <MenuItem mnemonicParsing="true" text="_Documentation" onAction="#doDocumentation"/>
+                <SeparatorMenuItem />
                 <MenuItem mnemonicParsing="true" text="_Web search" onAction="#doWebSearch"/>
             </items>
         </Menu>
