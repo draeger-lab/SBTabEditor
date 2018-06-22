@@ -19,7 +19,8 @@
                 <MenuItem fx:id="OpenItem" mnemonicParsing="true" text="_Open"  onAction="#doOpen"/>
                 <MenuItem fx:id="SaveItem" mnemonicParsing="true" text="_Save"  onAction="#doSave"/>
                 <MenuItem id="ImportItem" mnemonicParsing="true" text="_Import" onAction="#doImport"/>
-                <MenuItem id="ExportItem" mnemonicParsing="true" text="_Export" onAction="#doExport"/>          
+                <MenuItem id="ExportItem" mnemonicParsing="true" text="_Export" onAction="#doExport"/> 
+                <MenuItem fx:id="ValidateItem" mnemonicParsing="true" text="_Validate" onAction="#doValidate"/>         
                 <MenuItem fx:id="QuitItem" mnemonicParsing="true" text="_Quit" onAction="#doQuit"/>
             </items>
             </Menu>

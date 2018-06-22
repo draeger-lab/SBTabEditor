@@ -159,6 +159,10 @@ public class MenuController implements Initializable
 	  void doExport(ActionEvent event) {
 	    
 	  }
+	  
+	  @FXML
+	  void doValidate(ActionEvent event) {
+	  }
 
 	  @FXML
 	  void doQuit(ActionEvent event) {
