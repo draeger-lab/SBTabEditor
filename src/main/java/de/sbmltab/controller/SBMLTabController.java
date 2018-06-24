@@ -1,6 +1,8 @@
 package de.sbmltab.controller;
 
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -8,6 +10,7 @@ import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.TidySBMLWriter;
 
+import javafx.concurrent.Task;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -15,7 +18,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 public class SBMLTabController {
 
   private static final transient Logger LOGGER = LogManager.getLogger(SBMLTabController.class);
-
+  private static SBMLDocument doc;
   /**
    * Save SBML document to a {@link File}.
    * 
@@ -30,45 +33,45 @@ public class SBMLTabController {
    * 
    */
   public static void save(SBMLDocument doc, File path, String name, String version) {
-    try {
-      TidySBMLWriter.write(doc, path, name, version);
-    } catch (Exception e) {
-      LOGGER.error("Unable to write sbml file", e);
-    }
+    Task<Void> task = new Task<Void>() {
+      @Override
+      public Void call() {
+        try {
+          TidySBMLWriter.write(doc, path, name, version);
+        } catch (Exception e) {
+          LOGGER.error("Unable to write sbml file", e);
+        }
+        return null;
+      }
+    };
+    Thread th = new Thread(task);
+    th.setDaemon(true);
+    th.start();
   }
 
-  /*
-   * @author Julian Wanner
-   * Returns absolute Path of a chosen file with JavaFX.
-   */
-  public static String open(Stage stage) {
-    final FileChooser fileChooser = new FileChooser();
-    String filePath = "";
-    fileChooser.getExtensionFilters().addAll(
-      new ExtensionFilter("XML Files", "*.xml"),
-      new ExtensionFilter("SBML Files", "*.SBML"));
-    fileChooser.setTitle("Choose SBML or XML File.");
-    fileChooser.setInitialDirectory(new File(System.getProperty("user.home"))) ;
-    File file = fileChooser.showOpenDialog(stage);
-    if (file != null) {
-      filePath = file.getAbsolutePath();
-    }
-    return filePath;
-  }
 
   /**
    * Read SBML document from a {@link File}.
    * 
    * @param path
    *            absolute path to {@link SBMLDocument}
+   * @return 
    */
   public static SBMLDocument read(String filePath) {
-    SBMLDocument doc = null;
-    try {
-      doc = SBMLReader.read(filePath);
-    } catch (Exception e) {
-      LOGGER.error("Unable to read sbml file", e);
-    }
+    Task<Void> task = new Task<Void>() {
+      @Override
+      public Void call() {
+        try {
+          doc = SBMLReader.read(new File(filePath));
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+        return null;
+      }
+    };
+    Thread th = new Thread(task);
+    th.setDaemon(true);
+    th.start();
     return doc;
   }
   public static boolean validate(SBMLDocument doc) {
