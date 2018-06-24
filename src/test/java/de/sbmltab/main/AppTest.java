@@ -11,6 +11,6 @@ class AppTest {
  
     @Test
     void readSBMLFileTest() {
-    	assertNull(SBMLTabController.read(new File("42")));
+    	assertNull(SBMLTabController.read("42"));
     }
 }
