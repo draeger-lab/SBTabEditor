@@ -1,8 +1,6 @@
 package de.sbmltab.controller;
 
 import java.io.File;
-import java.util.Observable;
-import java.util.Observer;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -11,9 +9,6 @@ import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.TidySBMLWriter;
 
 import javafx.concurrent.Task;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.FileChooser.ExtensionFilter;
 
 public class SBMLTabController {
 
@@ -72,6 +67,11 @@ public class SBMLTabController {
     Thread th = new Thread(task);
     th.setDaemon(true);
     th.start();
+    try {
+    	th.join();
+    } catch (InterruptedException e) {
+    	e.printStackTrace();
+    }
     return doc;
   }
   public static boolean validate(SBMLDocument doc) {
