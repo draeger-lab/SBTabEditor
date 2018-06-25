@@ -21,14 +21,13 @@ import javafx.scene.layout.BorderPane;
 
 public class SBMLTabMainView extends Application {
 	public static SBMLDocument doc;
+	private static BorderPane root;
 
 	@Override
 	public void start(Stage stage) throws Exception {
 
-		BorderPane root = new BorderPane();
+		root = new BorderPane();
 		root.setTop(FXMLLoader.load(getClass().getResource("TabModMenu.fxml")));
-		TableView<ReactionWrapper> tableView = initializeReactionTableView();
-		root.setCenter(tableView);
 		root.setLeft(FXMLLoader.load(getClass().getResource("TabModTree.fxml")));
 
 		Scene scene = new Scene(root, 640, 480);
@@ -46,7 +45,7 @@ public class SBMLTabMainView extends Application {
 
 	}
 
-	private static TableView<ReactionWrapper> initializeReactionTableView() {
+	public static TableView<ReactionWrapper> initializeReactionTableView() {
 		final ObservableList<ReactionWrapper> data = FXCollections.observableArrayList();
 		if (doc != null) {
 			ListOf<Reaction> listOfReactions = doc.getModel().getListOfReactions();
@@ -62,7 +61,7 @@ public class SBMLTabMainView extends Application {
 		tableView.getColumns().add(defineColumn("SBO Term", ReactionWrapper::getSBOTerm));
 		tableView.getItems().setAll(data);
 		tableView.setEditable(true);
-
+		root.setCenter(tableView);
 		return tableView;
 	}
 
