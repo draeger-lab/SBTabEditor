@@ -135,7 +135,9 @@ public class MenuController implements Initializable {
   void doOpen(ActionEvent event) {
     SBMLTabMainView.doc = handleOpen();
     // TODO: change when tree and more views are implemented
-    SBMLTabMainView.initializeReactionTableView();
+    if (SBMLTabMainView.doc!=null) {
+      SBMLTabMainView.initializeReactionTableView();
+    }
   }
 
   @FXML
@@ -234,8 +236,11 @@ public class MenuController implements Initializable {
 
   private SBMLDocument handleOpen() {
     String filePath = chooseFile();
-    SBMLDocument doc = SBMLTabController.read(filePath);
-    return doc;
+    if (filePath!=null) {
+      SBMLDocument doc = SBMLTabController.read(filePath);
+      return doc;
+    }
+    return null;
   }
   private void handleSave() {
     
