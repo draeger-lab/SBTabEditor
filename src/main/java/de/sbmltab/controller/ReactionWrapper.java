@@ -2,18 +2,14 @@ package de.sbmltab.controller;
 
 import org.sbml.jsbml.Reaction;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class ReactionWrapper {
 	private Reaction reaction;
     private StringProperty reactionName;
-    private StringProperty reactionReactants;
-    private StringProperty reactionProducts;
-    private StringProperty reactionModifiers;
-    private IntegerProperty reactionId;
+    private StringProperty reactionId;
+    private StringProperty reactionSBOTerm;
 
     public ReactionWrapper(Reaction reaction) {
     	setReaction(reaction);
@@ -21,11 +17,10 @@ public class ReactionWrapper {
     }
   
     public void initialize(Reaction reaction) {
+    	// TODO: figure out what fields do we need to work with
     	reactionName = new SimpleStringProperty(reaction.getName());
-    	reactionReactants = new SimpleStringProperty(reaction.getListOfReactants().toString());
-    	reactionProducts = new SimpleStringProperty(reaction.getListOfProducts().toString());
-    	reactionModifiers = new SimpleStringProperty(reaction.getListOfModifiers().toString());
-    	reactionId = new SimpleIntegerProperty(Integer.parseInt(reaction.getId()));
+    	reactionId = new SimpleStringProperty(reaction.getId());
+    	reactionSBOTerm = new SimpleStringProperty(reaction.getSBOTermID());
     }
 
     private void setReaction(Reaction reaction) {
@@ -40,19 +35,11 @@ public class ReactionWrapper {
 		return reactionName;
 	}
 
-	public StringProperty getReactionReactants() {
-		return reactionReactants;
-	}
-
-	public StringProperty getReactionProducts() {
-		return reactionProducts;
-	}
-
-	public StringProperty getReactionModifiers() {
-		return reactionModifiers;
-	}
-
-	public IntegerProperty getReactionId() {
+	public StringProperty getReactionId() {
 		return reactionId;
+	}
+
+	public StringProperty getSBOTerm() {
+		return reactionSBOTerm;
 	}
 }

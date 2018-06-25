@@ -2,6 +2,10 @@ package de.sbmltab.view;
 
 import java.util.function.Function;
 
+import org.sbml.jsbml.ListOf;
+import org.sbml.jsbml.Reaction;
+import org.sbml.jsbml.SBMLDocument;
+
 import de.sbmltab.controller.ReactionWrapper;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
@@ -16,6 +20,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 
 public class SBMLTabMainView extends Application {
+	public static SBMLDocument doc;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -41,22 +46,27 @@ public class SBMLTabMainView extends Application {
 
 	}
 
-	private TableView<ReactionWrapper> initializeReactionTableView() {
+	private static TableView<ReactionWrapper> initializeReactionTableView() {
 		final ObservableList<ReactionWrapper> data = FXCollections.observableArrayList();
+		if (doc != null) {
+			ListOf<Reaction> listOfReactions = doc.getModel().getListOfReactions();
+			for (Reaction reaction : listOfReactions) {
+				data.add(new ReactionWrapper(reaction));
+			}
+		}
 
 		TableView<ReactionWrapper> tableView = new TableView<ReactionWrapper>();
+		// TODO: figure out what fields do we need to work with
 		tableView.getColumns().add(defineColumn("Name", ReactionWrapper::getReactionName));
 		tableView.getColumns().add(defineColumn("Id", ReactionWrapper::getReactionId));
-		tableView.getColumns().add(defineColumn("Modifiers", ReactionWrapper::getReactionModifiers));
-		tableView.getColumns().add(defineColumn("Products", ReactionWrapper::getReactionProducts));
-		tableView.getColumns().add(defineColumn("Reactants", ReactionWrapper::getReactionReactants));
+		tableView.getColumns().add(defineColumn("SBO Term", ReactionWrapper::getSBOTerm));
 		tableView.getItems().setAll(data);
 		tableView.setEditable(true);
 
 		return tableView;
 	}
 
-	private <S, T> TableColumn<S, T> defineColumn(String text, Function<S, ObservableValue<T>> property) {
+	private static <S, T> TableColumn<S, T> defineColumn(String text, Function<S, ObservableValue<T>> property) {
 		TableColumn<S, T> col = new TableColumn<>(text);
 		col.setCellValueFactory(cellData -> property.apply(cellData.getValue()));
 		return col;
