@@ -4,25 +4,13 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.sbml.jsbml.ListOf;
-import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
-import org.sbml.jsbml.SBMLReader;
-import org.sbml.jsbml.SBase;
-
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.InputEvent;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import de.sbmltab.controller.*;
 
@@ -145,7 +133,9 @@ public class MenuController implements Initializable {
 
   @FXML
   void doOpen(ActionEvent event) {
-    handleOpen();
+    SBMLTabMainView.doc = handleOpen();
+    // TODO: change when tree and more views are implemented
+    SBMLTabMainView.initializeReactionTableView();
   }
 
   @FXML
@@ -242,9 +232,10 @@ public class MenuController implements Initializable {
     th.start();
   }
 
-  private void handleOpen() {
+  private SBMLDocument handleOpen() {
     String filePath = chooseFile();
     SBMLDocument doc = SBMLTabController.read(filePath);
+    return doc;
   }
   private void handleSave() {
     
