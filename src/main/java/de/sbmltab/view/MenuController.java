@@ -204,11 +204,12 @@ public class MenuController implements Initializable {
 
   @FXML
   void doQuit(ActionEvent event) {
+	//TODO: check for unsaved changes
 	boolean unsavedChanges= true;
 	if (unsavedChanges){
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Usaved Changes");
-		alert.setHeaderText("Your file has unsaved changes");
+		alert.setTitle("Unsaved Changes");
+		alert.setHeaderText("Your file has unsaved changes");//TODO: Add appropriate text
 		alert.setContentText("Do you want to save your changes?");
 
 		ButtonType buttonTypeSave = new ButtonType("Save Changes");
