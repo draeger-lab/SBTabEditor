@@ -2,6 +2,7 @@ package de.sbmltab.view;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.sbml.jsbml.SBMLDocument;
@@ -17,6 +18,10 @@ import de.sbmltab.controller.*;
 import de.sbmltab.main.SBMLTab;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 
 public class MenuController implements Initializable {
   @FXML
@@ -182,15 +187,46 @@ public class MenuController implements Initializable {
 
   @FXML
   void doValidate(ActionEvent event) {
+	  boolean valid=true;//TODO: Implement validate
+	  if (valid){
+		  Alert alert = new Alert(AlertType.INFORMATION);
+		  alert.setTitle("Validator");
+		  alert.setHeaderText(null);
+		  alert.setContentText("Your file is a valid .sbml file");
+		  alert.showAndWait();
+	  }
+	  else{
+		  
+	  }
+	  
 
   }
 
   @FXML
   void doQuit(ActionEvent event) {
+	boolean unsavedChanges= true;
+	if (unsavedChanges){
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Usaved Changes");
+		alert.setHeaderText("Your file has unsaved changes");
+		alert.setContentText("Do you want to save your changes?");
 
-    // TODO: Check for unsaved changes
+		ButtonType buttonTypeSave = new ButtonType("Save Changes");
+		ButtonType buttonTypeDontSave = new ButtonType("Don't Save Changes");
+		ButtonType buttonTypeCancel = new ButtonType("Cancel");
 
-    System.exit(0);
+		alert.getButtonTypes().setAll(buttonTypeSave, buttonTypeDontSave, buttonTypeCancel);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == buttonTypeSave){
+			
+		    //TODO: implement save.
+			System.exit(0);
+		} else if (result.get() == buttonTypeDontSave) {
+			System.exit(0);
+		} else {
+		}
+	}
   }
 
   // edit menu action methods
