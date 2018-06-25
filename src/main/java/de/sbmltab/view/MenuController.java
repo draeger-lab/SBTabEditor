@@ -10,9 +10,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Menu;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import de.sbmltab.controller.*;
+import de.sbmltab.main.SBMLTab;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class MenuController implements Initializable {
   @FXML
@@ -65,10 +69,21 @@ public class MenuController implements Initializable {
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-    // TODO Auto-generated method stub
+	  if (!SBMLTabMainView.fileLoaded){
+		  ViewMenu.setDisable(true);
+		  EditMenu.setDisable(true);//Disable unnecessary Menus while no file is loaded
+	  }
 
   }
-  // file MenuItems:
+  // View and Edit Menu as objects:
+  @FXML
+  private Menu ViewMenu;
+  
+  @FXML
+  private Menu EditMenu;
+  
+  
+  //file MenuItems:
 
   @FXML
   private MenuItem NewItem;
@@ -90,6 +105,7 @@ public class MenuController implements Initializable {
 
   @FXML
   private MenuItem ValidateItem;
+  
 
   // edit MenuItems:
   @FXML
@@ -116,6 +132,15 @@ public class MenuController implements Initializable {
 
   @FXML
   private MenuItem ShowHiddenColumnsItem;
+  
+  @FXML
+  private MenuItem ZoomInItem;
+  
+  @FXML
+  private MenuItem ZoomOutItem;
+  
+  @FXML
+  private MenuItem SetToItem;
 
   // Help MenuItems:
   @FXML
@@ -137,12 +162,12 @@ public class MenuController implements Initializable {
     // TODO: change when tree and more views are implemented
     if (SBMLTabMainView.doc!=null) {
       SBMLTabMainView.initializeReactionTableView();
+      SBMLTabMainView.fileLoaded=true;
     }
   }
 
   @FXML
   void doSave(ActionEvent event) {
-
     handleSave();
   }
 
@@ -157,6 +182,7 @@ public class MenuController implements Initializable {
 
   @FXML
   void doValidate(ActionEvent event) {
+
   }
 
   @FXML
@@ -193,7 +219,16 @@ public class MenuController implements Initializable {
 
   // View menu action methods:
   @FXML
-  void doFieldSize(ActionEvent event) {
+  void doZoomIn(ActionEvent event) {
+
+  }
+  @FXML
+  void doZoomOut(ActionEvent event) {
+
+  }
+  @FXML
+  void doSetTo(ActionEvent event) {
+
   }
 
   @FXML
