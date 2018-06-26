@@ -2,6 +2,7 @@ package de.sbmltab.view;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.sbml.jsbml.SBMLDocument;
@@ -10,9 +11,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Menu;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import de.sbmltab.controller.*;
+import de.sbmltab.main.SBMLTab;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 
 public class MenuController implements Initializable {
   @FXML
@@ -65,10 +74,21 @@ public class MenuController implements Initializable {
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-    // TODO Auto-generated method stub
+	  if (!SBMLTabMainView.fileLoaded){
+		  ViewMenu.setDisable(true);
+		  EditMenu.setDisable(true);//Disable unnecessary Menus while no file is loaded
+	  }
 
   }
-  // file MenuItems:
+  // View and Edit Menu as objects:
+  @FXML
+  private Menu ViewMenu;
+  
+  @FXML
+  private Menu EditMenu;
+  
+  
+  //file MenuItems:
 
   @FXML
   private MenuItem NewItem;
@@ -90,6 +110,7 @@ public class MenuController implements Initializable {
 
   @FXML
   private MenuItem ValidateItem;
+  
 
   // edit MenuItems:
   @FXML
@@ -116,6 +137,15 @@ public class MenuController implements Initializable {
 
   @FXML
   private MenuItem ShowHiddenColumnsItem;
+  
+  @FXML
+  private MenuItem ZoomInItem;
+  
+  @FXML
+  private MenuItem ZoomOutItem;
+  
+  @FXML
+  private MenuItem SetToItem;
 
   // Help MenuItems:
   @FXML
@@ -135,12 +165,14 @@ public class MenuController implements Initializable {
   void doOpen(ActionEvent event) {
     SBMLTabMainView.doc = handleOpen();
     // TODO: change when tree and more views are implemented
-    SBMLTabMainView.initializeReactionTableView();
+    if (SBMLTabMainView.doc!=null) {
+      SBMLTabMainView.initializeReactionTableView();
+      SBMLTabMainView.fileLoaded=true;
+    }
   }
 
   @FXML
   void doSave(ActionEvent event) {
-
     handleSave();
   }
 
@@ -155,14 +187,47 @@ public class MenuController implements Initializable {
 
   @FXML
   void doValidate(ActionEvent event) {
+	  boolean valid=true;//TODO: Implement validate
+	  if (valid){
+		  Alert alert = new Alert(AlertType.INFORMATION);
+		  alert.setTitle("Validator");
+		  alert.setHeaderText(null);
+		  alert.setContentText("Your file is a valid .sbml file");
+		  alert.showAndWait();
+	  }
+	  else{
+		  
+	  }
+	  
+
   }
 
   @FXML
   void doQuit(ActionEvent event) {
+	//TODO: check for unsaved changes
+	boolean unsavedChanges= true;
+	if (unsavedChanges){
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Unsaved Changes");
+		alert.setHeaderText("Your file has unsaved changes");//TODO: Add appropriate text
+		alert.setContentText("Do you want to save your changes?");
 
-    // TODO: Check for unsaved changes
+		ButtonType buttonTypeSave = new ButtonType("Save Changes");
+		ButtonType buttonTypeDontSave = new ButtonType("Don't Save Changes");
+		ButtonType buttonTypeCancel = new ButtonType("Cancel");
 
-    System.exit(0);
+		alert.getButtonTypes().setAll(buttonTypeSave, buttonTypeDontSave, buttonTypeCancel);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == buttonTypeSave){
+			
+		    //TODO: implement save.
+			System.exit(0);
+		} else if (result.get() == buttonTypeDontSave) {
+			System.exit(0);
+		} else {
+		}
+	}
   }
 
   // edit menu action methods
@@ -191,7 +256,16 @@ public class MenuController implements Initializable {
 
   // View menu action methods:
   @FXML
-  void doFieldSize(ActionEvent event) {
+  void doZoomIn(ActionEvent event) {
+
+  }
+  @FXML
+  void doZoomOut(ActionEvent event) {
+
+  }
+  @FXML
+  void doSetTo(ActionEvent event) {
+
   }
 
   @FXML
@@ -234,8 +308,11 @@ public class MenuController implements Initializable {
 
   public static SBMLDocument handleOpen() {
     String filePath = chooseFile();
-    SBMLDocument doc = SBMLTabController.read(filePath);
-    return doc;
+    if (filePath!=null) {
+      SBMLDocument doc = SBMLTabController.read(filePath);
+      return doc;
+    }
+    return null;
   }
   private void handleSave() {
     

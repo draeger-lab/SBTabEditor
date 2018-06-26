@@ -21,14 +21,18 @@ import javafx.scene.layout.BorderPane;
 
 public class SBMLTabMainView extends Application {
 	public static SBMLDocument doc;
-	private static BorderPane root;
+	private static BorderPane root = new BorderPane();
+	public static boolean fileLoaded=true;// relevant information if a file is loaded or not.
 
 	@Override
 	public void start(Stage stage) throws Exception {
-
-		root = new BorderPane();
+		if (fileLoaded) {
 		root.setTop(FXMLLoader.load(getClass().getResource("TabModMenu.fxml")));
 		root.setLeft(FXMLLoader.load(getClass().getResource("TabModTree.fxml")));
+		}
+		else{
+			root.setTop(FXMLLoader.load(getClass().getResource("TabModMenu.fxml")));	
+		}
 
 		Scene scene = new Scene(root, 640, 480);
 
