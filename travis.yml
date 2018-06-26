@@ -5,3 +5,12 @@ script: mvn clean verify
 cache:
   directories:
   - $HOME/.m2
+notifications:
+  slack:
+    on_success: never # default: change
+    on_failure: always # default: always
+  email:
+    recipients:
+      - granitguri.gg@gmail.com
+    on_success: never # default: change
+    on_failure: always # default: always
