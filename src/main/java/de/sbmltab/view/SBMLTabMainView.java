@@ -1,42 +1,78 @@
 package de.sbmltab.view;
 
-import java.io.IOException;
+import java.util.function.Function;
 
+import org.sbml.jsbml.ListOf;
+import org.sbml.jsbml.Reaction;
+import org.sbml.jsbml.SBMLDocument;
+
+import de.sbmltab.controller.ReactionWrapper;
 import javafx.application.Application;
-import javafx.event.EventHandler;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.control.MenuBar;
-
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 
 public class SBMLTabMainView extends Application {
-	
+	public static SBMLDocument doc;
+	private static BorderPane root = new BorderPane();
+	public static boolean fileLoaded=true;// relevant information if a file is loaded or not.
 
+	@Override
 	public void start(Stage stage) throws Exception {
+		if (fileLoaded) {
+		root.setTop(FXMLLoader.load(getClass().getResource("TabModMenu.fxml")));
+		root.setLeft(FXMLLoader.load(getClass().getResource("TabModTree.fxml")));
+		}
+		else{
+			root.setTop(FXMLLoader.load(getClass().getResource("TabModMenu.fxml")));	
+		}
 
-        MenuBar menuBar = MenuController.generateMenuBar();
-        BorderPane root = new BorderPane();
-        //root.setTop(menuBar);
-		//Parent root = FXMLLoader.load(getClass().getResource("TabModView.fxml"));
-        root.setTop(FXMLLoader.load(getClass().getResource("TabModMenu.fxml")));
-	    root.setCenter(FXMLLoader.load(getClass().getResource("TabModView.fxml")));
-        Scene scene = new Scene(root, 800, 600);
-        
-        stage.getIcons().add (new Image("File:/Icons/Icon_small(16).png"));//add image to the IconList
-	stage.getIcons().add (new Image("File:/Icons/Icon_small(32).png"));//add image to the IconList
-        stage.getIcons().add (new Image("File:/Icons/Icon_small(48).png"));//add image to the IconList
-	stage.getIcons().add (new Image("File:/Icons/Icon_large(256).png"));//add image to the IconList
-        stage.setTitle("TabMod v1.0");
-        stage.setScene(scene);
-        stage.show();
-		
-	
+		Scene scene = new Scene(root, 640, 480);
+
+		// Add icons from resources to the Icon-List of this stage.
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_32.png")));
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_16.png")));
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_256.png")));
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_48.ico")));
+
+		stage.setTitle("TabMod 1.0");
+		stage.setScene(scene);
+		stage.sizeToScene();
+		stage.show();
+
 	}
 
+	public static TableView<ReactionWrapper> initializeReactionTableView() {
+		final ObservableList<ReactionWrapper> data = FXCollections.observableArrayList();
+		if (doc != null) {
+			ListOf<Reaction> listOfReactions = doc.getModel().getListOfReactions();
+			for (Reaction reaction : listOfReactions) {
+				data.add(new ReactionWrapper(reaction));
+			}
+		}
+
+		TableView<ReactionWrapper> tableView = new TableView<ReactionWrapper>();
+		// TODO: figure out what fields do we need to work with
+		tableView.getColumns().add(defineColumn("Name", ReactionWrapper::getReactionName));
+		tableView.getColumns().add(defineColumn("Id", ReactionWrapper::getReactionId));
+		tableView.getColumns().add(defineColumn("SBO Term", ReactionWrapper::getSBOTerm));
+		tableView.getItems().setAll(data);
+		tableView.setEditable(true);
+		root.setCenter(tableView);
+		return tableView;
+	}
+
+	private static <S, T> TableColumn<S, T> defineColumn(String text, Function<S, ObservableValue<T>> property) {
+		TableColumn<S, T> col = new TableColumn<>(text);
+		col.setCellValueFactory(cellData -> property.apply(cellData.getValue()));
+		return col;
+	}
 
 }
