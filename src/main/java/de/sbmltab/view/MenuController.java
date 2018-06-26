@@ -232,7 +232,7 @@ public class MenuController implements Initializable {
     th.start();
   }
 
-  private SBMLDocument handleOpen() {
+  public static SBMLDocument handleOpen() {
     String filePath = chooseFile();
     SBMLDocument doc = SBMLTabController.read(filePath);
     return doc;
@@ -241,7 +241,7 @@ public class MenuController implements Initializable {
     
   }
 
-  private String chooseFile(){
+  private static String chooseFile(){
     final FileChooser fileChooser = new FileChooser();
     String filePath = "";
     fileChooser.getExtensionFilters().addAll(
