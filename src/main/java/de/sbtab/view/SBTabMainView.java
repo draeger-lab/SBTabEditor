@@ -1,4 +1,4 @@
-package de.sbmltab.view;
+package de.sbtab.view;
 
 import java.util.function.Function;
 
@@ -6,7 +6,7 @@ import org.sbml.jsbml.ListOf;
 import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
 
-import de.sbmltab.controller.ReactionWrapper;
+import de.sbtab.controller.SBTabReactionWrapper;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -19,7 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 
-public class SBMLTabMainView extends Application {
+public class SBTabMainView extends Application {
 	public static SBMLDocument doc;
 	private static BorderPane root = new BorderPane();
 	public static boolean fileLoaded=true;// relevant information if a file is loaded or not.
@@ -27,11 +27,11 @@ public class SBMLTabMainView extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		if (fileLoaded) {
-		root.setTop(FXMLLoader.load(getClass().getResource("TabModMenu.fxml")));
-		root.setLeft(FXMLLoader.load(getClass().getResource("TabModTree.fxml")));
+		root.setTop(FXMLLoader.load(getClass().getResource("SBTabMenu.fxml")));
+		root.setLeft(FXMLLoader.load(getClass().getResource("SBTabTree.fxml")));
 		}
 		else{
-			root.setTop(FXMLLoader.load(getClass().getResource("TabModMenu.fxml")));	
+			root.setTop(FXMLLoader.load(getClass().getResource("SBTabMenu.fxml")));	
 		}
 
 		Scene scene = new Scene(root, 640, 480);
@@ -42,27 +42,27 @@ public class SBMLTabMainView extends Application {
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_256.png")));
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_48.ico")));
 
-		stage.setTitle("TabMod 1.0");
+		stage.setTitle("TabMod 1.1");
 		stage.setScene(scene);
 		stage.sizeToScene();
 		stage.show();
 
 	}
 
-	public static TableView<ReactionWrapper> initializeReactionTableView() {
-		final ObservableList<ReactionWrapper> data = FXCollections.observableArrayList();
+	public static TableView<SBTabReactionWrapper> initializeReactionTableView() {
+		final ObservableList<SBTabReactionWrapper> data = FXCollections.observableArrayList();
 		if (doc != null) {
 			ListOf<Reaction> listOfReactions = doc.getModel().getListOfReactions();
 			for (Reaction reaction : listOfReactions) {
-				data.add(new ReactionWrapper(reaction));
+				data.add(new SBTabReactionWrapper(reaction));
 			}
 		}
 
-		TableView<ReactionWrapper> tableView = new TableView<ReactionWrapper>();
+		TableView<SBTabReactionWrapper> tableView = new TableView<SBTabReactionWrapper>();
 		// TODO: figure out what fields do we need to work with
-		tableView.getColumns().add(defineColumn("Name", ReactionWrapper::getReactionName));
-		tableView.getColumns().add(defineColumn("Id", ReactionWrapper::getReactionId));
-		tableView.getColumns().add(defineColumn("SBO Term", ReactionWrapper::getSBOTerm));
+		tableView.getColumns().add(defineColumn("Name", SBTabReactionWrapper::getReactionName));
+		tableView.getColumns().add(defineColumn("Id", SBTabReactionWrapper::getReactionId));
+		tableView.getColumns().add(defineColumn("SBO Term", SBTabReactionWrapper::getSBOTerm));
 		tableView.getItems().setAll(data);
 		tableView.setEditable(true);
 		root.setCenter(tableView);

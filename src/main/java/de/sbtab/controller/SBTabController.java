@@ -1,4 +1,4 @@
-package de.sbmltab.controller;
+package de.sbtab.controller;
 
 import java.io.File;
 
@@ -10,9 +10,9 @@ import org.sbml.jsbml.TidySBMLWriter;
 
 import javafx.concurrent.Task;
 
-public class SBMLTabController {
+public class SBTabController {
 
-  private static final transient Logger LOGGER = LogManager.getLogger(SBMLTabController.class);
+  private static final transient Logger LOGGER = LogManager.getLogger(SBTabController.class);
   private static SBMLDocument doc;
   /**
    * Save SBML document to a {@link File}.

@@ -1,16 +1,16 @@
-package de.sbmltab.main;
+package de.sbtab.main;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
 
 import org.junit.jupiter.api.Test;
 
-import de.sbmltab.controller.SBMLTabController;
+import de.sbtab.controller.SBTabController;
 
-class AppTest {
+class SBTabTest {
  
     @Test
     void readSBMLFileTest() {
-    	assertNull(SBMLTabController.read("42"));
+    	assertNull(SBTabController.read("42"));
     }
 }

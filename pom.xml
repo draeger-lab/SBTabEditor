@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 
-	<groupId>de.sbmltab</groupId>
-	<artifactId>sbmltab</artifactId>
-	<version>0.1.0</version>
+	<groupId>de.sbtab</groupId>
+	<artifactId>sbtab</artifactId>
+	<version>0.1.1</version>
 	<packaging>jar</packaging>
 
-	<name>sbmltab</name>
+	<name>sbtab</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -81,7 +81,7 @@
 				<version>8.8.3</version>
 				<configuration>
 					<vendor>draeger-lab</vendor>
-					<mainClass>de.sbmltab.main.SBMLTab</mainClass>
+					<mainClass>de.sbtab.main.SBTabMain</mainClass>
 				</configuration>
 			</plugin>
 			<!--allows us to run tests that use either the “old” JUnit (3 or 4) or 

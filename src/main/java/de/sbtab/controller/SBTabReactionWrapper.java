@@ -1,17 +1,17 @@
-package de.sbmltab.controller;
+package de.sbtab.controller;
 
 import org.sbml.jsbml.Reaction;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class ReactionWrapper {
+public class SBTabReactionWrapper {
 	private Reaction reaction;
     private StringProperty reactionName;
     private StringProperty reactionId;
     private StringProperty reactionSBOTerm;
 
-    public ReactionWrapper(Reaction reaction) {
+    public SBTabReactionWrapper(Reaction reaction) {
     	setReaction(reaction);
     	initialize(reaction);
     }

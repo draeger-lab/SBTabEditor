@@ -1,4 +1,4 @@
-package de.sbmltab.view;
+package de.sbtab.view;
 
 import java.io.File;
 import java.net.URL;
@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.sbml.jsbml.SBMLDocument;
+
+import de.sbtab.controller.*;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,16 +16,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Menu;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import de.sbmltab.controller.*;
-import de.sbmltab.main.SBMLTab;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 
-public class MenuController implements Initializable {
+public class SBTabMenuController implements Initializable {
   @FXML
   void initialize() {
 
@@ -74,7 +71,7 @@ public class MenuController implements Initializable {
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-	  if (!SBMLTabMainView.fileLoaded){
+	  if (!SBTabMainView.fileLoaded){
 		  ViewMenu.setDisable(true);
 		  EditMenu.setDisable(true);//Disable unnecessary Menus while no file is loaded
 	  }
@@ -163,11 +160,11 @@ public class MenuController implements Initializable {
 
   @FXML
   void doOpen(ActionEvent event) {
-    SBMLTabMainView.doc = handleOpen();
+    SBTabMainView.doc = handleOpen();
     // TODO: change when tree and more views are implemented
-    if (SBMLTabMainView.doc!=null) {
-      SBMLTabMainView.initializeReactionTableView();
-      SBMLTabMainView.fileLoaded=true;
+    if (SBTabMainView.doc!=null) {
+      SBTabMainView.initializeReactionTableView();
+      SBTabMainView.fileLoaded=true;
     }
   }
 
@@ -309,7 +306,7 @@ public class MenuController implements Initializable {
   public static SBMLDocument handleOpen() {
     String filePath = chooseFile();
     if (filePath!=null) {
-      SBMLDocument doc = SBMLTabController.read(filePath);
+      SBMLDocument doc = SBTabController.read(filePath);
       return doc;
     }
     return null;

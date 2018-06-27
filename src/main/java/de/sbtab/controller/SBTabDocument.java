@@ -1,19 +1,16 @@
-package de.sbmltab.controller;
+package de.sbtab.controller;
 
 import java.beans.PropertyChangeEvent;
 import java.io.File;
 import javax.swing.tree.TreeNode;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.sbml.jsbml.AbstractTreeNode;
-import org.sbml.jsbml.SBMLReader;
-import org.sbml.jsbml.TidySBMLWriter;
 import org.sbml.jsbml.util.TreeNodeChangeListener;
 import org.sbml.jsbml.util.TreeNodeRemovedEvent;
 
-public class Document<T> implements TreeNodeChangeListener {
+public class SBTabDocument<T> implements TreeNodeChangeListener {
 
-	private static final transient Logger LOGGER = LogManager.getLogger(SBMLTabController.class);
+	private static final transient Logger LOGGER = LogManager.getLogger(SBTabController.class);
 
 	private T tempDoc;
 
@@ -28,7 +25,7 @@ public class Document<T> implements TreeNodeChangeListener {
 	 * 
 	 * @param version
 	 */
-	public Document(T Doc, String version) {
+	public SBTabDocument(T Doc, String version) {
 		try {
 			File temp = File.createTempFile("temp-file-name", ".tmp");			
 			String absolutePath = temp.getAbsolutePath();
