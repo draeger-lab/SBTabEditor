@@ -6,6 +6,7 @@ import javax.swing.tree.TreeNode;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.sbml.jsbml.util.TreeNodeChangeListener;
+import org.sbml.jsbml.AbstractTreeNode;
 import org.sbml.jsbml.util.TreeNodeRemovedEvent;
 
 public class SBTabDocument<T> implements TreeNodeChangeListener {
@@ -21,21 +22,24 @@ public class SBTabDocument<T> implements TreeNodeChangeListener {
 	/**
 	 * Constructor for Document
 	 *
-	 * @param Doc
+	 * @param doc
 	 * 
-	 * @param version
+	 * @param pathDoc
 	 */
-	public SBTabDocument(T Doc, String version) {
+	public SBTabDocument(T doc, String pathDoc) {
 		try {
-			File temp = File.createTempFile("temp-file-name", ".tmp");			
-			String absolutePath = temp.getAbsolutePath();
-			pathtempDoc = absolutePath.substring(0, absolutePath.lastIndexOf(File.separator));
+			tempDoc = doc;
+			pathtempDoc = pathDoc;
 			
-//			TidySBMLWriter.write(Doc, pathtempDoc, "temp-file-name", version);			
+//			File temp = File.createTempFile("temp-file-name", ".tmp");			
+//			String absolutePath = temp.getAbsolutePath();
+//			pathtempDoc = absolutePath.substring(0, absolutePath.lastIndexOf(File.separator));			
+//			TidySBMLWriter.write(doc, pathtempDoc, "temp-file-name", version);			
 //			tempDoc = SBMLReader.read(new File(tempfilePath));	
 
-//			((AbstractTreeNode) tempDoc).addTreeNodeChangeListener(this);
-			
+			if (tempDoc instanceof AbstractTreeNode) {
+				((AbstractTreeNode) tempDoc).addTreeNodeChangeListener(this);
+			}			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -43,19 +47,6 @@ public class SBTabDocument<T> implements TreeNodeChangeListener {
 		changed = false;
 	}
 
-	/**
-	 * Edit a temporary document
-	 * 
-	 * @param x
-	 */
-	public void edit(String x) {
-		try {
-			changed = true;
-
-		} catch (Exception e) {
-			LOGGER.error("Unable to edit sbml file", e);
-		}
-	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
