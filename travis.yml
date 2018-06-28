@@ -12,5 +12,6 @@ notifications:
   email:
     recipients:
       - granitguri.gg@gmail.com
+      - zakharchuk.vn@gmail.com
     on_success: never # default: change
     on_failure: always # default: always
