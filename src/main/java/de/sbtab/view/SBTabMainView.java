@@ -1,27 +1,21 @@
 package de.sbtab.view;
 
-import java.util.function.Function;
-
-import org.sbml.jsbml.ListOf;
-import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
 
-import de.sbtab.controller.SBTabReactionWrapper;
+import de.sbtab.services.SBTabReactionTable;
+import de.sbtab.services.SBTabTableProducer;
+import de.sbtab.services.TableType;
 import javafx.application.Application;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 
 public class SBTabMainView extends Application {
 	public static SBMLDocument doc;
 	private static BorderPane root = new BorderPane();
+	private static SBTabTableProducer tableProducer;
 	public static boolean fileLoaded=true;// relevant information if a file is loaded or not.
 
 	@Override
@@ -48,31 +42,12 @@ public class SBTabMainView extends Application {
 		stage.show();
 
 	}
-
-	public static TableView<SBTabReactionWrapper> initializeReactionTableView() {
-		final ObservableList<SBTabReactionWrapper> data = FXCollections.observableArrayList();
-		if (doc != null) {
-			ListOf<Reaction> listOfReactions = doc.getModel().getListOfReactions();
-			for (Reaction reaction : listOfReactions) {
-				data.add(new SBTabReactionWrapper(reaction));
-			}
-		}
-
-		TableView<SBTabReactionWrapper> tableView = new TableView<SBTabReactionWrapper>();
-		// TODO: figure out what fields do we need to work with
-		tableView.getColumns().add(defineColumn("Name", SBTabReactionWrapper::getReactionName));
-		tableView.getColumns().add(defineColumn("Id", SBTabReactionWrapper::getReactionId));
-		tableView.getColumns().add(defineColumn("SBO Term", SBTabReactionWrapper::getSBOTerm));
-		tableView.getItems().setAll(data);
-		tableView.setEditable(true);
-		root.setCenter(tableView);
-		return tableView;
+	
+	
+	// TODO: to be removed after redundant static field are eliminated and concurrency in 
+	//       handleOpen() fixed
+	public static void reInit() {
+		tableProducer = new SBTabTableProducer(doc);
+		root.setCenter(tableProducer.getTableView(TableType.REACTION));
 	}
-
-	private static <S, T> TableColumn<S, T> defineColumn(String text, Function<S, ObservableValue<T>> property) {
-		TableColumn<S, T> col = new TableColumn<>(text);
-		col.setCellValueFactory(cellData -> property.apply(cellData.getValue()));
-		return col;
-	}
-
 }

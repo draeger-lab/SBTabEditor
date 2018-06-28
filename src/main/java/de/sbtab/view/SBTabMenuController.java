@@ -163,7 +163,7 @@ public class SBTabMenuController implements Initializable {
     SBTabMainView.doc = handleOpen();
     // TODO: change when tree and more views are implemented
     if (SBTabMainView.doc!=null) {
-      SBTabMainView.initializeReactionTableView();
+      SBTabMainView.reInit();
       SBTabMainView.fileLoaded=true;
     }
   }
