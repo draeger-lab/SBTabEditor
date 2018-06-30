@@ -20,11 +20,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 
-public class SBTabMenuController implements Initializable {
-  @FXML
-  void initialize() {
+public class SBTabMenuController extends SBTabMainView implements Initializable {
 
-  }
+  public SBTabMenuController() {
+	}
   // Generates a MenuBar as discussed in the GUI-Concept
   /*
    * public static MenuBar generateMenuBar (){
@@ -71,7 +70,7 @@ public class SBTabMenuController implements Initializable {
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-	  if (!SBTabMainView.fileLoaded){
+	  if (!fileLoaded){
 		  ViewMenu.setDisable(true);
 		  EditMenu.setDisable(true);//Disable unnecessary Menus while no file is loaded
 	  }
@@ -160,11 +159,11 @@ public class SBTabMenuController implements Initializable {
 
   @FXML
   void doOpen(ActionEvent event) {
-    SBTabMainView.doc = handleOpen();
+    doc = handleOpen();
     // TODO: change when tree and more views are implemented
-    if (SBTabMainView.doc!=null) {
-      SBTabMainView.reInit();
-      SBTabMainView.fileLoaded=true;
+    if (doc!=null) {
+      reInit();
+      fileLoaded=true;
     }
   }
 

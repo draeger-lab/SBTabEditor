@@ -12,11 +12,30 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 
-public class SBTabMainView extends Application {
-	public static SBMLDocument doc;
+public class SBTabMainView extends Application implements Runnable{
+	
+	public SBMLDocument doc;
 	private static BorderPane root = new BorderPane();
 	private static SBTabTableProducer tableProducer;
-	public static boolean fileLoaded=true;// relevant information if a file is loaded or not.
+	public boolean fileLoaded;// relevant information if a file is loaded or not.
+	
+	@Override
+    public void run() {
+        launch();
+    }
+	
+	public SBTabMainView (SBMLDocument openDoc){
+		if (openDoc!=null){
+			this.doc=openDoc;
+			this.fileLoaded=true;
+		}
+		else{ this.fileLoaded=false;
+		}
+	}
+	
+	public SBTabMainView (){
+		this.fileLoaded=false;
+	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -46,7 +65,7 @@ public class SBTabMainView extends Application {
 	
 	// TODO: to be removed after redundant static field are eliminated and concurrency in 
 	//       handleOpen() fixed
-	public static void reInit() {
+	public void reInit() {
 		tableProducer = new SBTabTableProducer(doc);
 		root.setCenter(tableProducer.getTableView(TableType.REACTION));
 	}
