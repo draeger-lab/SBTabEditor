@@ -1,8 +1,13 @@
 package de.sbtab.view;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
 import java.net.URL;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.sbml.jsbml.SBMLDocument;
@@ -19,11 +24,11 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-
+import java.util.prefs.Preferences;
 public class SBTabMenuController extends SBTabMainView implements Initializable {
 
   public SBTabMenuController() {
-	}
+  }
   // Generates a MenuBar as discussed in the GUI-Concept
   /*
    * public static MenuBar generateMenuBar (){
@@ -70,20 +75,20 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-	  if (!fileLoaded){
-		  ViewMenu.setDisable(true);
-		  EditMenu.setDisable(true);//Disable unnecessary Menus while no file is loaded
-	  }
+    if (!fileLoaded){
+      ViewMenu.setDisable(true);
+      EditMenu.setDisable(true);//Disable unnecessary Menus while no file is loaded
+    }
 
   }
   // View and Edit Menu as objects:
   @FXML
   private Menu ViewMenu;
-  
+
   @FXML
   private Menu EditMenu;
-  
-  
+
+
   //file MenuItems:
 
   @FXML
@@ -106,7 +111,7 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 
   @FXML
   private MenuItem ValidateItem;
-  
+
 
   // edit MenuItems:
   @FXML
@@ -133,13 +138,13 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 
   @FXML
   private MenuItem ShowHiddenColumnsItem;
-  
+
   @FXML
   private MenuItem ZoomInItem;
-  
+
   @FXML
   private MenuItem ZoomOutItem;
-  
+
   @FXML
   private MenuItem SetToItem;
 
@@ -183,47 +188,47 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 
   @FXML
   void doValidate(ActionEvent event) {
-	  boolean valid=true;//TODO: Implement validate
-	  if (valid){
-		  Alert alert = new Alert(AlertType.INFORMATION);
-		  alert.setTitle("Validator");
-		  alert.setHeaderText(null);
-		  alert.setContentText("Your file is a valid .sbml file");
-		  alert.showAndWait();
-	  }
-	  else{
-		  
-	  }
-	  
+    boolean valid=true;//TODO: Implement validate
+    if (valid){
+      Alert alert = new Alert(AlertType.INFORMATION);
+      alert.setTitle("Validator");
+      alert.setHeaderText(null);
+      alert.setContentText("Your file is a valid .sbml file");
+      alert.showAndWait();
+    }
+    else{
+
+    }
+
 
   }
 
   @FXML
   void doQuit(ActionEvent event) {
-	//TODO: check for unsaved changes
-	boolean unsavedChanges= true;
-	if (unsavedChanges){
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Unsaved Changes");
-		alert.setHeaderText("Your file has unsaved changes");//TODO: Add appropriate text
-		alert.setContentText("Do you want to save your changes?");
+    //TODO: check for unsaved changes
+    boolean unsavedChanges= true;
+    if (unsavedChanges){
+      Alert alert = new Alert(AlertType.CONFIRMATION);
+      alert.setTitle("Unsaved Changes");
+      alert.setHeaderText("Your file has unsaved changes");//TODO: Add appropriate text
+      alert.setContentText("Do you want to save your changes?");
 
-		ButtonType buttonTypeSave = new ButtonType("Save Changes");
-		ButtonType buttonTypeDontSave = new ButtonType("Don't Save Changes");
-		ButtonType buttonTypeCancel = new ButtonType("Cancel");
+      ButtonType buttonTypeSave = new ButtonType("Save Changes");
+      ButtonType buttonTypeDontSave = new ButtonType("Don't Save Changes");
+      ButtonType buttonTypeCancel = new ButtonType("Cancel");
 
-		alert.getButtonTypes().setAll(buttonTypeSave, buttonTypeDontSave, buttonTypeCancel);
+      alert.getButtonTypes().setAll(buttonTypeSave, buttonTypeDontSave, buttonTypeCancel);
 
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == buttonTypeSave){
-			
-		    //TODO: implement save.
-			System.exit(0);
-		} else if (result.get() == buttonTypeDontSave) {
-			System.exit(0);
-		} else {
-		}
-	}
+      Optional<ButtonType> result = alert.showAndWait();
+      if (result.get() == buttonTypeSave){
+
+        //TODO: implement save.
+        System.exit(0);
+      } else if (result.get() == buttonTypeDontSave) {
+        System.exit(0);
+      } else {
+      }
+    }
   }
 
   // edit menu action methods
@@ -310,18 +315,38 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
     }
     return null;
   }
-  private void handleSave() {
-    
-  }
 
+  private void handleSave() {
+    SBMLDocument doc = SBTabController.getDoc();
+    File filePath = new File(SBTabController.getFilePath());
+    SBTabController.save(doc, filePath, "name", "version");
+  }
+  /*
+   * Choose file from file dialog and get the file path.
+   */
   private static String chooseFile(){
+    Reader reader = null;
+    Properties theProperties = new Properties();
+    try
+    {
+      if(!(new File (".properties").exists())){
+        SBTabController.setProperties();
+      }
+        reader = new FileReader( ".properties" );
+        theProperties.load( reader );
+        theProperties.list( System.out );
+    }
+    catch ( IOException e )
+    {
+      e.printStackTrace();
+    }
     final FileChooser fileChooser = new FileChooser();
     String filePath = "";
     fileChooser.getExtensionFilters().addAll(
       new ExtensionFilter("XML Files", "*.xml"),
       new ExtensionFilter("SBML Files", "*.SBML"));
     fileChooser.setTitle("Choose SBML or XML File.");
-    fileChooser.setInitialDirectory(new File(System.getProperty("user.home"))) ;
+    fileChooser.setInitialDirectory(new File(theProperties.getProperty("FilePath"))) ;
     File file = fileChooser.showOpenDialog(null);
     if (file != null) {
       filePath = file.getAbsolutePath();
@@ -329,5 +354,4 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
     }
     return null;
   }
-
 }

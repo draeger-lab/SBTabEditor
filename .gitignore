@@ -1,6 +1,7 @@
+/.settings
 /target
 *.log
 *.gen
 .project
 .classpath
-/.settings
+.properties

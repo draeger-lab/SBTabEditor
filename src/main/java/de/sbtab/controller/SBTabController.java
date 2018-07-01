@@ -1,6 +1,15 @@
 package de.sbtab.controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.Properties;
+import java.util.prefs.Preferences;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -14,6 +23,39 @@ public class SBTabController {
 
   private static final transient Logger LOGGER = LogManager.getLogger(SBTabController.class);
   private static SBMLDocument doc;
+  private static String filePath = null;
+
+  public static String getFilePath() {
+    return filePath;
+  }
+  
+  public static SBMLDocument getDoc() {
+    return doc;
+  }
+  
+  /**
+   * Set Properties for the programm, at the moment only the file path is saved. 
+   */
+  public static void setProperties(){
+    Writer writer = null;
+    try
+    {
+      writer = new FileWriter( ".properties" );
+      Properties theProperties = new Properties( System.getProperties() );
+      if(filePath != null){
+        theProperties.setProperty( "FilePath", new File(filePath).getParent());
+      }
+      else{
+        theProperties.setProperty( "FilePath", System.getProperty("user.home"));
+      }
+      theProperties.store( writer, "Properties of STabEditor" );
+    }
+    catch ( IOException e )
+    {
+      e.printStackTrace();
+    }
+  }
+
   /**
    * Save SBML document to a {@link File}.
    * 
@@ -50,14 +92,16 @@ public class SBTabController {
    * 
    * @param path
    *            absolute path to {@link SBMLDocument}
-   * @return 
+   * @return
    */
   public static SBMLDocument read(String filePath) {
     Task<Void> task = new Task<Void>() {
       @Override
       public Void call() {
         try {
+          SBTabController.filePath = filePath;
           doc = SBMLReader.read(new File(filePath));
+          setProperties();
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -68,9 +112,9 @@ public class SBTabController {
     th.setDaemon(true);
     th.start();
     try {
-    	th.join();
+      th.join();
     } catch (InterruptedException e) {
-    	e.printStackTrace();
+      e.printStackTrace();
     }
     return doc;
   }
