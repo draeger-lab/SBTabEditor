@@ -13,13 +13,14 @@ import java.util.ResourceBundle;
 import org.sbml.jsbml.SBMLDocument;
 
 import de.sbtab.controller.*;
-import de.sbtab.main.SBTabMain;
+
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Menu;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -27,7 +28,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import java.util.prefs.Preferences;
+
 public class SBTabMenuController extends SBTabMainView implements Initializable {
 
   public SBTabMenuController() {
@@ -146,6 +147,7 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		  Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 	      stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+	      alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
 	      alert.setTitle("Open another file");
 	      alert.setHeaderText("To open another file a new Session of TabMod must be started");//TODO: Add appropriate text/ Implement abstract dialogs
 	      alert.setContentText("Do you want to start a new Session to open another file?");
@@ -187,6 +189,7 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 	  if (valid){
 		  Alert alert = new Alert(AlertType.CONFIRMATION);
 		  Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		  alert.setGraphic(new ImageView(this.getClass().getResource("ApproveIcon_64.png").toString()));
 	      stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
 		  alert.setTitle("Validator");
 		  alert.setHeaderText(null);
@@ -197,6 +200,7 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 	  else{
 		  Alert alert = new Alert(AlertType.CONFIRMATION);
 		  Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		  alert.setGraphic(new ImageView(this.getClass().getResource("DisapproveIcon_64.png").toString()));
 	      stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
 		  alert.setTitle("Validator");
 		  alert.setHeaderText(null);
@@ -214,6 +218,8 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
       Alert alert = new Alert(AlertType.CONFIRMATION);
       Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
       stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+      alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
+      
       alert.setTitle("Unsaved Changes");
       alert.setHeaderText("Your file has unsaved changes");
       alert.setContentText("Do you want to save your changes?");
