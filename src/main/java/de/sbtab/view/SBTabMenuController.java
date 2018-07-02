@@ -19,9 +19,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.control.Menu;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -142,9 +144,12 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
     }
 	else{
 		Alert alert = new Alert(AlertType.CONFIRMATION);
+		  Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+	      stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
 	      alert.setTitle("Open another file");
-	      alert.setHeaderText("To open another file a new Session of TabMod must be started");//TODO: Add appropriate text
+	      alert.setHeaderText("To open another file a new Session of TabMod must be started");//TODO: Add appropriate text/ Implement abstract dialogs
 	      alert.setContentText("Do you want to start a new Session to open another file?");
+	      
 
 	      ButtonType buttonTypeNew = new ButtonType("new Session");
 	      ButtonType buttonTypeCancel = new ButtonType("Cancel");
@@ -181,6 +186,8 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 	  boolean valid=SBTabController.validate(doc);//TODO: Implement validate
 	  if (valid){
 		  Alert alert = new Alert(AlertType.CONFIRMATION);
+		  Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+	      stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
 		  alert.setTitle("Validator");
 		  alert.setHeaderText(null);
 		  alert.setContentText("Your file is a valid .sbml file");
@@ -189,6 +196,8 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 	  }
 	  else{
 		  Alert alert = new Alert(AlertType.CONFIRMATION);
+		  Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+	      stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
 		  alert.setTitle("Validator");
 		  alert.setHeaderText(null);
 		  alert.setContentText("Your Document has " + SBTabController.numErrors(doc) + " Errors");
@@ -203,8 +212,10 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
     boolean unsavedChanges= true;
     if (unsavedChanges){
       Alert alert = new Alert(AlertType.CONFIRMATION);
+      Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+      stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
       alert.setTitle("Unsaved Changes");
-      alert.setHeaderText("Your file has unsaved changes");//TODO: Add appropriate text
+      alert.setHeaderText("Your file has unsaved changes");
       alert.setContentText("Do you want to save your changes?");
 
       ButtonType buttonTypeSave = new ButtonType("Save Changes");
