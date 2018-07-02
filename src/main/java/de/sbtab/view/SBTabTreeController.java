@@ -16,10 +16,7 @@ public class SBTabTreeController implements Initializable {
 	@FXML
 	private TreeView<String> treeView;
 
-	public void recursiveTree(SBase tree) {
-
-	}
-
+	
 //	public String getResource(ResourceBundle resources, String value) {
 //		resources = ResourceBundle.getBundle("");
 //		return resources.getString(value);
@@ -48,11 +45,9 @@ public class SBTabTreeController implements Initializable {
 			}
 
 			// for (int i = 0; i < document.getChildCount(); i++) {
-			// Enumeration<TreeNode> children =
-			// document.getChildAt(i).children();
+			// Enumeration<TreeNode> children = document.getChildAt(i).children();
 			// while (children.hasMoreElements()) {
-			// TreeItem<String> node = new
-			// TreeItem<String>(String.valueOf(children.nextElement()));
+			// TreeItem<String> node = new TreeItem<String>(String.valueOf(children.nextElement()));
 			// root.getChildren().add(node);
 			// }
 			// }
