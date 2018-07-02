@@ -1,10 +1,15 @@
 package de.sbtab.view;
 
+import java.awt.Label;
+import java.awt.TextArea;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.Optional;
 import java.util.Properties;
@@ -22,6 +27,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Menu;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -198,13 +204,38 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 		  
 	  }
 	  else{
-		  Alert alert = new Alert(AlertType.CONFIRMATION);
-		  Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-		  alert.setGraphic(new ImageView(this.getClass().getResource("DisapproveIcon_64.png").toString()));
-	      stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-		  alert.setTitle("Validator");
-		  alert.setHeaderText(null);
-		  alert.setContentText("Your Document has " + SBTabController.numErrors(doc) + " Errors");
+		  Alert alert = new Alert(AlertType.ERROR);
+		  alert.setTitle("Exception Dialog");
+		  alert.setHeaderText("You have " + SBTabController.numErrors(doc) + "Errors in your Document.");
+		  alert.setContentText("List of all Errors");
+
+		  Exception ex = new FileNotFoundException("Error");
+
+		  // Create expandable Exception.
+		  StringWriter sw = new StringWriter();
+		  PrintWriter pw = new PrintWriter(sw);
+		  ex.printStackTrace(pw);
+		  String exceptionText = sw.toString();
+
+		  Label label = new Label("The exception stacktrace was:");
+
+		  TextArea textArea = new TextArea(exceptionText);
+		  textArea.setEditable(false);
+
+		  textArea.setSize((int)Double.MAX_VALUE, (int)Double.MAX_VALUE);
+		  //Cannot be resolved to a field for unknown reason
+		  //GridPane.setVgrow(textArea, Priority.ALWAYS);
+		  //GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+		  GridPane expContent = new GridPane();
+		  expContent.setMaxWidth(Double.MAX_VALUE);
+		  //despite all tutorials and Documentations the add functions states that it needs a node
+		  //expContent.add(label, 0, 0);
+		  //expContent.add(textArea, 0, 1);
+
+		  // Set expandable Exception into the dialog pane.
+		  alert.getDialogPane().setExpandableContent(expContent);
+
 		  alert.showAndWait();
 	  }
 

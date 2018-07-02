@@ -144,4 +144,15 @@ public class SBTabController {
   public static int numErrors(SBMLDocument doc) {
 	  return doc.checkConsistencyOffline();
   }
+  /**
+   * Testmethod to get a String-Type Error Code
+   * @param doc
+   * @return String-Error
+   */
+  public static String errorToString(SBMLDocument doc) {
+	  int numErrors = doc.checkConsistencyOffline();
+	  String StringError = null;
+	  StringError = doc.getError(0).toString();
+	  return StringError;
+  }
 }
