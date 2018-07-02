@@ -53,53 +53,11 @@ public class SBTabReactionTable extends SBTabViewAbstractTable implements SBTabT
 	private TableView<SBTabReactionWrapper> generateTableColumns(final ObservableList<SBTabReactionWrapper> data) {
 		TableView<SBTabReactionWrapper> tableView = new TableView<SBTabReactionWrapper>();
 		// TODO: figure out what fields do we need to work with
-		TableColumn reactionName = defineColumn("Name", SBTabReactionWrapper::getReactionName);
-		tableView.getColumns().add(reactionName);		
-		TableColumn reactionId = defineColumn("Id", SBTabReactionWrapper::getReactionId);
-		tableView.getColumns().add(reactionId);
-		TableColumn reactionSBOTerm = defineColumn("SBO Term", SBTabReactionWrapper::getSBOTerm);
-		tableView.getColumns().add(reactionSBOTerm);
+		tableView.getColumns().add(defineColumn("Name", SBTabReactionWrapper::getReactionName));	
+		tableView.getColumns().add(defineColumn("Id", SBTabReactionWrapper::getReactionId));	
+		tableView.getColumns().add(defineColumn("SBO Term", SBTabReactionWrapper::getSBOTerm));
 		tableView.getItems().setAll(data);
 		tableView.setEditable(true);
-
-		reactionName.setCellFactory(TextFieldTableCell.forTableColumn());
-        reactionName.setOnEditCommit(
-            new EventHandler<CellEditEvent<SBTabReactionWrapper, String>>() {
-                @Override
-                public void handle(CellEditEvent<SBTabReactionWrapper, String> t) {
-                    SBTabReactionWrapper y = ((SBTabReactionWrapper) t.getTableView().getItems().get(
-                            t.getTablePosition().getRow()));
-            		StringProperty changedValue = new SimpleStringProperty(t.getNewValue());
-                    y.setReactionName(changedValue);
-                }
-            }
-		 );
-        
-        reactionId.setCellFactory(TextFieldTableCell.forTableColumn());
-        reactionId.setOnEditCommit(
-            new EventHandler<CellEditEvent<SBTabReactionWrapper, String>>() {
-                @Override
-                public void handle(CellEditEvent<SBTabReactionWrapper, String> t) {
-                    SBTabReactionWrapper y = ((SBTabReactionWrapper) t.getTableView().getItems().get(
-                            t.getTablePosition().getRow()));
-            		StringProperty changedValue = new SimpleStringProperty(t.getNewValue());
-                    y.setReactionId(changedValue);
-                }
-            }
-		 );
-        
-        reactionSBOTerm.setCellFactory(TextFieldTableCell.forTableColumn());
-        reactionSBOTerm.setOnEditCommit(
-            new EventHandler<CellEditEvent<SBTabReactionWrapper, String>>() {
-                @Override
-                public void handle(CellEditEvent<SBTabReactionWrapper, String> t) {
-                    SBTabReactionWrapper y = ((SBTabReactionWrapper) t.getTableView().getItems().get(
-                            t.getTablePosition().getRow()));
-            		StringProperty changedValue = new SimpleStringProperty(t.getNewValue());
-                    y.setSBOTerm(changedValue);
-                }
-            }
-		 );
 
 		return tableView;
 	}
