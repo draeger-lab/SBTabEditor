@@ -46,6 +46,7 @@ public class SBTabMainView extends Application implements Runnable{
 		if (fileLoaded) {
 		root.setTop(FXMLLoader.load(getClass().getResource("SBTabMenu.fxml")));
 		root.setLeft(FXMLLoader.load(getClass().getResource("SBTabTree.fxml")));
+		root.setCenter(tableProducer.getTableView(TableType.REACTION));
 		}
 		else{
 			root.setTop(FXMLLoader.load(getClass().getResource("SBTabMenu.fxml")));	

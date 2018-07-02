@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import org.sbml.jsbml.SBMLDocument;
 
 import de.sbtab.controller.*;
+import de.sbtab.main.SBTabMain;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,49 +30,6 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 
   public SBTabMenuController() {
   }
-  // Generates a MenuBar as discussed in the GUI-Concept
-  /*
-   * public static MenuBar generateMenuBar (){
-   * 
-   * MenuBar menuBar = new MenuBar();
-   * 
-   * // Menus needed Menu fileMenu = new Menu("File"); Menu editMenu = new
-   * Menu("Edit"); Menu viewMenu = new Menu("View"); Menu helpMenu = new
-   * Menu("Help");
-   * 
-   * // Menu-Items needed //file MenuItem newItem = new MenuItem("New");
-   * MenuItem openItem = new MenuItem("Open"); MenuItem saveItem = new
-   * MenuItem("Save"); MenuItem exitItem = new MenuItem("Exit"); MenuItem
-   * exportItem = new MenuItem("Export"); MenuItem importItem = new
-   * MenuItem("Import"); //edit MenuItem copyItem = new MenuItem("Copy");
-   * MenuItem cutItem = new MenuItem("Cut"); MenuItem pasteItem = new
-   * MenuItem("Paste"); MenuItem undoItem = new MenuItem("Undo"); MenuItem
-   * redoItem = new MenuItem("Redo"); //View MenuItem columnsShownItem = new
-   * MenuItem("Columns shown"); MenuItem hideColumnsItem = new
-   * MenuItem("Hide Columns"); MenuItem showHiddenColumnsItem = new
-   * MenuItem("Show hidden columns");
-   * 
-   * // Arranging Menu-Items in the right order
-   * fileMenu.getItems().addAll(newItem, openItem, importItem, exportItem,
-   * saveItem, exitItem ); editMenu.getItems().addAll(undoItem, redoItem,
-   * copyItem, cutItem, pasteItem);
-   * viewMenu.getItems().addAll(columnsShownItem, hideColumnsItem,
-   * showHiddenColumnsItem);
-   * 
-   * menuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
-   * 
-   * //define Keyboard shortcuts
-   * newItem.setAccelerator(KeyCombination.keyCombination("Ctrl+N"));
-   * openItem.setAccelerator(KeyCombination.keyCombination("Ctrl+O"));
-   * saveItem.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
-   * undoItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Z"));
-   * redoItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Y"));
-   * copyItem.setAccelerator(KeyCombination.keyCombination("Ctrl+C"));
-   * cutItem.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
-   * pasteItem.setAccelerator(KeyCombination.keyCombination("Ctrl+V"));
-   * 
-   * return menuBar; }
-   */
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
@@ -167,6 +125,7 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 
   @FXML
   void doOpen(ActionEvent event) {
+	if (!fileLoaded){
     doc = handleOpen();
     // TODO: change when tree and more views are implemented
     if (doc!=null) {
@@ -178,8 +137,29 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
         SaveItem.setDisable(false);
         ValidateItem.setDisable(false);
         ExportItem.setDisable(false);
+    }
         
     }
+	else{
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+	      alert.setTitle("Open another file");
+	      alert.setHeaderText("To open another file a new Session of TabMod must be started");//TODO: Add appropriate text
+	      alert.setContentText("Do you want to start a new Session to open another file?");
+
+	      ButtonType buttonTypeNew = new ButtonType("new Session");
+	      ButtonType buttonTypeCancel = new ButtonType("Cancel");
+
+	      alert.getButtonTypes().setAll(buttonTypeNew, buttonTypeCancel);
+
+	      Optional<ButtonType> result = alert.showAndWait();
+	      if (result.get() == buttonTypeNew){
+	    	  SBMLDocument newDoc=handleOpen(); 
+	         //TODO: Implement opening a new window in a new thread.
+	      }
+	      else {
+	      }
+		
+	}
   }
 
   @FXML
