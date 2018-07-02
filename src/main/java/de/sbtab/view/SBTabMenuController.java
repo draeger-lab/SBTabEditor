@@ -333,7 +333,9 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
   private void handleSave() {
     SBMLDocument doc = SBTabController.getDoc();
     File filePath = new File(SBTabController.getFilePath());
-    SBTabController.save(doc, filePath, "name", "version");
+    String theProjectName = SBTabMenuController.getTheProjectName();
+    String theVersion = SBTabMenuController.getTheVersion();
+    SBTabController.save(doc, filePath, theProjectName, theVersion);
   }
   /*
    * Choose file from file dialog and get the file path.
