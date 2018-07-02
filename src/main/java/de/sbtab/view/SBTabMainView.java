@@ -19,6 +19,8 @@ public class SBTabMainView extends Application implements Runnable{
 	public SBMLDocument doc;
 	private static BorderPane root = new BorderPane();
 	private static SBTabTableProducer tableProducer;
+	private static final String THE_PROJECT_NAME = "TabMod";
+	private static final String THE_VERSION = "1.1"; 
 	public boolean fileLoaded;// relevant information if a file is loaded or not.
 	
 	@Override
@@ -57,7 +59,7 @@ public class SBTabMainView extends Application implements Runnable{
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_256.png")));
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_48.ico")));
 
-		stage.setTitle("TabMod 1.1");
+		stage.setTitle(THE_PROJECT_NAME +" " + THE_VERSION);
 		stage.setScene(scene);
 		stage.sizeToScene();
 		stage.show();
@@ -77,4 +79,12 @@ public class SBTabMainView extends Application implements Runnable{
 			e.printStackTrace();
 		}
 	}
+
+  public static String getTheVersion() {
+    return THE_VERSION;
+  }
+
+  public static String getTheProjectName() {
+    return THE_PROJECT_NAME;
+  }
 }
