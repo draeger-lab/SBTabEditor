@@ -78,6 +78,9 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
     if (!fileLoaded){
       ViewMenu.setDisable(true);
       EditMenu.setDisable(true);//Disable unnecessary Menus while no file is loaded
+      SaveItem.setDisable(true);
+      ValidateItem.setDisable(true);
+      ExportItem.setDisable(true);
     }
 
   }
@@ -167,8 +170,15 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
     doc = handleOpen();
     // TODO: change when tree and more views are implemented
     if (doc!=null) {
-      reInit();
-      fileLoaded=true;
+    	fileLoaded=true;
+        reInit();
+        //Enable full Menu
+        ViewMenu.setDisable(false);
+        EditMenu.setDisable(false);
+        SaveItem.setDisable(false);
+        ValidateItem.setDisable(false);
+        ExportItem.setDisable(false);
+        
     }
   }
 
