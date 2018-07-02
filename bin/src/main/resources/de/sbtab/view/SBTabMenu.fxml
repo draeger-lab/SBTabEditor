@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.MenuBar.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+
+<MenuBar id="menuBar" VBox.vgrow="NEVER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.sbtab.view.SBTabMenuController">
+    <menus>
+        <Menu mnemonicParsing="true" text="_File">
+            <items>
+                <MenuItem id="NewItem" accelerator="Shortcut+N" mnemonicParsing="true" onAction="#doNew" text="_New" />
+                <MenuItem fx:id="OpenItem" accelerator="Shortcut+O" mnemonicParsing="true" onAction="#doOpen" text="_Open" />
+                <MenuItem fx:id="SaveItem" accelerator="Shortcut+S" mnemonicParsing="true" onAction="#doSave" text="_Save" />
+                <MenuItem fx:id="ImportItem" mnemonicParsing="true" onAction="#doImport" text="_Import" />
+                <MenuItem fx:id="ExportItem" mnemonicParsing="true" onAction="#doExport" text="_Export" /> 
+                <SeparatorMenuItem />
+                <MenuItem fx:id="ValidateItem" mnemonicParsing="true" onAction="#doValidate" text="_Validate" />   
+                <SeparatorMenuItem />      
+                <MenuItem fx:id="QuitItem" accelerator="Shortcut+Q" mnemonicParsing="true" onAction="#doQuit" text="_Quit" />
+            </items>
+            </Menu>
+        <Menu fx:id="EditMenu" mnemonicParsing="true" text="_Edit">
+            <items>
+                <MenuItem fx:id="UndoItem" accelerator="Shortcut+Z" mnemonicParsing="true" onAction="#doUndo" text="_Undo" />
+                <MenuItem fx:id="RedoItem" accelerator="Shortcut+Y" mnemonicParsing="true" onAction="#doRedo" text="_Redo" />
+                <SeparatorMenuItem />
+                <MenuItem fx:id="CopyItem" accelerator="Shortcut+C" mnemonicParsing="true" onAction="#doCopy" text="_Copy" />
+                <MenuItem fx:id="CutItem" accelerator="Shortcut+X" mnemonicParsing="true" onAction="#doCut" text="_Cut" />
+                <MenuItem fx:id="PasteItem" accelerator="Shortcut+V" mnemonicParsing="true" onAction="#doPaste" text="_Paste" />
+            </items>
+        </Menu>
+        <Menu fx:id="ViewMenu" mnemonicParsing="true" text="_View">
+            <items>
+                <Menu mnemonicParsing="true" text="_Field size">
+                   <items>
+                   <MenuItem fx:id="ZoomInItem" accelerator="Shortcut+P" mnemonicParsing="true" onAction="#doZoomIn" text="_Zoom in" />
+                   <MenuItem fx:id="ZoomOutItem" accelerator="Shortcut+M" mnemonicParsing="true" onAction="#doZoomOut" text="_Zoom out" />
+                   <MenuItem fx:id="SetToItem" mnemonicParsing="true" onAction="#doSetTo" text="_Set to" />
+                   </items>
+                </Menu>
+                
+                <SeparatorMenuItem />
+                <MenuItem fx:id="HideColumnsItem" mnemonicParsing="true" onAction="#doHideColumns" text="_Hide columns" />
+                <MenuItem fx:id="ShowHiddenColumnsItem" mnemonicParsing="true" onAction="#doShowHiddenColumns" text="_Show hidden columns" />
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="true" text="_Help">
+           <items>
+                <MenuItem mnemonicParsing="true" onAction="#doDocumentation" text="_Documentation" />
+                <SeparatorMenuItem />
+                <MenuItem mnemonicParsing="true" onAction="#doWebSearch" text="_Web search" />
+            </items>
+        </Menu>
+
+   
+                
+    </menus>
+</MenuBar>

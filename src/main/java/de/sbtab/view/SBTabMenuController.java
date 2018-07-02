@@ -188,18 +188,22 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 
   @FXML
   void doValidate(ActionEvent event) {
-    boolean valid=true;//TODO: Implement validate
-    if (valid){
-      Alert alert = new Alert(AlertType.INFORMATION);
-      alert.setTitle("Validator");
-      alert.setHeaderText(null);
-      alert.setContentText("Your file is a valid .sbml file");
-      alert.showAndWait();
-    }
-    else{
-
-    }
-
+	  boolean valid=SBTabController.validate(doc);//TODO: Implement validate
+	  if (valid){
+		  Alert alert = new Alert(AlertType.CONFIRMATION);
+		  alert.setTitle("Validator");
+		  alert.setHeaderText(null);
+		  alert.setContentText("Your file is a valid .sbml file");
+		  alert.showAndWait();
+		  
+	  }
+	  else{
+		  Alert alert = new Alert(AlertType.CONFIRMATION);
+		  alert.setTitle("Validator");
+		  alert.setHeaderText(null);
+		  alert.setContentText("Your Document has " + SBTabController.numErrors(doc) + " Errors");
+		  alert.showAndWait();
+	  }
 
   }
 

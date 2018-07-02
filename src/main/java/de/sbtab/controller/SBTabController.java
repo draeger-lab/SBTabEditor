@@ -118,14 +118,30 @@ public class SBTabController {
     }
     return doc;
   }
+  /**
+   * Validator of SBML-Files
+   * @param doc is the input SBML-File
+   * @return boolean true for valid Document else false plus Logger errors
+   */
   public static boolean validate(SBMLDocument doc) {
-    if(doc.checkConsistencyOffline() == 0) {
+	  // the number of Errors of a SBMLFile
+	  int numErrors = doc.checkConsistencyOffline();
+    if(numErrors == 0) {
       return true;
     }else {
-      for(int i = 0; i < doc.checkConsistencyOffline(); i++) {
+    	//get each error and show it
+      for(int i = 0; i < numErrors; i++) {
         LOGGER.error(doc.getError(i));
       }
       return false;
     }
+  }
+  /**
+   * Number of Errors in Document
+   * @param doc
+   * @return Number of Errors
+   */
+  public static int numErrors(SBMLDocument doc) {
+	  return doc.checkConsistencyOffline();
   }
 }
