@@ -1,5 +1,7 @@
 package de.sbtab.view;
 
+import java.io.IOException;
+
 import org.sbml.jsbml.SBMLDocument;
 
 import de.sbtab.services.SBTabReactionTable;
@@ -68,5 +70,11 @@ public class SBTabMainView extends Application implements Runnable{
 	public void reInit() {
 		tableProducer = new SBTabTableProducer(doc);
 		root.setCenter(tableProducer.getTableView(TableType.REACTION));
+		try {
+			root.setLeft(FXMLLoader.load(getClass().getResource("SBTabTree.fxml")));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
