@@ -2,6 +2,8 @@
 [![License (MIT)](https://img.shields.io/badge/license-MIT-blue.svg?style=plastic)](http://opensource.org/licenses/MIT)
 <img align="right" src="src/main/resources/de/sbtab/view/Icon_256.png"/>
 
+https://travis-ci.com/draeger-lab/SBTabEditor.svg?token=ByDn1ybpoXpKvMHXpZD4&branch=master
+
 **Free, open-source application to help you read, write, manipulate and validate SBML files**
 
 The available information about biological systems increased strongly in the last decade and will
