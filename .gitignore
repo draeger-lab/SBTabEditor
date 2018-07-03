@@ -1,3 +1,8 @@
+/.settings
 /target
 *.log
 *.gen
+.project
+.classpath
+.properties
+/bin/

@@ -1,6 +1,15 @@
 package de.sbtab.controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.Properties;
+import java.util.prefs.Preferences;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -14,6 +23,39 @@ public class SBTabController {
 
   private static final transient Logger LOGGER = LogManager.getLogger(SBTabController.class);
   private static SBMLDocument doc;
+  private static String filePath = null;
+
+  public static String getFilePath() {
+    return filePath;
+  }
+  
+  public static SBMLDocument getDoc() {
+    return doc;
+  }
+  
+  /**
+   * Set Properties for the programm, at the moment only the file path is saved. 
+   */
+  public static void setProperties(){
+    Writer writer = null;
+    try
+    {
+      writer = new FileWriter( ".properties" );
+      Properties theProperties = new Properties( System.getProperties() );
+      if(filePath != null){
+        theProperties.setProperty( "FilePath", new File(filePath).getParent());
+      }
+      else{
+        theProperties.setProperty( "FilePath", System.getProperty("user.home"));
+      }
+      theProperties.store( writer, "Properties of STabEditor" );
+    }
+    catch ( IOException e )
+    {
+      e.printStackTrace();
+    }
+  }
+
   /**
    * Save SBML document to a {@link File}.
    * 
@@ -50,14 +92,16 @@ public class SBTabController {
    * 
    * @param path
    *            absolute path to {@link SBMLDocument}
-   * @return 
+   * @return
    */
   public static SBMLDocument read(String filePath) {
     Task<Void> task = new Task<Void>() {
       @Override
       public Void call() {
         try {
+          SBTabController.filePath = filePath;
           doc = SBMLReader.read(new File(filePath));
+          setProperties();
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -68,20 +112,47 @@ public class SBTabController {
     th.setDaemon(true);
     th.start();
     try {
-    	th.join();
+      th.join();
     } catch (InterruptedException e) {
-    	e.printStackTrace();
+      e.printStackTrace();
     }
     return doc;
   }
+  /**
+   * Validator of SBML-Files
+   * @param doc is the input SBML-File
+   * @return boolean true for valid Document else false plus Logger errors
+   */
   public static boolean validate(SBMLDocument doc) {
-    if(doc.checkConsistencyOffline() == 0) {
+	  // the number of Errors of a SBMLFile
+	  int numErrors = doc.checkConsistencyOffline();
+    if(numErrors == 0) {
       return true;
     }else {
-      for(int i = 0; i < doc.checkConsistencyOffline(); i++) {
+    	//get each error and show it
+      for(int i = 0; i < numErrors; i++) {
         LOGGER.error(doc.getError(i));
       }
       return false;
     }
+  }
+  /**
+   * Number of Errors in Document
+   * @param doc
+   * @return Number of Errors
+   */
+  public static int numErrors(SBMLDocument doc) {
+	  return doc.checkConsistencyOffline();
+  }
+  /**
+   * Testmethod to get a String-Type Error Code
+   * @param doc
+   * @return String-Error
+   */
+  public static String errorToString(SBMLDocument doc) {
+	  int numErrors = doc.checkConsistencyOffline();
+	  String StringError = null;
+	  StringError = doc.getError(0).toString();
+	  return StringError;
   }
 }

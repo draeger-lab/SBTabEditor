@@ -1,10 +1,11 @@
 package de.sbtab.view;
 
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.ResourceBundle;
-
-import org.sbml.jsbml.Model;
-import org.sbml.jsbml.SBMLDocument;
+import javax.swing.tree.TreeNode;
+import org.sbml.jsbml.SBase;
+import de.sbtab.controller.SBTabController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
@@ -15,33 +16,45 @@ public class SBTabTreeController implements Initializable {
 	@FXML
 	private TreeView<String> treeView;
 
+	
+//	public String getResource(ResourceBundle resources, String value) {
+//		resources = ResourceBundle.getBundle("");
+//		return resources.getString(value);
+//		}
+		
+
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub {
+	public void initialize(URL location, ResourceBundle value) {
+		SBase document = SBTabController.getDoc();
+		TreeNode root = document.getRoot();
+		TreeItem<String> root2 = new TreeItem<String>(String.valueOf(root));
+		treeView.setRoot(root2);
+
+		tree(root, document, root2);
+	}
+
+	private void tree(TreeNode root, SBase document, TreeItem<String> root2) {
 		try {
-
-			SBMLDocument document = SBTabMenuController.handleOpen();
-			TreeItem<String> root = new TreeItem<String>("Root Node");
-			root.setExpanded(true);
-			// Enumeration<TreeNode> children = document.children() ;
-			// System.out.println(children);
-			Model mod = (Model) document.getChildAt(0);
-
-			for (int i = 0; i < mod.getChildCount(); i++) {
-				TreeItem<String> node = new TreeItem<String>(String.valueOf(mod.getChildAt(i)));
-				root.getChildren().add(node);
+			if (root.getChildCount() > 0) {
+				for (int i = 0; i < root.getChildCount(); i++) {
+					TreeNode node = root.getChildAt(i);
+					TreeItem<String> node2 = new TreeItem<String>(String.valueOf(node));
+					root2.getChildren().add(node2);
+					tree(node, document, node2);
+				}
 			}
-			
-//			Enumeration<TreeNode> tn = mod.getChildAt(1).children();
-//		    while(tn.hasMoreElements()){
-//		    	System.out.println(tn.nextElement());
-//		    }
-			
-			treeView.setRoot(root);
-			
+
+			// for (int i = 0; i < document.getChildCount(); i++) {
+			// Enumeration<TreeNode> children = document.getChildAt(i).children();
+			// while (children.hasMoreElements()) {
+			// TreeItem<String> node = new TreeItem<String>(String.valueOf(children.nextElement()));
+			// root.getChildren().add(node);
+			// }
+			// }
 
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+
 	}
 }

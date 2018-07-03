@@ -74,7 +74,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.7.0</version>
 			</plugin>
-			<!-- To create your executable file call mvn jfx:jar. The jar-file will be placed at target/jfx/app -->
+			<!-- To create your executable file call mvn jfx:jar. The jar-file will 
+				be placed at target/jfx/app -->
 			<plugin>
 				<groupId>com.zenjava</groupId>
 				<artifactId>javafx-maven-plugin</artifactId>
@@ -83,6 +84,15 @@
 					<vendor>draeger-lab</vendor>
 					<mainClass>de.sbtab.main.SBTabMain</mainClass>
 				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<inherited>false</inherited>
+					</execution>
+				</executions>
 			</plugin>
 			<!--allows us to run tests that use either the “old” JUnit (3 or 4) or 
 				JUnit 5 -->
