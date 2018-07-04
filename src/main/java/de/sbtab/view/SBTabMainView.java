@@ -4,15 +4,14 @@ import java.io.IOException;
 
 import org.sbml.jsbml.SBMLDocument;
 
-import de.sbtab.services.SBTabReactionTable;
 import de.sbtab.services.SBTabTableProducer;
 import de.sbtab.services.TableType;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 public class SBTabMainView extends Application implements Runnable{
 	

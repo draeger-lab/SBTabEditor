@@ -1,10 +1,12 @@
 package de.sbtab.view;
 
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.ResourceBundle;
+
 import javax.swing.tree.TreeNode;
+
 import org.sbml.jsbml.SBase;
+
 import de.sbtab.controller.SBTabController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

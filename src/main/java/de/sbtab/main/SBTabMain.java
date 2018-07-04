@@ -1,8 +1,8 @@
 package de.sbtab.main;
 
-import de.sbtab.view.SBTabMainView;
-import javafx.application.Application;
 import org.sbml.jsbml.SBMLDocument;
+
+import de.sbtab.view.SBTabMainView;
 
 public class SBTabMain {
 

@@ -1,16 +1,10 @@
 package de.sbtab.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.Properties;
-import java.util.prefs.Preferences;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.sbml.jsbml.SBMLDocument;

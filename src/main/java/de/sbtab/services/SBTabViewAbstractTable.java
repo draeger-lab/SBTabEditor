@@ -1,6 +1,5 @@
 package de.sbtab.services;
 
-import java.util.concurrent.Callable;
 import java.util.function.Function;
 
 import org.sbml.jsbml.SBase;
@@ -10,12 +9,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.Callback;
-import java.lang.Object;
 import javafx.util.StringConverter;
 import javafx.util.converter.DefaultStringConverter;
 
