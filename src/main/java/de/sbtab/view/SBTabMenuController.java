@@ -35,365 +35,362 @@ import javafx.stage.Stage;
 
 public class SBTabMenuController extends SBTabMainView implements Initializable {
 
-  public SBTabMenuController() {
-  }
-
-  @Override
-  public void initialize(URL arg0, ResourceBundle arg1) {
-    if (!fileLoaded){
-      ViewMenu.setDisable(true);
-      EditMenu.setDisable(true);//Disable unnecessary Menus while no file is loaded
-      SaveItem.setDisable(true);
-      ValidateItem.setDisable(true);
-      ExportItem.setDisable(true);
-    }
-
-  }
-  // View and Edit Menu as objects:
-  @FXML
-  private Menu ViewMenu;
-
-  @FXML
-  private Menu EditMenu;
-
-
-  //file MenuItems:
-
-  @FXML
-  private MenuItem NewItem;
-
-  @FXML
-  private MenuItem OpenItem;
-
-  @FXML
-  private MenuItem SaveItem;
-
-  @FXML
-  private MenuItem QuitItem;
-
-  @FXML
-  private MenuItem ImportItem;
-
-  @FXML
-  private MenuItem ExportItem;
-
-  @FXML
-  private MenuItem ValidateItem;
-
-
-  // edit MenuItems:
-  @FXML
-  private MenuItem UndoItem;
-
-  @FXML
-  private MenuItem RedoItem;
-
-  @FXML
-  private MenuItem CopyItem;
-
-  @FXML
-  private MenuItem PasteItem;
-
-  @FXML
-  private MenuItem CutItem;
-
-  // view MenuItems:
-  @FXML
-  private MenuItem FieldSizeItem;
-
-  @FXML
-  private MenuItem HideColumnsItem;
-
-  @FXML
-  private MenuItem ShowHiddenColumnsItem;
-
-  @FXML
-  private MenuItem ZoomInItem;
-
-  @FXML
-  private MenuItem ZoomOutItem;
-
-  @FXML
-  private MenuItem SetToItem;
-
-  // Help MenuItems:
-  @FXML
-  private MenuItem DocumentationItem;
-
-  @FXML
-  private MenuItem WebSearchItem;
-
-  // file menu action Methods:
-
-  @FXML
-  void doNew(ActionEvent event) {
-    handleNew();
-  }
-
-  @FXML
-  void doOpen(ActionEvent event) {
-	if (!fileLoaded){
-    doc = handleOpen();
-    // TODO: change when tree and more views are implemented
-    if (doc!=null) {
-    	fileLoaded=true;
-        reInit();
-        //Enable full Menu
-        ViewMenu.setDisable(false);
-        EditMenu.setDisable(false);
-        SaveItem.setDisable(false);
-        ValidateItem.setDisable(false);
-        ExportItem.setDisable(false);
-    }
-        
-    }
-	else{
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		  Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-	      stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-	      alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
-	      alert.setTitle("Open another file");
-	      alert.setHeaderText("To open another file a new Session of TabMod must be started");//TODO: Add appropriate text/ Implement abstract dialogs
-	      alert.setContentText("Do you want to start a new Session to open another file?");
-	      
-
-	      ButtonType buttonTypeNew = new ButtonType("new Session");
-	      ButtonType buttonTypeCancel = new ButtonType("Cancel");
-
-	      alert.getButtonTypes().setAll(buttonTypeNew, buttonTypeCancel);
-
-	      Optional<ButtonType> result = alert.showAndWait();
-	      if (result.get() == buttonTypeNew){
-	    	  SBMLDocument newDoc=handleOpen(); 
-	         //TODO: Implement opening a new window in a new thread.
-	      }
-	      else {
-	      }
-		
+	public SBTabMenuController() {
 	}
-  }
 
-  @FXML
-  void doSave(ActionEvent event) {
-    handleSave();
-  }
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		if (!fileLoaded) {
+			ViewMenu.setDisable(true);
+			EditMenu.setDisable(true);// Disable unnecessary Menus while no file is loaded
+			SaveItem.setDisable(true);
+			ValidateItem.setDisable(true);
+			ExportItem.setDisable(true);
+		}
 
-  @FXML
-  void doImport(ActionEvent event) {
-  }
+	}
 
-  @FXML
-  void doExport(ActionEvent event) {
+	// View and Edit Menu as objects:
+	@FXML
+	private Menu ViewMenu;
 
-  }
+	@FXML
+	private Menu EditMenu;
 
-  @FXML
-  void doValidate(ActionEvent event) {
-	  boolean valid=SBTabController.validate(doc);//TODO: Implement validate
-	  if (valid){
-		  Alert alert = new Alert(AlertType.CONFIRMATION);
-		  Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-		  alert.setGraphic(new ImageView(this.getClass().getResource("ApproveIcon_64.png").toString()));
-	      stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-		  alert.setTitle("Validator");
-		  alert.setHeaderText(null);
-		  alert.setContentText("Your file is a valid .sbml file");
-		  alert.showAndWait();
-		  
-	  }
-	  else{
-		  Alert alert = new Alert(AlertType.ERROR);
-		  alert.setTitle("Exception Dialog");
-		  alert.setHeaderText("You have " + SBTabController.numErrors(doc) + "Errors in your Document.");
-		  alert.setContentText("List of all Errors");
+	// file MenuItems:
 
-		  Exception ex = new FileNotFoundException("Error");
+	@FXML
+	private MenuItem NewItem;
 
-		  // Create expandable Exception.
-		  StringWriter sw = new StringWriter();
-		  PrintWriter pw = new PrintWriter(sw);
-		  ex.printStackTrace(pw);
-		  String exceptionText = sw.toString();
+	@FXML
+	private MenuItem OpenItem;
 
-		  Label label = new Label("The exception stacktrace was:");
+	@FXML
+	private MenuItem SaveItem;
 
-		  TextArea textArea = new TextArea(exceptionText);
-		  textArea.setEditable(false);
+	@FXML
+	private MenuItem QuitItem;
 
-		  textArea.setSize((int)Double.MAX_VALUE, (int)Double.MAX_VALUE);
-		  //Cannot be resolved to a field for unknown reason
-		  //GridPane.setVgrow(textArea, Priority.ALWAYS);
-		  //GridPane.setHgrow(textArea, Priority.ALWAYS);
+	@FXML
+	private MenuItem ImportItem;
 
-		  GridPane expContent = new GridPane();
-		  expContent.setMaxWidth(Double.MAX_VALUE);
-		  //despite all tutorials and Documentations the add functions states that it needs a node
-		  //expContent.add(label, 0, 0);
-		  //expContent.add(textArea, 0, 1);
+	@FXML
+	private MenuItem ExportItem;
 
-		  // Set expandable Exception into the dialog pane.
-		  alert.getDialogPane().setExpandableContent(expContent);
+	@FXML
+	private MenuItem ValidateItem;
 
-		  alert.showAndWait();
-	  }
+	// edit MenuItems:
+	@FXML
+	private MenuItem UndoItem;
 
-  }
+	@FXML
+	private MenuItem RedoItem;
 
-  @FXML
-  void doQuit(ActionEvent event) {
-    //TODO: check for unsaved changes
-    boolean unsavedChanges= true;
-    if (unsavedChanges){
-      Alert alert = new Alert(AlertType.CONFIRMATION);
-      Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-      stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-      alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
-      
-      alert.setTitle("Unsaved Changes");
-      alert.setHeaderText("Your file has unsaved changes");
-      alert.setContentText("Do you want to save your changes?");
+	@FXML
+	private MenuItem CopyItem;
 
-      ButtonType buttonTypeSave = new ButtonType("Save Changes");
-      ButtonType buttonTypeDontSave = new ButtonType("Don't Save Changes");
-      ButtonType buttonTypeCancel = new ButtonType("Cancel");
+	@FXML
+	private MenuItem PasteItem;
 
-      alert.getButtonTypes().setAll(buttonTypeSave, buttonTypeDontSave, buttonTypeCancel);
+	@FXML
+	private MenuItem CutItem;
 
-      Optional<ButtonType> result = alert.showAndWait();
-      if (result.get() == buttonTypeSave){
+	// view MenuItems:
+	@FXML
+	private MenuItem FieldSizeItem;
 
-        //TODO: implement save.
-        System.exit(0);
-      } else if (result.get() == buttonTypeDontSave) {
-        System.exit(0);
-      } else {
-      }
-    }
-  }
+	@FXML
+	private MenuItem HideColumnsItem;
 
-  // edit menu action methods
-  @FXML
-  void doUndo(ActionEvent event) {
+	@FXML
+	private MenuItem ShowHiddenColumnsItem;
 
-  }
+	@FXML
+	private MenuItem ZoomInItem;
 
-  @FXML
-  void doRedo(ActionEvent event) {
+	@FXML
+	private MenuItem ZoomOutItem;
 
-  }
+	@FXML
+	private MenuItem SetToItem;
 
-  @FXML
-  void doCopy(ActionEvent event) {
+	// Help MenuItems:
+	@FXML
+	private MenuItem DocumentationItem;
 
-  }
+	@FXML
+	private MenuItem WebSearchItem;
 
-  @FXML
-  void doPaste(ActionEvent event) {
-  }
+	// file menu action Methods:
 
-  @FXML
-  void doCut(ActionEvent event) {
-  }
+	@FXML
+	void doNew(ActionEvent event) {
+		handleNew();
+	}
 
-  // View menu action methods:
-  @FXML
-  void doZoomIn(ActionEvent event) {
+	@FXML
+	void doOpen(ActionEvent event) {
+		if (!fileLoaded) {
+			doc = handleOpen();
+			// TODO: change when tree and more views are implemented
+			if (doc != null) {
+				fileLoaded = true;
+				reInit();
+				// Enable full Menu
+				ViewMenu.setDisable(false);
+				EditMenu.setDisable(false);
+				SaveItem.setDisable(false);
+				ValidateItem.setDisable(false);
+				ExportItem.setDisable(false);
+			}
 
-  }
-  @FXML
-  void doZoomOut(ActionEvent event) {
+		} else {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+			alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
+			alert.setTitle("Open another file");
+			alert.setHeaderText("To open another file a new Session of TabMod must be started");// TODO: Add appropriate
+																								// text/ Implement
+																								// abstract dialogs
+			alert.setContentText("Do you want to start a new Session to open another file?");
 
-  }
-  @FXML
-  void doSetTo(ActionEvent event) {
+			ButtonType buttonTypeNew = new ButtonType("new Session");
+			ButtonType buttonTypeCancel = new ButtonType("Cancel");
 
-  }
+			alert.getButtonTypes().setAll(buttonTypeNew, buttonTypeCancel);
 
-  @FXML
-  void doHideColumns(ActionEvent event) {
-  }
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == buttonTypeNew) {
+				SBMLDocument newDoc = handleOpen();
+				// TODO: Implement opening a new window in a new thread.
+			} else {
+			}
 
-  @FXML
-  void doShowHiddenColumns(ActionEvent event) {
-  }
-  // Help menu action methods:
+		}
+	}
 
-  @FXML
-  void doDocumentation(ActionEvent event) {
-  }
+	@FXML
+	void doSave(ActionEvent event) {
+		handleSave();
+	}
 
-  @FXML
-  void doWebSearch(ActionEvent event) {
-  }
+	@FXML
+	void doImport(ActionEvent event) {
+	}
 
-  // Handler methods:
+	@FXML
+	void doExport(ActionEvent event) {
 
-  private void handleNew() {
-    Task<Void> task = new Task<Void>() {
-      @Override
-      public Void call() {
-        try {
-          System.out.println("new");
-          // TODO new
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
+	}
 
-        return null;
-      }
-    };
-    Thread th = new Thread(task);
-    th.setDaemon(true);
-    th.start();
-  }
+	@FXML
+	void doValidate(ActionEvent event) {
+		boolean valid = SBTabController.validate(doc);// TODO: Implement validate
+		if (valid) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			alert.setGraphic(new ImageView(this.getClass().getResource("ApproveIcon_64.png").toString()));
+			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+			alert.setTitle("Validator");
+			alert.setHeaderText(null);
+			alert.setContentText("Your file is a valid .sbml file");
+			alert.showAndWait();
 
-  public static SBMLDocument handleOpen() {
-    String filePath = chooseFile();
-    if (filePath!=null) {
-      SBMLDocument doc = SBTabController.read(filePath);
-      return doc;
-    }
-    return null;
-  }
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Exception Dialog");
+			alert.setHeaderText("You have " + SBTabController.numErrors(doc) + "Errors in your Document.");
+			alert.setContentText("List of all Errors");
 
-  private void handleSave() {
-    SBMLDocument doc = SBTabController.getDoc();
-    File filePath = new File(SBTabController.getFilePath());
-    String theProjectName = SBTabMenuController.getTheProjectName();
-    String theVersion = SBTabMenuController.getTheVersion();
-    SBTabController.save(doc, filePath, theProjectName, theVersion);
-  }
-  /*
-   * Choose file from file dialog and get the file path.
-   */
-  private static String chooseFile(){
-    Reader reader = null;
-    Properties theProperties = new Properties();
-    try
-    {
-      if(!(new File (".properties").exists())){
-        SBTabController.setProperties();
-      }
-        reader = new FileReader( ".properties" );
-        theProperties.load( reader );
-        theProperties.list( System.out );
-    }
-    catch ( IOException e )
-    {
-      e.printStackTrace();
-    }
-    final FileChooser fileChooser = new FileChooser();
-    String filePath = "";
-    fileChooser.getExtensionFilters().addAll(
-      new ExtensionFilter("XML Files", "*.xml"),
-      new ExtensionFilter("GZip Files", "*.gz"));
-    fileChooser.setTitle("Choose SBML or XML File.");
-    fileChooser.setInitialDirectory(new File(theProperties.getProperty("FilePath"))) ;
-    File file = fileChooser.showOpenDialog(null);
-    if (file != null) {
-      filePath = file.getAbsolutePath();
-      return filePath;
-    }
-    return null;
-  }
+			Exception ex = new FileNotFoundException("Error");
+
+			// Create expandable Exception.
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			ex.printStackTrace(pw);
+			String exceptionText = sw.toString();
+
+			Label label = new Label("The exception stacktrace was:");
+
+			TextArea textArea = new TextArea(exceptionText);
+			textArea.setEditable(false);
+
+			textArea.setSize((int) Double.MAX_VALUE, (int) Double.MAX_VALUE);
+			// Cannot be resolved to a field for unknown reason
+			// GridPane.setVgrow(textArea, Priority.ALWAYS);
+			// GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+			GridPane expContent = new GridPane();
+			expContent.setMaxWidth(Double.MAX_VALUE);
+			// despite all tutorials and Documentations the add functions states that it
+			// needs a node
+			// expContent.add(label, 0, 0);
+			// expContent.add(textArea, 0, 1);
+
+			// Set expandable Exception into the dialog pane.
+			alert.getDialogPane().setExpandableContent(expContent);
+
+			alert.showAndWait();
+		}
+
+	}
+
+	@FXML
+	void doQuit(ActionEvent event) {
+		// TODO: check for unsaved changes
+		boolean unsavedChanges = true;
+		if (unsavedChanges) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+			alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
+
+			alert.setTitle("Unsaved Changes");
+			alert.setHeaderText("Your file has unsaved changes");
+			alert.setContentText("Do you want to save your changes?");
+
+			ButtonType buttonTypeSave = new ButtonType("Save Changes");
+			ButtonType buttonTypeDontSave = new ButtonType("Don't Save Changes");
+			ButtonType buttonTypeCancel = new ButtonType("Cancel");
+
+			alert.getButtonTypes().setAll(buttonTypeSave, buttonTypeDontSave, buttonTypeCancel);
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == buttonTypeSave) {
+
+				// TODO: implement save.
+				System.exit(0);
+			} else if (result.get() == buttonTypeDontSave) {
+				System.exit(0);
+			} else {
+			}
+		}
+	}
+
+	// edit menu action methods
+	@FXML
+	void doUndo(ActionEvent event) {
+
+	}
+
+	@FXML
+	void doRedo(ActionEvent event) {
+
+	}
+
+	@FXML
+	void doCopy(ActionEvent event) {
+
+	}
+
+	@FXML
+	void doPaste(ActionEvent event) {
+	}
+
+	@FXML
+	void doCut(ActionEvent event) {
+	}
+
+	// View menu action methods:
+	@FXML
+	void doZoomIn(ActionEvent event) {
+
+	}
+
+	@FXML
+	void doZoomOut(ActionEvent event) {
+
+	}
+
+	@FXML
+	void doSetTo(ActionEvent event) {
+
+	}
+
+	@FXML
+	void doHideColumns(ActionEvent event) {
+	}
+
+	@FXML
+	void doShowHiddenColumns(ActionEvent event) {
+	}
+	// Help menu action methods:
+
+	@FXML
+	void doDocumentation(ActionEvent event) {
+	}
+
+	@FXML
+	void doWebSearch(ActionEvent event) {
+	}
+
+	// Handler methods:
+
+	private void handleNew() {
+		Task<Void> task = new Task<Void>() {
+			@Override
+			public Void call() {
+				try {
+					System.out.println("new");
+					// TODO new
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				return null;
+			}
+		};
+		Thread th = new Thread(task);
+		th.setDaemon(true);
+		th.start();
+	}
+
+	public static SBMLDocument handleOpen() {
+		String filePath = chooseFile();
+		if (filePath != null) {
+			SBMLDocument doc = SBTabController.read(filePath);
+			return doc;
+		}
+		return null;
+	}
+
+	private void handleSave() {
+		SBMLDocument doc = SBTabController.getDoc();
+		File filePath = new File(SBTabController.getFilePath());
+		String theProjectName = SBTabMenuController.getTheProjectName();
+		String theVersion = SBTabMenuController.getTheVersion();
+		SBTabController.save(doc, filePath, theProjectName, theVersion);
+	}
+
+	/*
+	 * Choose file from file dialog and get the file path.
+	 */
+	private static String chooseFile() {
+		Reader reader = null;
+		Properties theProperties = new Properties();
+		try {
+			if (!(new File(".properties").exists())) {
+				SBTabController.setProperties();
+			}
+			reader = new FileReader(".properties");
+			theProperties.load(reader);
+			theProperties.list(System.out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		final FileChooser fileChooser = new FileChooser();
+		String filePath = "";
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML Files", "*.xml"),
+				new ExtensionFilter("GZip Files", "*.gz"));
+		fileChooser.setTitle("Choose SBML or XML File.");
+		fileChooser.setInitialDirectory(new File(theProperties.getProperty("FilePath")));
+		File file = fileChooser.showOpenDialog(null);
+		if (file != null) {
+			filePath = file.getAbsolutePath();
+			return filePath;
+		}
+		return null;
+	}
 }
