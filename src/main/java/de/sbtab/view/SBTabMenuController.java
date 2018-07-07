@@ -386,7 +386,7 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
     String filePath = "";
     fileChooser.getExtensionFilters().addAll(
       new ExtensionFilter("XML Files", "*.xml"),
-      new ExtensionFilter("SBML Files", "*.SBML"));
+      new ExtensionFilter("GZip Files", "*.gz"));
     fileChooser.setTitle("Choose SBML or XML File.");
     fileChooser.setInitialDirectory(new File(theProperties.getProperty("FilePath"))) ;
     File file = fileChooser.showOpenDialog(null);
