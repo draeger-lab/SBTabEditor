@@ -16,10 +16,10 @@ import javafx.stage.Stage;
 
 public class SBTabMainView extends Application implements Runnable{
 	
-	public SBMLDocument doc;
-	FXMLLoader loader = new FXMLLoader();
-	private static BorderPane root = new BorderPane();
-	private static SBTabTableProducer tableProducer;
+	private SBMLDocument doc;
+	private FXMLLoader loader = new FXMLLoader();
+	private BorderPane root = new BorderPane();
+	private SBTabTableProducer tableProducer;
 	private static final String THE_PROJECT_NAME = "TabMod";
 	private static final String THE_VERSION = "1.1"; 
 	public boolean fileLoaded;// relevant information if a file is loaded or not.
