@@ -9,6 +9,7 @@ import de.sbtab.services.TableType;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 public class SBTabMainView extends Application implements Runnable{
 	
 	public SBMLDocument doc;
+	FXMLLoader loader = new FXMLLoader();
 	private static BorderPane root = new BorderPane();
 	private static SBTabTableProducer tableProducer;
 	private static final String THE_PROJECT_NAME = "TabMod";
@@ -42,13 +44,16 @@ public class SBTabMainView extends Application implements Runnable{
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		loader.setLocation(getClass().getResource("SBTabMenu.fxml"));
+        loader.setController(new SBTabMenuController());
+        MenuBar menuBar = (MenuBar) loader.load();
 		if (fileLoaded) {
-		root.setTop(FXMLLoader.load(getClass().getResource("SBTabMenu.fxml")));
+		root.setTop(menuBar);
 		root.setLeft(FXMLLoader.load(getClass().getResource("SBTabTree.fxml")));
 		root.setCenter(tableProducer.getTableView(TableType.REACTION));
 		}
 		else{
-			root.setTop(FXMLLoader.load(getClass().getResource("SBTabMenu.fxml")));	
+			root.setTop(menuBar);	
 		}
 
 		Scene scene = new Scene(root, 640, 480);
