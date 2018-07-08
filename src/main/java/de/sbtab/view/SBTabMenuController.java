@@ -33,21 +33,21 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
-public class SBTabMenuController extends SBTabMainView implements Initializable {
-
+public class SBTabMenuController implements Initializable {
+	SBMLDocument doc;
+	SBTabMainView mainView;
+	
 	public SBTabMenuController() {
+		//
+	}
+	
+	public SBTabMenuController(SBTabMainView mainView) {
+		this.mainView = mainView;
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		if (!fileLoaded) {
-			ViewMenu.setDisable(true);
-			EditMenu.setDisable(true);// Disable unnecessary Menus while no file is loaded
-			SaveItem.setDisable(true);
-			ValidateItem.setDisable(true);
-			ExportItem.setDisable(true);
-		}
-
+		lockMenu(true);
 	}
 
 	// View and Edit Menu as objects:
@@ -131,44 +131,41 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 
 	@FXML
 	void doOpen(ActionEvent event) {
-		if (!fileLoaded) {
-			doc = handleOpen();
-			// TODO: change when tree and more views are implemented
-			if (doc != null) {
-				fileLoaded = true;
-				reInit();
-				// Enable full Menu
-				ViewMenu.setDisable(false);
-				EditMenu.setDisable(false);
-				SaveItem.setDisable(false);
-				ValidateItem.setDisable(false);
-				ExportItem.setDisable(false);
-			}
+			handleOpen();
+			// TODO: will be implemented next
+//		else {
+//			Alert alert = new Alert(AlertType.CONFIRMATION);
+//			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+//			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+//			alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
+//			alert.setTitle("Open another file");
+//			alert.setHeaderText("To open another file a new Session of TabMod must be started");// TODO: Add appropriate
+//																								// text/ Implement
+//																								// abstract dialogs
+//			alert.setContentText("Do you want to start a new Session to open another file?");
+//
+//			ButtonType buttonTypeNew = new ButtonType("new Session");
+//			ButtonType buttonTypeCancel = new ButtonType("Cancel");
+//
+//			alert.getButtonTypes().setAll(buttonTypeNew, buttonTypeCancel);
+//
+//			Optional<ButtonType> result = alert.showAndWait();
+//			if (result.get() == buttonTypeNew) {
+//				handleOpen();
+//				SBMLDocument newDoc = doc;
+//				// TODO: Implement opening a new window in a new thread.
+//			} else {
+//			}
+//
+//		}
+	}
 
-		} else {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-			alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
-			alert.setTitle("Open another file");
-			alert.setHeaderText("To open another file a new Session of TabMod must be started");// TODO: Add appropriate
-																								// text/ Implement
-																								// abstract dialogs
-			alert.setContentText("Do you want to start a new Session to open another file?");
-
-			ButtonType buttonTypeNew = new ButtonType("new Session");
-			ButtonType buttonTypeCancel = new ButtonType("Cancel");
-
-			alert.getButtonTypes().setAll(buttonTypeNew, buttonTypeCancel);
-
-			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get() == buttonTypeNew) {
-				SBMLDocument newDoc = handleOpen();
-				// TODO: Implement opening a new window in a new thread.
-			} else {
-			}
-
-		}
+	private void lockMenu(boolean bool) {
+		ViewMenu.setDisable(bool);
+		EditMenu.setDisable(bool);
+		SaveItem.setDisable(bool);
+		ValidateItem.setDisable(bool);
+		ExportItem.setDisable(bool);
 	}
 
 	@FXML
@@ -347,27 +344,38 @@ public class SBTabMenuController extends SBTabMainView implements Initializable 
 		th.start();
 	}
 
-	public static SBMLDocument handleOpen() {
+	public void handleOpen() {
 		String filePath = chooseFile();
-		if (filePath != null) {
-			SBMLDocument doc = SBTabController.read(filePath);
-			return doc;
-		}
-		return null;
+		Task<Void> task = new Task<Void>() {
+		    @Override public Void call() {
+				if (filePath != null) {
+					mainView.setDoc(SBTabController.read(filePath));
+				}
+				return null;
+		    }
+		    @Override 
+		    public void succeeded() {
+		    	super.succeeded();
+		    	mainView.reInit();
+		    	lockMenu(false);
+		    }};
+		Thread thread = new Thread(task);
+		thread.setDaemon(true);
+		thread.start();
 	}
 
 	private void handleSave() {
 		SBMLDocument doc = SBTabController.getDoc();
 		File filePath = new File(SBTabController.getFilePath());
-		String theProjectName = SBTabMenuController.getTheProjectName();
-		String theVersion = SBTabMenuController.getTheVersion();
+		String theProjectName = mainView.getTheProjectName();
+		String theVersion = mainView.getTheVersion();
 		SBTabController.save(doc, filePath, theProjectName, theVersion);
 	}
 
 	/*
 	 * Choose file from file dialog and get the file path.
 	 */
-	private static String chooseFile() {
+	private String chooseFile() {
 		Reader reader = null;
 		Properties theProperties = new Properties();
 		try {

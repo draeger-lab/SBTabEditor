@@ -45,16 +45,9 @@ public class SBTabMainView extends Application implements Runnable{
 	@Override
 	public void start(Stage stage) throws Exception {
 		loader.setLocation(getClass().getResource("SBTabMenu.fxml"));
-        loader.setController(new SBTabMenuController());
+        loader.setController(new SBTabMenuController(this));
         MenuBar menuBar = (MenuBar) loader.load();
-		if (fileLoaded) {
 		root.setTop(menuBar);
-		root.setLeft(FXMLLoader.load(getClass().getResource("SBTabTree.fxml")));
-		root.setCenter(tableProducer.getTableView(TableType.REACTION));
-		}
-		else{
-			root.setTop(menuBar);	
-		}
 
 		Scene scene = new Scene(root, 640, 480);
 
@@ -85,11 +78,19 @@ public class SBTabMainView extends Application implements Runnable{
 		}
 	}
 
-  public static String getTheVersion() {
-    return THE_VERSION;
-  }
+	public String getTheVersion() {
+		return THE_VERSION;
+	}
 
-  public static String getTheProjectName() {
-    return THE_PROJECT_NAME;
-  }
+	public String getTheProjectName() {
+		return THE_PROJECT_NAME;
+	}
+	
+	public void setDoc(SBMLDocument doc) {
+		this.doc = doc;
+	}
+	
+	public boolean isDocumentLoaded() {
+		return doc != null;
+	}
 }
