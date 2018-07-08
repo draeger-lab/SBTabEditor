@@ -99,14 +99,17 @@ public class SBTabController {
         try {
           SBTabController.filePath = filePath;
           File theSBMLFile = new File(filePath);
+          boolean isFile = theSBMLFile.isFile();
           System.out.println(getFileExtension(theSBMLFile));
-          if(Objects.equals(getFileExtension(theSBMLFile), ".xml")){
-            doc = SBMLReader.read(theSBMLFile);
+          if(isFile){
+            if(Objects.equals(getFileExtension(theSBMLFile), ".xml")){
+              doc = SBMLReader.read(theSBMLFile);
+            }
+            if(Objects.equals(getFileExtension(theSBMLFile), ".gz")){
+              doc = SBMLReader.read(new GZIPInputStream(new FileInputStream(filePath)));
+            }
+            setProperties();
           }
-          if(Objects.equals(getFileExtension(theSBMLFile), ".gz")){
-            doc = SBMLReader.read(new GZIPInputStream(new FileInputStream(filePath)));
-          }
-          setProperties();
         } catch (Exception e) {
           e.printStackTrace();
         }
