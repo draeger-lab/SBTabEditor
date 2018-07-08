@@ -2,6 +2,7 @@ package de.sbtab.view;
 
 import java.io.IOException;
 
+import org.controlsfx.control.StatusBar;
 import org.sbml.jsbml.SBMLDocument;
 
 import de.sbtab.services.SBTabTableProducer;
@@ -17,7 +18,7 @@ import javafx.stage.Stage;
 public class SBTabMainView extends Application implements Runnable{
 	
 	private SBMLDocument doc;
-	private FXMLLoader loader = new FXMLLoader();
+	private FXMLLoader menuLoader = new FXMLLoader();
 	private BorderPane root = new BorderPane();
 	private SBTabTableProducer tableProducer;
 	private static final String THE_PROJECT_NAME = "TabMod";
@@ -44,11 +45,12 @@ public class SBTabMainView extends Application implements Runnable{
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		loader.setLocation(getClass().getResource("SBTabMenu.fxml"));
-        loader.setController(new SBTabMenuController(this));
-        MenuBar menuBar = (MenuBar) loader.load();
+		menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
+        menuLoader.setController(new SBTabMenuController(this));
+        MenuBar menuBar = (MenuBar) menuLoader.load();
 		root.setTop(menuBar);
-
+		assignStatusBar("No file specified.", 0D);
+		
 		Scene scene = new Scene(root, 640, 480);
 
 		// Add icons from resources to the Icon-List of this stage.
@@ -69,6 +71,7 @@ public class SBTabMainView extends Application implements Runnable{
 	//       handleOpen() fixed
 	public void reInit() {
 		tableProducer = new SBTabTableProducer(doc);
+		assignStatusBar("Ready.", 0D);
 		root.setCenter(tableProducer.getTableView(TableType.REACTION));
 		try {
 			root.setLeft(FXMLLoader.load(getClass().getResource("SBTabTree.fxml")));
@@ -88,6 +91,12 @@ public class SBTabMainView extends Application implements Runnable{
 	
 	public void setDoc(SBMLDocument doc) {
 		this.doc = doc;
+	}
+	public void assignStatusBar(String message, Double progressState) {
+		StatusBar sb = new StatusBar();
+		sb.setText(message);
+		sb.setProgress(progressState);
+		this.root.setBottom(sb);
 	}
 	
 	public boolean isDocumentLoaded() {

@@ -353,16 +353,23 @@ public class SBTabMenuController implements Initializable {
 	public void handleOpen() {
 		String filePath = chooseFile();
 		Task<Void> task = new Task<Void>() {
-		    @Override public Void call() {
+		    @Override 
+			public Void call() {
 				if (filePath != null) {
 					mainView.setDoc(SBTabController.read(filePath));
 				}
 				return null;
+			}
+		    @Override
+		    protected void running() {
+		    	super.running();
+		    	mainView.assignStatusBar("Loading: " + filePath, -1D);
 		    }
 		    @Override 
 		    public void succeeded() {
 		    	super.succeeded();
 		    	mainView.reInit();
+		    	mainView.assignStatusBar("Ready.", 0D);
 		    	lockMenu(false);
 		    }};
 		Thread thread = new Thread(task);
