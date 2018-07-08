@@ -131,33 +131,39 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doOpen(ActionEvent event) {
+		if(!mainView.isDocumentLoaded()) {
 			handleOpen();
-			// TODO: will be implemented next
-//		else {
-//			Alert alert = new Alert(AlertType.CONFIRMATION);
-//			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-//			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-//			alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
-//			alert.setTitle("Open another file");
-//			alert.setHeaderText("To open another file a new Session of TabMod must be started");// TODO: Add appropriate
-//																								// text/ Implement
-//																								// abstract dialogs
-//			alert.setContentText("Do you want to start a new Session to open another file?");
-//
-//			ButtonType buttonTypeNew = new ButtonType("new Session");
-//			ButtonType buttonTypeCancel = new ButtonType("Cancel");
-//
-//			alert.getButtonTypes().setAll(buttonTypeNew, buttonTypeCancel);
-//
-//			Optional<ButtonType> result = alert.showAndWait();
-//			if (result.get() == buttonTypeNew) {
-//				handleOpen();
-//				SBMLDocument newDoc = doc;
-//				// TODO: Implement opening a new window in a new thread.
-//			} else {
-//			}
-//
-//		}
+		} else {
+			// TODO: it would be nice to have a choice:
+			// - open in a new window
+			// - open in this window(another file)
+			showOnDoubleOpenDialog();
+		}
+	}
+
+	private void showOnDoubleOpenDialog() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+		alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
+		alert.setTitle("Open another file");
+		alert.setHeaderText("To open another file a new Session of TabMod must be started");// TODO: Add appropriate
+																							// text/ Implement
+																							// abstract dialogs
+		alert.setContentText("Do you want to start a new Session to open another file?");
+
+		ButtonType buttonTypeNew = new ButtonType("New Session");
+		ButtonType buttonTypeCancel = new ButtonType("Cancel");
+
+		alert.getButtonTypes().setAll(buttonTypeNew, buttonTypeCancel);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == buttonTypeNew) {
+			handleOpen();
+			SBMLDocument newDoc = doc;
+			// TODO: Implement opening a new window in a new thread.
+		} else {
+		}
 	}
 
 	private void lockMenu(boolean bool) {
