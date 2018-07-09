@@ -139,9 +139,6 @@ public class SBTabMenuController implements Initializable {
 		if(!mainView.isDocumentLoaded()) {
 			handleOpen();
 		} else {
-			// TODO: it would be nice to have a choice:
-			// - open in a new window
-			// - open in this window(another file)
 			showOnDoubleOpenDialog();
 		}
 	}
@@ -181,7 +178,8 @@ public class SBTabMenuController implements Initializable {
 	private void startNewWindow(){
 		SBMLDocument newDoc = SBTabController.read(chooseFile());
 		Stage newStage = new Stage();
-		SBTabMainView newGUI = new SBTabMainView(newDoc);
+		SBTabMainView newGUI = new SBTabMainView();
+		newGUI.setDoc(newDoc);
 		try {
 			newGUI.start(newStage);
 		} catch (Exception e) {
@@ -368,8 +366,10 @@ public class SBTabMenuController implements Initializable {
 			}
 		    @Override
 		    protected void running() {
+		    	if (filePath != null) {
 		    	super.running();
 		    	mainView.assignStatusBar("Loading: " + filePath, -1D);
+		    	}
 		    }
 		    @Override 
 		    public void succeeded() {

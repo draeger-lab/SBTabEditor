@@ -31,12 +31,6 @@ public class SBTabMainView extends Application implements Runnable{
         launch();
     }
 	
-	public SBTabMainView (SBMLDocument openDoc){
-		if (openDoc!=null){
-			this.doc=openDoc;			
-		}
-	}
-	
 	public SBTabMainView (){
 	}
 
