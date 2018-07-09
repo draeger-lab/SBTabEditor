@@ -10,13 +10,13 @@
 
 <!-- author Franziska Daumueller -->
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.sbtab.view.SBTabTreeController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.sbtab.view.SBTabTreeController">
 	<children>
 		<TextField prefHeight="31.0" prefWidth="170.0" promptText="search">
          <opaqueInsets>
             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
          </opaqueInsets></TextField>
-		<TreeView fx:id="treeView" prefHeight="426.0" prefWidth="200.0" />
+		<TreeView fx:id="treeView" prefHeight="419.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
 	</children>
    <cursor>
       <Cursor fx:constant="W_RESIZE" />
