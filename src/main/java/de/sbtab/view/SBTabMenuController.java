@@ -159,9 +159,15 @@ public class SBTabMenuController implements Initializable {
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeNew) {
-			handleOpen();
-			SBMLDocument newDoc = doc;
-			// TODO: Implement opening a new window in a new thread.
+
+			SBMLDocument newDoc = SBTabController.read(chooseFile());
+			Stage newStage = new Stage();
+			SBTabMainView newGUI = new SBTabMainView(newDoc);
+			try {
+				newGUI.start(newStage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
 		}
 	}

@@ -25,7 +25,6 @@ public class SBTabMainView extends Application implements Runnable{
 	private SBTabTableProducer tableProducer;
 	private static final String THE_PROJECT_NAME = "TabMod";
 	private static final String THE_VERSION = "1.1"; 
-	public boolean fileLoaded;// relevant information if a file is loaded or not.
 	
 	@Override
     public void run() {
@@ -34,24 +33,29 @@ public class SBTabMainView extends Application implements Runnable{
 	
 	public SBTabMainView (SBMLDocument openDoc){
 		if (openDoc!=null){
-			this.doc=openDoc;
-			this.fileLoaded=true;
-		}
-		else{ this.fileLoaded=false;
+			this.doc=openDoc;			
 		}
 	}
 	
 	public SBTabMainView (){
-		this.fileLoaded=false;
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
-        menuLoader.setController(new SBTabMenuController(this));
-        MenuBar menuBar = (MenuBar) menuLoader.load();
-		root.setTop(menuBar);
-		assignStatusBar("No file specified.", 0D);
+		if (!isDocumentLoaded()){
+		    menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
+            menuLoader.setController(new SBTabMenuController(this));
+            MenuBar menuBar = (MenuBar) menuLoader.load();
+		    root.setTop(menuBar);
+		    assignStatusBar("No file specified.", 0D);
+		}
+		else{
+			menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
+            menuLoader.setController(new SBTabMenuController(this));
+            MenuBar menuBar = (MenuBar) menuLoader.load();
+		    root.setTop(menuBar);
+		    reInit();	    
+		}
 		
 		Scene scene = new Scene(root, 640, 480);
 
