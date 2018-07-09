@@ -23,6 +23,8 @@ public class SBTabTreeController implements Initializable {
 	@FXML
 	private Button expandButton;
 	
+	private ResourceBundle bundle;
+	
 	public Boolean expanded = false;
 	
 	@FXML
@@ -33,6 +35,7 @@ public class SBTabTreeController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle value) {
+		bundle = value; 
 		SBase document = SBTabController.getDoc();
 		TreeNode root = document.getRoot();
 		TreeItem<String> root2 = new TreeItem<String>(String.valueOf(root));
@@ -41,25 +44,39 @@ public class SBTabTreeController implements Initializable {
 		tree(root, document, root2, false);
 	}
 
-	public void tree(TreeNode root, SBase document, TreeItem<String> root2, Boolean expand) {
+	private void tree(TreeNode root, SBase document, TreeItem<String> root2, Boolean expand) {
 		try {
 			if (root.getChildCount() > 0) {
+				
 				for (int i = 0; i < root.getChildCount(); i++) {
 					TreeNode node = root.getChildAt(i);
-					TreeItem<String> node2 = new TreeItem<String>(String.valueOf(node));
+					TreeItem<String> node2 = new TreeItem<String>(TreeElementName(node.toString()));		
 					root2.setExpanded(expand);
 					root2.getChildren().add(node2);
 					tree(node, document, node2, expand);
 				}
 			}
-
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-
 	}
 	
-	public void ExpandTree2(){
+	private String TreeElementName(String name){
+		String TreeElementName = name;
+		
+		if(bundle.containsKey(name)){
+			TreeElementName = bundle.getString(name);
+		} else if(name.contains(" ")) {
+			String names[] = name.split(" ");
+			name = names[0];
+			if(bundle.containsKey(name)){
+				TreeElementName = bundle.getString(name);
+			} 
+		} 
+		return TreeElementName;
+	}
+	
+	private void ExpandTree2(){
 		SBase document = SBTabController.getDoc();
 		TreeNode root = document.getRoot();
 		TreeItem<String> root2 = new TreeItem<String>(String.valueOf(root));

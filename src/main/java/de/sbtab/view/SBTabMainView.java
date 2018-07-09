@@ -1,9 +1,11 @@
 package de.sbtab.view;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 import org.controlsfx.control.StatusBar;
 import org.sbml.jsbml.SBMLDocument;
+import org.sbml.jsbml.util.ResourceManager;
 
 import de.sbtab.services.SBTabTableProducer;
 import de.sbtab.services.TableType;
@@ -74,7 +76,8 @@ public class SBTabMainView extends Application implements Runnable{
 		assignStatusBar("Ready.", 0D);
 		root.setCenter(tableProducer.getTableView(TableType.REACTION));
 		try {
-			root.setLeft(FXMLLoader.load(getClass().getResource("SBTabTree.fxml")));
+			ResourceBundle bundle = ResourceManager.getBundle("de.sbtab.view.SBTabTreeElementNames");
+            root.setLeft(FXMLLoader.load(getClass().getResource("SBTabTree.fxml"), bundle));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
