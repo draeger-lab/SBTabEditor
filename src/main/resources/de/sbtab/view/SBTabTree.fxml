@@ -16,13 +16,14 @@
          <opaqueInsets>
             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
          </opaqueInsets></TextField>
+         <Button fx:id="expandButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#doExpandTree" text="Expand Tree" />
 		<TreeView fx:id="treeView" prefHeight="419.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor></TreeView>
 	</children>
    <cursor>
-      <Cursor fx:constant="W_RESIZE" />
+      <Cursor fx:constant="DEFAULT" />
    </cursor>
    <opaqueInsets>
       <Insets top="5.0" />
