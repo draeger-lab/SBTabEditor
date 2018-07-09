@@ -76,9 +76,10 @@ public class SBTabMainView extends Application implements Runnable{
 	// TODO: to be removed after redundant static field are eliminated and concurrency in 
 	//       handleOpen() fixed
 	public void reInit() {
-		tableProducer = new SBTabTableProducer(doc);
-		assignStatusBar("Ready.", 0D);
-		root.setCenter(tableProducer.getTableView(TableType.REACTION));
+		if (doc!=null){
+			tableProducer = new SBTabTableProducer(doc);
+			assignStatusBar("Ready.", 0D);
+			root.setCenter(tableProducer.getTableView(TableType.REACTION));
 		try {
 			ResourceBundle bundle = ResourceManager.getBundle("de.sbtab.view.SBTabTreeElementNames");
             root.setLeft(FXMLLoader.load(getClass().getResource("SBTabTree.fxml"), bundle));
@@ -86,6 +87,12 @@ public class SBTabMainView extends Application implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		}
+	}
+	public void clearView(String message) {	
+		root.setCenter(null);
+        root.setLeft(null);
+        assignStatusBar(message, 0D);
 	}
 
 	public String getTheVersion() {
@@ -98,6 +105,9 @@ public class SBTabMainView extends Application implements Runnable{
 	
 	public void setDoc(SBMLDocument doc) {
 		this.doc = doc;
+	}
+	public SBMLDocument getDoc() {
+		return doc;
 	}
 	public void assignStatusBar(String message, Double progressState) {
 		StatusBar sb = new StatusBar();

@@ -34,8 +34,8 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class SBTabMenuController implements Initializable {
-	SBMLDocument doc;
 	SBTabMainView mainView;
+	private boolean unsavedChanges;
 	
 	public SBTabMenuController() {
 		//
@@ -76,9 +76,14 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	private MenuItem ExportItem;
+	
+	@FXML
+	private MenuItem CloseItem;
 
 	@FXML
 	private MenuItem ValidateItem;
+	
+	//TODO: add closeItem and referring methods that close the file but not the stage and blocks the menu again.
 
 	// edit MenuItems:
 	@FXML
@@ -152,24 +157,37 @@ public class SBTabMenuController implements Initializable {
 																							// abstract dialogs
 		alert.setContentText("Do you want to start a new Session to open another file?");
 
-		ButtonType buttonTypeNew = new ButtonType("New Session");
+		ButtonType buttonTypeNew = new ButtonType("New session");
+		ButtonType buttonTypeClose = new ButtonType("close current file");
 		ButtonType buttonTypeCancel = new ButtonType("Cancel");
+		
 
-		alert.getButtonTypes().setAll(buttonTypeNew, buttonTypeCancel);
+		alert.getButtonTypes().setAll(buttonTypeNew, buttonTypeClose ,buttonTypeCancel);
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeNew) {
-
-			SBMLDocument newDoc = SBTabController.read(chooseFile());
-			Stage newStage = new Stage();
-			SBTabMainView newGUI = new SBTabMainView(newDoc);
-			try {
-				newGUI.start(newStage);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
+			startNewWindow();
+		
 		}
+		if (result.get() == buttonTypeClose) {
+			handleClose();
+			mainView.clearView("No file specified.");
+			lockMenu(true);
+			handleOpen();
+		}
+		else {
+		}
+	}
+	private void startNewWindow(){
+		SBMLDocument newDoc = SBTabController.read(chooseFile());
+		Stage newStage = new Stage();
+		SBTabMainView newGUI = new SBTabMainView(newDoc);
+		try {
+			newGUI.start(newStage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void lockMenu(boolean bool) {
@@ -178,6 +196,7 @@ public class SBTabMenuController implements Initializable {
 		SaveItem.setDisable(bool);
 		ValidateItem.setDisable(bool);
 		ExportItem.setDisable(bool);
+		CloseItem.setDisable(bool);
 	}
 
 	@FXML
@@ -196,7 +215,8 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doValidate(ActionEvent event) {
-		boolean valid = SBTabController.validate(doc);// TODO: Implement validate
+		//boolean valid = SBTabController.validate(doc);// TODO: Implement validate
+		boolean valid=true;//as long as  validate doesn't work properly
 		if (valid) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -210,7 +230,7 @@ public class SBTabMenuController implements Initializable {
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Exception Dialog");
-			alert.setHeaderText("You have " + SBTabController.numErrors(doc) + "Errors in your Document.");
+			alert.setHeaderText("You have " + SBTabController.numErrors(mainView.getDoc()) + "Errors in your Document.");
 			alert.setContentText("List of all Errors");
 
 			Exception ex = new FileNotFoundException("Error");
@@ -248,35 +268,15 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doQuit(ActionEvent event) {
-		// TODO: check for unsaved changes
-		boolean unsavedChanges = true;
-		if (unsavedChanges) {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-			alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
-
-			alert.setTitle("Unsaved Changes");
-			alert.setHeaderText("Your file has unsaved changes");
-			alert.setContentText("Do you want to save your changes?");
-
-			ButtonType buttonTypeSave = new ButtonType("Save Changes");
-			ButtonType buttonTypeDontSave = new ButtonType("Don't Save Changes");
-			ButtonType buttonTypeCancel = new ButtonType("Cancel");
-
-			alert.getButtonTypes().setAll(buttonTypeSave, buttonTypeDontSave, buttonTypeCancel);
-
-			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get() == buttonTypeSave) {
-
-				// TODO: implement save.
-				System.exit(0);
-			} else if (result.get() == buttonTypeDontSave) {
-				System.exit(0);
-			} else {
-			}
-		}
+		handleQuit();
 	}
+	
+	
+	@FXML
+	void doClose(ActionEvent event) {
+		handleClose();
+	}
+	
 
 	// edit menu action methods
 	@FXML
@@ -374,9 +374,10 @@ public class SBTabMenuController implements Initializable {
 		    @Override 
 		    public void succeeded() {
 		    	super.succeeded();
-		    	mainView.reInit();
-		    	mainView.assignStatusBar("Ready.", 0D);
-		    	lockMenu(false);
+		    	if (filePath != null) {
+					lockMenu(false);
+					mainView.reInit();				
+				}
 		    }};
 		Thread thread = new Thread(task);
 		thread.setDaemon(true);
@@ -389,7 +390,80 @@ public class SBTabMenuController implements Initializable {
 		String theProjectName = mainView.getTheProjectName();
 		String theVersion = mainView.getTheVersion();
 		SBTabController.save(doc, filePath, theProjectName, theVersion);
+		unsavedChanges=true;
 	}
+	
+	private void handleQuit() {
+		if (unsavedChanges) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+			alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
+
+			alert.setTitle("Unsaved Changes");
+			alert.setHeaderText("Your file has unsaved changes");
+			alert.setContentText("Do you want to save your changes?");
+
+			ButtonType buttonTypeSave = new ButtonType("Save Changes");
+			ButtonType buttonTypeDontSave = new ButtonType("Don't Save Changes");
+			ButtonType buttonTypeCancel = new ButtonType("Cancel");
+
+			alert.getButtonTypes().setAll(buttonTypeSave, buttonTypeDontSave, buttonTypeCancel);
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == buttonTypeSave) {
+
+				// TODO: implement save.
+				System.exit(0);
+			} else if (result.get() == buttonTypeDontSave) {
+				System.exit(0);
+			} else {
+			}
+		}
+		else {
+			System.exit(0);		
+		}
+	}
+	
+	private void handleClose() {
+		if (unsavedChanges) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+			alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
+
+			alert.setTitle("Unsaved Changes");
+			alert.setHeaderText("Your file has unsaved changes");
+			alert.setContentText("Do you want to save your changes?");
+
+			ButtonType buttonTypeSave = new ButtonType("Save Changes");
+			ButtonType buttonTypeDontSave = new ButtonType("Don't Save Changes");
+			ButtonType buttonTypeCancel = new ButtonType("Cancel");
+
+			alert.getButtonTypes().setAll(buttonTypeSave, buttonTypeDontSave, buttonTypeCancel);
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == buttonTypeSave) {
+
+				// TODO: implement save.
+				mainView.setDoc(null);
+				mainView.clearView("No file specified.");
+				lockMenu(true);
+			} else if (result.get() == buttonTypeDontSave) {
+				mainView.setDoc(null);
+				mainView.clearView("No file specified.");
+				lockMenu(true);
+			} else {
+			}
+		}
+		else{
+			mainView.setDoc(null);
+			mainView.clearView("No file specified.");
+			lockMenu(true);
+		}
+	}
+	
+	
 
 	/*
 	 * Choose file from file dialog and get the file path.

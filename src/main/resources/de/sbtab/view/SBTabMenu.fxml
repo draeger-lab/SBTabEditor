@@ -22,6 +22,8 @@
                 <MenuItem fx:id="ImportItem" mnemonicParsing="true" onAction="#doImport" text="_Import" />
                 <MenuItem fx:id="ExportItem" mnemonicParsing="true" onAction="#doExport" text="_Export" /> 
                 <SeparatorMenuItem />
+                <MenuItem fx:id="CloseItem" mnemonicParsing="true" onAction="#doClose" text="_Close" /> 
+                <SeparatorMenuItem />
                 <MenuItem fx:id="ValidateItem" mnemonicParsing="true" onAction="#doValidate" text="_Validate" />   
                 <SeparatorMenuItem />      
                 <MenuItem fx:id="QuitItem" accelerator="Shortcut+Q" mnemonicParsing="true" onAction="#doQuit" text="_Quit" />
