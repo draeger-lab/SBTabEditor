@@ -48,6 +48,7 @@ public class SBTabMainView extends Application {
 		    setViewOnFile();
 		}
 		else {
+			System.out.println("invalid command, please enter a path to a valid .xml or .gz file next time!");
 			setViewDefault();
 		}
 		}
