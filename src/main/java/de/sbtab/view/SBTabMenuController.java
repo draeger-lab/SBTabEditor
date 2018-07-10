@@ -1,7 +1,5 @@
 package de.sbtab.view;
 
-import java.awt.Label;
-import java.awt.TextArea;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -21,9 +19,12 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.layout.Priority;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
@@ -214,7 +215,7 @@ public class SBTabMenuController implements Initializable {
 	@FXML
 	void doValidate(ActionEvent event) {
 		//boolean valid = SBTabController.validate(doc);// TODO: Implement validate
-		boolean valid=true;//as long as  validate doesn't work properly
+		boolean valid=SBTabController.validate(mainView.getDoc());//as long as  validate doesn't work properly
 		if (valid) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -244,17 +245,16 @@ public class SBTabMenuController implements Initializable {
 			TextArea textArea = new TextArea(exceptionText);
 			textArea.setEditable(false);
 
-			textArea.setSize((int) Double.MAX_VALUE, (int) Double.MAX_VALUE);
+			textArea.setMaxWidth(Double.MAX_VALUE);
+			textArea.setMaxHeight(Double.MAX_VALUE);
 			// Cannot be resolved to a field for unknown reason
-			// GridPane.setVgrow(textArea, Priority.ALWAYS);
-			// GridPane.setHgrow(textArea, Priority.ALWAYS);
+			GridPane.setVgrow(textArea, Priority.ALWAYS);
+			GridPane.setHgrow(textArea, Priority.ALWAYS);
 
 			GridPane expContent = new GridPane();
 			expContent.setMaxWidth(Double.MAX_VALUE);
-			// despite all tutorials and Documentations the add functions states that it
-			// needs a node
-			// expContent.add(label, 0, 0);
-			// expContent.add(textArea, 0, 1);
+			expContent.add(label, 0, 0);
+			expContent.add(textArea, 0, 1);
 
 			// Set expandable Exception into the dialog pane.
 			alert.getDialogPane().setExpandableContent(expContent);
