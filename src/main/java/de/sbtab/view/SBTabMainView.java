@@ -1,12 +1,15 @@
 package de.sbtab.view;
 
+
 import java.io.IOException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.controlsfx.control.StatusBar;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.util.ResourceManager;
 
+import de.sbtab.controller.SBTabController;
 import de.sbtab.services.SBTabTableProducer;
 import de.sbtab.services.TableType;
 import javafx.application.Application;
@@ -17,7 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class SBTabMainView extends Application implements Runnable{
+public class SBTabMainView extends Application {
 	
 	private SBMLDocument doc;
 	private FXMLLoader menuLoader = new FXMLLoader();
@@ -26,17 +29,15 @@ public class SBTabMainView extends Application implements Runnable{
 	private static final String THE_PROJECT_NAME = "TabMod";
 	private static final String THE_VERSION = "1.1"; 
 	
-	@Override
-    public void run() {
-        launch();
-    }
+
 	
 	public SBTabMainView (){
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		if (!isDocumentLoaded()){
+		List<String> Parameters = this.getParameters().getRaw();
+		if (Parameters.isEmpty()){
 		    menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
             menuLoader.setController(new SBTabMenuController(this));
             MenuBar menuBar = (MenuBar) menuLoader.load();
@@ -44,6 +45,7 @@ public class SBTabMainView extends Application implements Runnable{
 		    assignStatusBar("No file specified.", 0D);
 		}
 		else{
+			doc = SBTabController.read(Parameters.get(0));
 			menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
             menuLoader.setController(new SBTabMenuController(this));
             MenuBar menuBar = (MenuBar) menuLoader.load();

@@ -48,7 +48,9 @@ public class SBTabMenuController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		if (mainView.getDoc()==null){
 		lockMenu(true);
+		}
 	}
 
 	// View and Edit Menu as objects:
