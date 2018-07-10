@@ -247,7 +247,6 @@ public class SBTabMenuController implements Initializable {
 
 			textArea.setMaxWidth(Double.MAX_VALUE);
 			textArea.setMaxHeight(Double.MAX_VALUE);
-			// Cannot be resolved to a field for unknown reason
 			GridPane.setVgrow(textArea, Priority.ALWAYS);
 			GridPane.setHgrow(textArea, Priority.ALWAYS);
 
