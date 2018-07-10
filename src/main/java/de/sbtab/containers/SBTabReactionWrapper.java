@@ -1,7 +1,8 @@
-package de.sbtab.controller;
+package de.sbtab.containers;
 
 import org.sbml.jsbml.Reaction;
 
+import de.sbtab.controller.SBTabElement;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 

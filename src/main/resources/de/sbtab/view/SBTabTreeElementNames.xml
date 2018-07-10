@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <comment>
+    $Id$
+    $URL$
+    ---------------------------------------------------------------------
+    This file is part of the SysBio API library.
+ 
+    Copyright (C) 2009-2016 by the University of Tuebingen, Germany.
+ 
+    This library is free software; you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation. A copy of the license
+    agreement is provided in the file named "LICENSE.txt" included with
+    this software distribution and also available online as
+    http://www.gnu.org/licenses/lgpl-3.0-standalone.html.
+    ---------------------------------------------------------------------
+  
+    This file collects locale-dependent user-visible names for SBML elements.
+    
+    version: $Rev$
+  </comment>
+
+  <!-- Attributes -->
+  
+  <entry key="id">ID</entry>
+  
+  <entry key="areaUnits">Area units</entry>
+  <entry key="boundaryCondition">Boundary condition</entry>
+  <entry key="charge">Charge</entry>
+  <entry key="constant">Constant</entry>
+  <entry key="containsUndeclaredUnits">Contains undeclared units</entry>
+  <entry key="conversionFactor">Conversion factor</entry>
+  <entry key="dateOfCreation">Date of creation</entry>
+  <entry key="dateOfModification">Date of modification</entry>
+  <entry key="definition">Definition</entry>
+  <entry key="derivedUnit">Derived unit</entry>
+  <entry key="eMail">E-mail</entry>
+  <entry key="element">Element</entry>
+  <entry key="exponent">Exponent</entry>
+  <entry key="extentUnits">Extent units</entry>
+  <entry key="familyName">Family name</entry>
+  <entry key="formula">Formula</entry>
+  <entry key="fast">Fast</entry>
+  <entry key="givenName">Given name</entry>
+  <entry key="hasOnlySubstanceUnits">Has only substance units</entry>
+  <entry key="initialAmount">Initial amount</entry>
+  <entry key="initialConcentration">Initial concentration</entry>
+  <entry key="kind">Kind</entry>
+  <entry key="lengthUnits">Length units</entry>
+  <entry key="level">Level</entry>
+  <entry key="listOfCreators">Creators</entry>
+  <entry key="message">Message</entry>
+  <entry key="multiplier">Multiplier</entry>
+  <entry key="multiplier_tooltip">The multiplier for the unit</entry>
+  <entry key="MIRIAM">Minimal Information Required In the Annotation of Models (MIRIAM)</entry>
+  <entry key="name">Name</entry>
+  <entry key="notes">Notes</entry>
+  <entry key="offset">Offset</entry>
+  <entry key="organization">Organization</entry>
+  <entry key="outside">Outside</entry>
+  <entry key="quantity">Quantity</entry>
+  <entry key="reactionEquation">Reaction equation</entry>
+  <entry key="reversible">Reversible</entry>
+  <entry key="scale">Scale</entry>
+  <entry key="size">Size</entry>
+  <entry key="spatialDimensions">Spatial dimensions</entry>
+  <entry key="stoichiometry">Stoichiometry</entry>
+  <entry key="substanceUnits">Substance units</entry>
+  <entry key="substanceUnit">Substance unit</entry>
+  <entry key="SBO">Systems Biology Ontology</entry>
+  <entry key="timeUnits">Time units</entry>
+  <entry key="usesValuesFromTriggerTime">Uses values from trigger time</entry>
+  <entry key="value">Value</entry>
+  <entry key="version">Version</entry>
+  <entry key="volumeUnits">Volume units</entry>
+  
+  <!-- Units -->
+  
+  <entry key="AMPERE">Ampere</entry>
+  <entry key="AVOGADRO">Avogadro's number</entry>
+  <entry key="BECQUEREL">Bequerel</entry>
+  <entry key="CANDELA">Candela</entry>
+  <entry key="CELSIUS">Celsius</entry>
+  <entry key="COULOMB">Coulomb</entry>
+  <entry key="DIMENSIONLESS">Dimensionless</entry>
+  <entry key="FARAD">Farad</entry>
+  <entry key="GRAM">Gram</entry>
+  <entry key="GRAY">Gray</entry>
+  <entry key="HENRY">Henry</entry>
+  <entry key="HERTZ">Hertz</entry>
+  <entry key="INVALID">Invalid</entry>
+  <entry key="ITEM">Item</entry>
+  <entry key="JOULE">Joule</entry>
+  <entry key="KATAL">Katal</entry>
+  <entry key="KELVIN">Kelvin</entry>
+  <entry key="KILOGRAM">Kilogram</entry>
+  <entry key="LITER">Liter</entry>
+  <entry key="LITRE">Litre</entry>
+  <entry key="LUMEN">Lumen</entry>
+  <entry key="LUX">Lux</entry>
+  <entry key="METER">Meter</entry>
+  <entry key="METRE">Metre</entry>
+  <entry key="MOLE">Mole</entry>
+  <entry key="NEWTON">Newton</entry>
+  <entry key="OHM">Ohm</entry>
+  <entry key="PASCAL">Pascal</entry>
+  <entry key="RADIAN">Radian</entry>
+  <entry key="SECOND">Second</entry>
+  <entry key="SIEMENS">Simens</entry>
+  <entry key="SIEVERT">Sievert</entry>
+  <entry key="STERADIAN">Steradian</entry>
+  <entry key="TESLA">Tesla</entry>
+  <entry key="VOLT">Volt</entry>
+  <entry key="WATT">Watt</entry>
+  <entry key="WEBER">Weber</entry>
+  
+  
+  <!-- Core SBML -->
+  
+  <entry key="algebraicRule">Algebraic rule</entry>
+  <entry key="annotation">Annotation</entry>
+  <entry key="assignmentRule">Assignment rule</entry>
+  <entry key="compartment">Compartment</entry>
+  <entry key="compartmentType">CompartmentType</entry>
+  <entry key="constraint">Constraint</entry>
+  <entry key="delay">Delay</entry>
+  <entry key="event">Event</entry>
+  <entry key="eventAssignment">Event assignment</entry>
+  <entry key="functionDefinition">Function definition</entry>
+  <entry key="initialAssignment">Initial assignment</entry>
+  <entry key="kineticLaw">Kinetic law</entry>
+  <entry key="listOfCompartments">Compartments</entry>
+  <entry key="listOfCompartmentTypes">Compartment types</entry>
+  <entry key="listOfConstraints">Constraints</entry>
+  <entry key="listOfEvents">Events</entry>
+  <entry key="listOfEventAssignments">Event assignments</entry>
+  <entry key="listOfFunctionDefinitions">Function definitions</entry>
+  <entry key="listOfInitialAssignments">Initial assignments</entry>
+  <entry key="listOfLocalParameters">Local parameters</entry>
+  <entry key="listOfModifiers">Modifiers</entry>
+  <entry key="listOfParameters">Parameters</entry>
+  <entry key="listOfProducts">Products</entry>
+  <entry key="listOfReactants">Reactants</entry>
+  <entry key="listOfReactions">Reactions</entry>
+  <entry key="listOfRules">Rules</entry>
+  <entry key="listOfSpecies">Species</entry>
+  <entry key="listOfSpeciesTypes">Species types</entry>
+  <entry key="listOfUnitDefinitions">Unit definitions</entry>
+  <entry key="listOfUnits">Units</entry>
+  <entry key="localParameter">Local parameter</entry>
+  <entry key="model">Model</entry>
+  <entry key="modifierSpeciesReference">Modifier species reference</entry>
+  <entry key="parameter">Parameter</entry>
+  <entry key="priority">Priority</entry>
+  <entry key="rateRule">Rate rule</entry>
+  <entry key="reaction">Reaction</entry>
+  <entry key="rule">Rule</entry>
+  <entry key="sbml">SBML document</entry>
+  <entry key="specie">Species</entry>
+  <entry key="specieReference">Species reference</entry>
+  <entry key="species">Species</entry>
+  <entry key="speciesReference">Species reference</entry>
+  <entry key="speciesType">Species type</entry>
+  <entry key="stoichiometryMath">Stoichiometry math</entry>
+  <entry key="trigger">Trigger</entry>
+  <entry key="unit">Unit</entry>
+  <entry key="unitDefinition">Unit definition</entry>
+
+  <!-- Arrays -->
+  
+  <entry key="dimension">Dimension</entry>
+  <entry key="index">Index</entry>
+
+  <!-- Comp -->
+  
+  <!-- Distrib -->
+  
+  <!-- Dyn -->
+  
+  <!-- FBC -->
+
+  <entry key="chemicalFormula">Chemical formula</entry>
+  <entry key="fluxBound">Flux bound</entry>
+  <entry key="fluxObjective">Flux objective</entry>
+  <entry key="geneProduct">Gene product</entry>
+  <entry key="listOfFluxBounds">Flux bounds</entry>
+  <entry key="listOfFluxObjectives">Flux objectives</entry>
+  <entry key="listOfGeneProducts">Gene products</entry>
+  <entry key="listOfObjectives">Objectives</entry>
+  <entry key="objective">Objective</entry>
+  
+  <!-- Groups -->
+  
+  <entry key="classification">Classification</entry>
+  <entry key="collection">Collection</entry>
+  <entry key="group">Group</entry>
+  <entry key="group.kind">Kind</entry>
+  <entry key="listOfGroups">Groups</entry>
+  <entry key="listOfMembers">Members</entry>
+  <entry key="member">Member</entry>
+  <entry key="member.ref">Referenced element</entry>
+  <entry key="partonomy">Partonomy</entry>
+  
+  <!-- Layout -->
+  
+  <entry key="basePoint1">Base point 1</entry>
+  <entry key="basePoint2">Base point 2</entry>
+  <entry key="boundingBox">Bounding box</entry>
+  <entry key="compartmentGlyph">Compartment glyph</entry>
+  <entry key="cubicBezier">Cubic Bézier curve</entry>
+  <entry key="curve">Curve</entry>
+  <entry key="curveSegment">Curve segment</entry>
+  <entry key="depth">Depth</entry>
+  <entry key="dimensions">Dimensions</entry>
+  <entry key="end">End</entry>
+  <entry key="graphicalObject">Graphical object</entry>
+  <entry key="height">Height</entry>
+  <entry key="layout">Layout</entry>
+  <entry key="lineSegment">Line segment</entry>
+  <entry key="listOfCompartmentGlyphs">Compartment glyphs</entry>
+  <entry key="listOfCubicBeziers">Cubic Beziér curves</entry>
+  <entry key="listOfCurveSegments">Curve segments</entry>
+  <entry key="listOfLayouts">Layouts</entry>
+  <entry key="listOfLineSegments">Line segments</entry>
+  <entry key="listOfReactionGlyphs">Reaction glyphs</entry>
+  <entry key="listOfSpeciesGlyphs">Species glyphs</entry>
+  <entry key="listOfSpeciesReferenceGlyphs">Species reference glyphs</entry>
+  <entry key="listOfTextGlyphs">Text glyphs</entry>
+  <entry key="originOfText">Origin of text</entry>
+  <entry key="position">Position</entry>  
+  <entry key="reactionGlyph">Reaction glyph</entry>
+  <entry key="speciesGlyph">Species glyph</entry>
+  <entry key="speciesReferenceGlyph">Species reference glyph</entry>
+  <entry key="speciesReferenceRole">Role</entry>
+  <entry key="start">Start</entry>
+  <entry key="text">Text</entry>
+  <entry key="textGlyph">Text glyph</entry>
+  <entry key="width">Width</entry>
+  <entry key="x">x-coordinate</entry>
+  <entry key="y">y-coordinate</entry>
+  <entry key="z">z-coordinate</entry>
+  
+  <!-- Multi -->
+  
+  <!-- Qual -->
+  
+  <entry key="assignmentLevel">Assignment level</entry>
+  <entry key="consumption">Consumption</entry>
+  <entry key="functionTerm">Function term</entry>
+  <entry key="input">Input</entry>
+  <entry key="inputTransitionEffect">Input transition effect</entry>
+  <entry key="listOfFunctionTerms">Function terms</entry>
+  <entry key="listOfInputs">Inputs</entry>
+  <entry key="listOfOutputs">Outputs</entry>
+  <entry key="listOfQualitativeSpecies">Qualitative species</entry>
+  <entry key="listOfSymbolicValues">Symbolic values</entry>
+  <entry key="listOfTransitions">Transitions</entry>
+  <entry key="none">none</entry>
+  <entry key="output">Output</entry>
+  <entry key="outputTransitionEffect">Output transition effect</entry>
+  <entry key="production">Production</entry>
+  <entry key="qualitativeSpecies">Qualitative species</entry>
+  <entry key="sign">Sign</entry>
+  <entry key="transition">Transition</entry>
+
+  <!-- Render -->
+  
+  <entry key="colorDefinition">Color definition</entry>
+  <entry key="g">Rendering group</entry>
+  <entry key="idList">ID list</entry>
+  <entry key="listOfColorDefinitions">Color definitions</entry>
+  <entry key="listOfRenderInformation">List of render information</entry>
+  <entry key="listOfStyles">Styles</entry>
+  <entry key="renderInformation">Render information</entry>
+  <entry key="roleList">Role list</entry>
+  <entry key="style">Style</entry>
+  
+  <!-- Req -->
+  
+  <!-- Spatial -->
+  
+</properties>

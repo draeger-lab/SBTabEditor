@@ -27,6 +27,10 @@ public class SBTabTableProducer {
 		switch (type) {
 		case REACTION:
 			return new SBTabReactionTable(doc).makeTableView();
+		case COMPARTEMENT:
+			return new SBTabCompartmentTable(doc).makeTableView();
+		case SPECIE:
+			return new SBTabSpeciesTable(doc).makeTableView();
 		// TODO: add cases for another table factories
 		default:
 			break;

@@ -1,15 +1,13 @@
 package de.sbtab.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.Writer;
+import java.util.Objects;
 import java.util.Properties;
-import java.util.prefs.Preferences;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -18,6 +16,7 @@ import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.TidySBMLWriter;
 
 import javafx.concurrent.Task;
+
 
 public class SBTabController {
 
@@ -28,13 +27,13 @@ public class SBTabController {
   public static String getFilePath() {
     return filePath;
   }
-  
+
   public static SBMLDocument getDoc() {
     return doc;
   }
-  
+
   /**
-   * Set Properties for the programm, at the moment only the file path is saved. 
+   * Set Properties for the programm, at the moment only the file path is saved.
    */
   public static void setProperties(){
     Writer writer = null;
@@ -90,9 +89,8 @@ public class SBTabController {
   /**
    * Read SBML document from a {@link File}.
    * 
-   * @param path
-   *            absolute path to {@link SBMLDocument}
-   * @return
+   * @param absolute path to {@link SBMLDocument}
+   * @return {@link SBMLDocument}
    */
   public static SBMLDocument read(String filePath) {
     Task<Void> task = new Task<Void>() {
@@ -100,8 +98,18 @@ public class SBTabController {
       public Void call() {
         try {
           SBTabController.filePath = filePath;
-          doc = SBMLReader.read(new File(filePath));
-          setProperties();
+          File theSBMLFile = new File(filePath);
+          boolean isFile = theSBMLFile.isFile();
+          System.out.println(getFileExtension(theSBMLFile));
+          if(isFile){
+            if(Objects.equals(getFileExtension(theSBMLFile), ".xml")){
+              doc = SBMLReader.read(theSBMLFile);
+            }
+            if(Objects.equals(getFileExtension(theSBMLFile), ".gz")){
+              doc = SBMLReader.read(new GZIPInputStream(new FileInputStream(filePath)));
+            }
+            setProperties();
+          }
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -124,12 +132,12 @@ public class SBTabController {
    * @return boolean true for valid Document else false plus Logger errors
    */
   public static boolean validate(SBMLDocument doc) {
-	  // the number of Errors of a SBMLFile
-	  int numErrors = doc.checkConsistencyOffline();
+    // the number of Errors of a SBMLFile
+    int numErrors = doc.checkConsistencyOffline();
     if(numErrors == 0) {
       return true;
     }else {
-    	//get each error and show it
+      //get each error and show it
       for(int i = 0; i < numErrors; i++) {
         LOGGER.error(doc.getError(i));
       }
@@ -142,7 +150,7 @@ public class SBTabController {
    * @return Number of Errors
    */
   public static int numErrors(SBMLDocument doc) {
-	  return doc.checkConsistencyOffline();
+    return doc.checkConsistencyOffline();
   }
   /**
    * Testmethod to get a String-Type Error Code
@@ -150,9 +158,31 @@ public class SBTabController {
    * @return String-Error
    */
   public static String errorToString(SBMLDocument doc) {
-	  int numErrors = doc.checkConsistencyOffline();
-	  String StringError = null;
-	  StringError = doc.getError(0).toString();
-	  return StringError;
+    int numErrors = doc.checkConsistencyOffline();
+    String StringError = null;
+    StringError = doc.getError(0).toString();
+    return StringError;
+  }
+
+
+
+  /**
+   * @author Julian Wanner
+   * @param File
+   * @return File Extension
+   */
+  private static String getFileExtension(File file) {
+    String theFileExtension = "";
+    try {
+      if (file != null && file.exists()) {
+        String theFileName = file.getName();
+        theFileExtension = theFileName.substring(theFileName.lastIndexOf("."));
+      }
+    } catch (Exception e) {
+      theFileExtension = "";
+    }
+
+    return theFileExtension;
+
   }
 }

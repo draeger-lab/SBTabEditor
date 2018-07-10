@@ -4,19 +4,13 @@ import org.sbml.jsbml.ListOf;
 import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBase;
 
-import de.sbtab.controller.SBTabReactionWrapper;
+import de.sbtab.containers.SBTabReactionWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.event.EventHandler;
-import javafx.scene.control.TableColumn.CellEditEvent;
 
 /**
- * Generates TableView of JSBML Reaction by using <p>SBTabReactionWrapper<p>
+ * Generates TableView of JSBML Reaction by using <p>SBTabReactionWrapper<p/>
  * */
 public class SBTabReactionTable extends SBTabViewAbstractTable implements SBTabTableFactory<Reaction, SBTabReactionWrapper> {
 
