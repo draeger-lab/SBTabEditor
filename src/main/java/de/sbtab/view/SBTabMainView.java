@@ -36,22 +36,22 @@ public class SBTabMainView extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		List<String> Parameters = this.getParameters().getRaw();
-		if (Parameters.isEmpty()){
-		    menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
-            menuLoader.setController(new SBTabMenuController(this));
-            MenuBar menuBar = (MenuBar) menuLoader.load();
-		    root.setTop(menuBar);
-		    assignStatusBar("No file specified.", 0D);
+		if (isDocumentLoaded()){
+			setViewOnFile();
 		}
-		else{
-			doc = SBTabController.read(Parameters.get(0));
-			menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
-            menuLoader.setController(new SBTabMenuController(this));
-            MenuBar menuBar = (MenuBar) menuLoader.load();
-		    root.setTop(menuBar);
-		    reInit();	    
+		else {
+			List<String> Parameters = this.getParameters().getRaw();
+			if (!Parameters.isEmpty()) {
+				doc = SBTabController.read(Parameters.get(0));
+			}
+		if (isDocumentLoaded()){
+		    setViewOnFile();
 		}
+		else {
+			setViewDefault();
+		}
+		}
+
 		
 		Scene scene = new Scene(root, 640, 480);
 
@@ -66,6 +66,24 @@ public class SBTabMainView extends Application {
 		stage.sizeToScene();
 		stage.show();
 
+	}
+	
+	public void setViewOnFile() throws Exception {
+		menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
+        menuLoader.setController(new SBTabMenuController(this));
+        MenuBar menuBar = (MenuBar) menuLoader.load();
+	    root.setTop(menuBar);
+	    reInit();
+		
+	}
+	
+   public void setViewDefault() throws Exception {
+	   menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
+       menuLoader.setController(new SBTabMenuController(this));
+       MenuBar menuBar = (MenuBar) menuLoader.load();
+	    root.setTop(menuBar);
+	    assignStatusBar("No file specified.", 0D);
+		
 	}
 	
 	
