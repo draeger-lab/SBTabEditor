@@ -4,7 +4,7 @@ sudo: false
 script: mvn clean verify
 notifications:
   slack: modbiosys:cbXIhVIeXKhYc4ZaM9OO2KpY
-    on_success: never # default: always
+    on_success: always # default: always
     on_failure: always # default: always
   email:
     recipients:
