@@ -3,14 +3,12 @@ jdk: oraclejdk8
 sudo: false
 script: mvn clean verify
 notifications:
-  slack:
-    rooms:
-      - modbiosys:cbXIhVIeXKhYc4ZaM9OO2KpY#tabmod
-    on_success: never # default: always
+  slack: modbiosys:cbXIhVIeXKhYc4ZaM9OO2KpY
+    on_success: always # default: always
     on_failure: always # default: always
   email:
     recipients:
       - granitguri.gg@gmail.com
       - zakharchuk.vn@gmail.com
     on_success: never # default: change
-on_failure: always # default: always
+    on_failure: always # default: always
