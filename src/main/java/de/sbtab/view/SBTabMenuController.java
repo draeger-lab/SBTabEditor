@@ -217,8 +217,8 @@ public class SBTabMenuController implements Initializable {
 	@FXML
 	void doValidate(ActionEvent event) {
 		//boolean valid = SBTabController.validate(doc);// TODO: Implement validate
-		boolean valid=SBTabController.validate(mainView.getDoc());//as long as  validate doesn't work properly
-		if (valid) {
+		int errors = SBTabController.numErrors(mainView.getDoc());
+		if (errors == 0) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 			alert.setGraphic(new ImageView(this.getClass().getResource("ApproveIcon_64.png").toString()));
@@ -231,7 +231,7 @@ public class SBTabMenuController implements Initializable {
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Exception Dialog");
-			alert.setHeaderText("You have " + SBTabController.numErrors(mainView.getDoc()) + "Errors in your Document.");
+			alert.setHeaderText("You have " + errors + "Errors in your Document.");
 			alert.setContentText("List of all Errors");
 
 			Exception ex = new FileNotFoundException("Error");
