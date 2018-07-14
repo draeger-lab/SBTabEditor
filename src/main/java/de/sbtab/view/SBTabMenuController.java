@@ -475,10 +475,8 @@ public class SBTabMenuController implements Initializable {
 		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML Files", "*.xml"),
 				new ExtensionFilter("GZip Files", "*.gz"));
 		fileChooser.setTitle("Choose SBML or XML File.");
-		String lastOutputDir = thePreferences.get("last_output_dir", "");
-		if (lastOutputDir != null) {
+		String lastOutputDir = thePreferences.get("last_output_dir", "user.home");
 			fileChooser.setInitialDirectory( new File(lastOutputDir));
-		}
 		File file = fileChooser.showOpenDialog(null);
 		if (file != null) {
 			filePath = file.getAbsolutePath();
