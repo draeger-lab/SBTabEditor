@@ -36,14 +36,16 @@ import javafx.stage.Stage;
 
 public class SBTabMenuController implements Initializable {
 	SBTabMainView mainView;
+	SBTabController controller;
 	private boolean unsavedChanges;
 	
 	public SBTabMenuController() {
 		//
 	}
 	
-	public SBTabMenuController(SBTabMainView mainView) {
+	public SBTabMenuController(SBTabMainView mainView, SBTabController controller) {
 		this.mainView = mainView;
+		this.controller = controller;
 	}
 
 	@Override
@@ -179,7 +181,7 @@ public class SBTabMenuController implements Initializable {
 		}
 	}
 	private void startNewWindow(){
-		SBMLDocument newDoc = SBTabController.read(chooseFile());
+		SBMLDocument newDoc = controller.read(chooseFile());
 		Stage newStage = new Stage();
 		SBTabMainView newGUI = new SBTabMainView();
 		newGUI.setDoc(newDoc);
@@ -361,7 +363,7 @@ public class SBTabMenuController implements Initializable {
 		    @Override 
 			public Void call() {
 				if (filePath != null) {
-					mainView.setDoc(SBTabController.read(filePath));
+					mainView.setDoc(controller.read(filePath));
 				}
 				return null;
 			}
@@ -386,11 +388,11 @@ public class SBTabMenuController implements Initializable {
 	}
 
 	private void handleSave() {
-		SBMLDocument doc = SBTabController.getDoc();
-		File filePath = new File(SBTabController.getFilePath());
+		SBMLDocument doc = controller.getDoc();
+		File filePath = new File(controller.getFilePath());
 		String theProjectName = mainView.getTheProjectName();
 		String theVersion = mainView.getTheVersion();
-		SBTabController.save(doc, filePath, theProjectName, theVersion);
+		controller.save(doc, filePath, theProjectName, theVersion);
 		unsavedChanges=true;
 	}
 	
@@ -474,7 +476,7 @@ public class SBTabMenuController implements Initializable {
 		Properties theProperties = new Properties();
 		try {
 			if (!(new File(".properties").exists())) {
-				SBTabController.setProperties();
+				controller.setProperties();
 			}
 			reader = new FileReader(".properties");
 			theProperties.load(reader);

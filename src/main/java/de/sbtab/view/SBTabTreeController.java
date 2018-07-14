@@ -16,6 +16,11 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 public class SBTabTreeController implements Initializable {
+	SBTabController controller;
+	
+	public SBTabTreeController(SBTabController controller) {
+		this.controller = controller;
+	}
 
 	@FXML
 	private TreeView<String> treeView;
@@ -36,7 +41,7 @@ public class SBTabTreeController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle value) {
 		bundle = value; 
-		SBase document = SBTabController.getDoc();
+		SBase document = controller.getDoc();
 		TreeNode root = document.getRoot();
 		TreeItem<String> root2 = new TreeItem<String>(String.valueOf(root));
 		treeView.setRoot(root2);
@@ -77,7 +82,7 @@ public class SBTabTreeController implements Initializable {
 	}
 	
 	private void ExpandTree2(){
-		SBase document = SBTabController.getDoc();
+		SBase document = controller.getDoc();
 		TreeNode root = document.getRoot();
 		TreeItem<String> root2 = new TreeItem<String>(String.valueOf(root));
 		root2.setExpanded(expanded);

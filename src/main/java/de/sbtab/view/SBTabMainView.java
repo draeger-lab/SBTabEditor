@@ -14,6 +14,7 @@ import de.sbtab.services.SBTabTableProducer;
 import de.sbtab.services.TableType;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
@@ -23,9 +24,12 @@ import javafx.stage.Stage;
 public class SBTabMainView extends Application {
 	
 	private SBMLDocument doc;
+	private SBTabController controller = new SBTabController();
 	private FXMLLoader menuLoader = new FXMLLoader();
+	private FXMLLoader treeLoader = new FXMLLoader();
 	private BorderPane root = new BorderPane();
 	private SBTabTableProducer tableProducer;
+	private ResourceBundle bundle = ResourceManager.getBundle("de.sbtab.view.SBTabTreeElementNames");
 	private static final String THE_PROJECT_NAME = "TabMod";
 	private static final String THE_VERSION = "1.1"; 
 	
@@ -42,7 +46,7 @@ public class SBTabMainView extends Application {
 		else {
 			List<String> Parameters = this.getParameters().getRaw();
 			if (!Parameters.isEmpty()) {
-				doc = SBTabController.read(Parameters.get(0));
+				doc = controller.read(Parameters.get(0));
 			}
 		if (isDocumentLoaded()){
 		    setViewOnFile();
@@ -71,16 +75,20 @@ public class SBTabMainView extends Application {
 	
 	public void setViewOnFile() throws Exception {
 		menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
-        menuLoader.setController(new SBTabMenuController(this));
+		treeLoader.setLocation(getClass().getResource("SBTabTree.fxml"));
+        menuLoader.setController(new SBTabMenuController(this, controller));
+        treeLoader.setController(new SBTabTreeController(controller));
+        treeLoader.setResources(bundle);
         MenuBar menuBar = (MenuBar) menuLoader.load();
+        Node treeView = (Node)treeLoader.load();
 	    root.setTop(menuBar);
+	    root.setLeft(treeView);
 	    reInit();
-		
 	}
 	
    public void setViewDefault() throws Exception {
 	   menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
-       menuLoader.setController(new SBTabMenuController(this));
+       menuLoader.setController(new SBTabMenuController(this, controller));
        MenuBar menuBar = (MenuBar) menuLoader.load();
 	    root.setTop(menuBar);
 	    assignStatusBar("No file specified.", 0D);
@@ -96,8 +104,10 @@ public class SBTabMainView extends Application {
 			assignStatusBar("Ready.", 0D);
 			root.setCenter(tableProducer.getTableView(TableType.REACTION));
 		try {
-			ResourceBundle bundle = ResourceManager.getBundle("de.sbtab.view.SBTabTreeElementNames");
-            root.setLeft(FXMLLoader.load(getClass().getResource("SBTabTree.fxml"), bundle));
+			treeLoader.setLocation(getClass().getResource("SBTabTree.fxml"));
+			treeLoader.setController(new SBTabTreeController(controller));
+			treeLoader.setResources(bundle);
+			root.setLeft(treeLoader.load());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

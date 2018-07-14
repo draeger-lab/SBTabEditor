@@ -21,21 +21,21 @@ import javafx.concurrent.Task;
 public class SBTabController {
 
   private static final transient Logger LOGGER = LogManager.getLogger(SBTabController.class);
-  private static SBMLDocument doc;
-  private static String filePath = null;
+  private SBMLDocument doc;
+  private String filePath = null;
 
-  public static String getFilePath() {
+  public String getFilePath() {
     return filePath;
   }
 
-  public static SBMLDocument getDoc() {
+  public SBMLDocument getDoc() {
     return doc;
   }
 
   /**
-   * Set Properties for the programm, at the moment only the file path is saved.
+   * Set Properties for the program, at the moment only the file path is saved.
    */
-  public static void setProperties(){
+  public void setProperties(){
     Writer writer = null;
     try
     {
@@ -68,7 +68,7 @@ public class SBTabController {
    *            version of {@link SBMLDocument}
    * 
    */
-  public static void save(SBMLDocument doc, File path, String name, String version) {
+  public void save(SBMLDocument doc, File path, String name, String version) {
     Task<Void> task = new Task<Void>() {
       @Override
       public Void call() {
@@ -92,46 +92,32 @@ public class SBTabController {
    * @param absolute path to {@link SBMLDocument}
    * @return {@link SBMLDocument}
    */
-  public static SBMLDocument read(String filePath) {
-    Task<Void> task = new Task<Void>() {
-      @Override
-      public Void call() {
-        try {
-          SBTabController.filePath = filePath;
-          File theSBMLFile = new File(filePath);
-          boolean isFile = theSBMLFile.isFile();
-          System.out.println(getFileExtension(theSBMLFile));
-          if(isFile){
-            if(Objects.equals(getFileExtension(theSBMLFile), ".xml")){
-              doc = SBMLReader.read(theSBMLFile);
-            }
-            if(Objects.equals(getFileExtension(theSBMLFile), ".gz")){
-              doc = SBMLReader.read(new GZIPInputStream(new FileInputStream(filePath)));
-            }
-            setProperties();
-          }
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-        return null;
-      }
-    };
-    Thread th = new Thread(task);
-    th.setDaemon(true);
-    th.start();
-    try {
-      th.join();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    return doc;
-  }
+	public SBMLDocument read(String filePath) {
+		this.filePath = filePath;
+		File theSBMLFile = new File(filePath);
+		boolean isFile = theSBMLFile.isFile();
+		System.out.println(getFileExtension(theSBMLFile));
+		if (Objects.equals(getFileExtension(theSBMLFile), ".xml")) {
+			try {
+				if (isFile) {
+					doc = SBMLReader.read(theSBMLFile);
+				}
+				if (Objects.equals(getFileExtension(theSBMLFile), ".gz")) {
+					doc = SBMLReader.read(new GZIPInputStream(new FileInputStream(filePath)));
+				}
+				setProperties();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return doc;
+	  }
   /**
    * Validator of SBML-Files
    * @param doc is the input SBML-File
    * @return boolean true for valid Document else false plus Logger errors
    */
-  public static boolean validate(SBMLDocument doc) {
+  public boolean validate(SBMLDocument doc) {
     // the number of Errors of a SBMLFile
     int numErrors = doc.checkConsistencyOffline();
     if(numErrors == 0) {
@@ -157,7 +143,7 @@ public class SBTabController {
    * @param doc
    * @return String-Error
    */
-  public static String errorToString(SBMLDocument doc) {
+  public String errorToString(SBMLDocument doc) {
     int numErrors = doc.checkConsistencyOffline();
     String StringError = null;
     StringError = doc.getError(0).toString();
@@ -171,7 +157,7 @@ public class SBTabController {
    * @param File
    * @return File Extension
    */
-  private static String getFileExtension(File file) {
+  private String getFileExtension(File file) {
     String theFileExtension = "";
     try {
       if (file != null && file.exists()) {
