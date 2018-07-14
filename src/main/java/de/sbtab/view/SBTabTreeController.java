@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import javax.swing.tree.TreeNode;
 
 import org.sbml.jsbml.SBase;
+import org.sbml.jsbml.util.ResourceManager;
 
 import de.sbtab.controller.SBTabController;
 import javafx.application.Platform;
@@ -29,6 +30,12 @@ public class SBTabTreeController implements Initializable {
 	
 	public Boolean expanded = false;
 	
+	SBTabMainView mainView;
+	
+	public SBTabTreeController(SBTabMainView mainView) {
+		this.mainView = mainView;
+	} 
+	
 	@FXML
 	void doExpandTree(ActionEvent event) {		
 		 Task<Void> task = new Task<Void>() {
@@ -50,7 +57,7 @@ public class SBTabTreeController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle value) {
-		bundle = value; 
+		bundle = ResourceManager.getBundle("de.sbtab.view.SBTabTreeElementNames");
 		SBase document = SBTabController.getDoc();
 		TreeNode root = document.getRoot();
 		TreeItem<String> rootAsItem = new TreeItem<String>(String.valueOf(root));
@@ -68,6 +75,7 @@ public class SBTabTreeController implements Initializable {
 	 */
 	private void tree(TreeNode root, SBase document, TreeItem<String> rootAsItem) {
 		try {
+			
 			if (root.getChildCount() > 0) {
 				
 				for (int i = 0; i < root.getChildCount(); i++) {
