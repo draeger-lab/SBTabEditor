@@ -2,11 +2,7 @@ package de.sbtab.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Objects;
-import java.util.Properties;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.log4j.LogManager;
@@ -17,12 +13,16 @@ import org.sbml.jsbml.TidySBMLWriter;
 
 import javafx.concurrent.Task;
 
+import java.util.prefs.Preferences;
 
 public class SBTabController {
 
   private static final transient Logger LOGGER = LogManager.getLogger(SBTabController.class);
   private SBMLDocument doc;
   private String filePath = null;
+  //declare my variable at the top of my Java class
+  private static Preferences prefs;
+
 
   public String getFilePath() {
     return filePath;
@@ -33,25 +33,17 @@ public class SBTabController {
   }
 
   /**
-   * Set Properties for the program, at the moment only the file path is saved.
+   * Set Preferences for the programm, at the moment only the file path is saved.
    */
-  public void setProperties(){
-    Writer writer = null;
-    try
-    {
-      writer = new FileWriter( ".properties" );
-      Properties theProperties = new Properties( System.getProperties() );
-      if(filePath != null){
-        theProperties.setProperty( "FilePath", new File(filePath).getParent());
+  public void setPreferences(String filePath){
+  //create a Preferences instance (somewhere later in the code)
+    prefs = Preferences.userNodeForPackage(SBTabController.class);    
+    if(filePath != null){
+      String folderPath = (new File(filePath)).getParent();
+      prefs.put("last_output_dir", folderPath);    
       }
-      else{
-        theProperties.setProperty( "FilePath", System.getProperty("user.home"));
-      }
-      theProperties.store( writer, "Properties of STabEditor" );
-    }
-    catch ( IOException e )
-    {
-      e.printStackTrace();
+    else{
+      prefs.put("last_output_dir", System.getProperty("user.home"));
     }
   }
 
@@ -97,21 +89,25 @@ public class SBTabController {
 		File theSBMLFile = new File(filePath);
 		boolean isFile = theSBMLFile.isFile();
 		System.out.println(getFileExtension(theSBMLFile));
-		if (Objects.equals(getFileExtension(theSBMLFile), ".xml")) {
-			try {
-				if (isFile) {
+		if (isFile) {
+			if (Objects.equals(getFileExtension(theSBMLFile), ".xml")) {
+				try {
 					doc = SBMLReader.read(theSBMLFile);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				if (Objects.equals(getFileExtension(theSBMLFile), ".gz")) {
-					doc = SBMLReader.read(new GZIPInputStream(new FileInputStream(filePath)));
-				}
-				setProperties();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+			if (Objects.equals(getFileExtension(theSBMLFile), ".gz")) {
+				try {
+					doc = SBMLReader.read(new GZIPInputStream(new FileInputStream(filePath)));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			setPreferences(filePath);
 		}
 		return doc;
-	  }
+	}
   /**
    * Validator of SBML-Files
    * @param doc is the input SBML-File
@@ -135,7 +131,7 @@ public class SBTabController {
    * @param doc
    * @return Number of Errors
    */
-  public static int numErrors(SBMLDocument doc) {
+  public int numErrors(SBMLDocument doc) {
     return doc.checkConsistencyOffline();
   }
   /**

@@ -34,8 +34,7 @@ public class SBTabMainView extends Application {
 	private static final String THE_VERSION = "1.1"; 
 	
 
-	
-	public SBTabMainView (){
+	public SBTabMainView(){
 	}
 
 	@Override

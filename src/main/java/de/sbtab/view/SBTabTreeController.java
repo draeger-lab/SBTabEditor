@@ -6,8 +6,11 @@ import java.util.ResourceBundle;
 import javax.swing.tree.TreeNode;
 
 import org.sbml.jsbml.SBase;
+import org.sbml.jsbml.util.ResourceManager;
 
 import de.sbtab.controller.SBTabController;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -32,33 +35,60 @@ public class SBTabTreeController implements Initializable {
 	
 	public Boolean expanded = false;
 	
+	SBTabMainView mainView;
+	
+	public SBTabTreeController(SBTabMainView mainView) {
+		this.mainView = mainView;
+	} 
+	
 	@FXML
-	void doExpandTree(ActionEvent event) {
-		expanded ^= true;
-		ExpandTree2();
+	void doExpandTree(ActionEvent event) {		
+		 Task<Void> task = new Task<Void>() {
+		     @Override protected Void call() throws Exception {	         
+		             Platform.runLater(new Runnable() {
+		                 @Override public void run() {
+		                	 expanded ^= true;
+		                	 ExpandTree2();
+		                 }
+		             });		         
+		         return null;
+		     }
+		 };
+		
+		Thread th = new Thread(task);
+		th.setDaemon(true);
+		th.start();	
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle value) {
-		bundle = value; 
+		bundle = ResourceManager.getBundle("de.sbtab.view.SBTabTreeElementNames");
 		SBase document = controller.getDoc();
 		TreeNode root = document.getRoot();
-		TreeItem<String> root2 = new TreeItem<String>(String.valueOf(root));
-		treeView.setRoot(root2);
+		TreeItem<String> rootAsItem = new TreeItem<String>(String.valueOf(root));
+		treeView.setRoot(rootAsItem);
 
-		tree(root, document, root2, false);
+		tree(root, document, rootAsItem);
 	}
 
-	private void tree(TreeNode root, SBase document, TreeItem<String> root2, Boolean expand) {
+	/**
+	 * recursive tree (depends on variable expanded)
+	 * 
+	 * @param root
+	 * @param document
+	 * @param rootAsItem
+	 */
+	private void tree(TreeNode root, SBase document, TreeItem<String> rootAsItem) {
 		try {
+			
 			if (root.getChildCount() > 0) {
 				
 				for (int i = 0; i < root.getChildCount(); i++) {
 					TreeNode node = root.getChildAt(i);
-					TreeItem<String> node2 = new TreeItem<String>(TreeElementName(node.toString()));		
-					root2.setExpanded(expand);
-					root2.getChildren().add(node2);
-					tree(node, document, node2, expand);
+					TreeItem<String> nodeAsItem = new TreeItem<String>(readableName(node.toString()));		
+					rootAsItem.setExpanded(expanded);
+					rootAsItem.getChildren().add(nodeAsItem);
+					tree(node, document, nodeAsItem);
 				}
 			}
 		} catch (Exception e) {
@@ -66,21 +96,31 @@ public class SBTabTreeController implements Initializable {
 		}
 	}
 	
-	private String TreeElementName(String name){
-		String TreeElementName = name;
+	/**
+	 * returns a readable name for a tree element
+	 * 
+	 * @param name
+	 * @return treeElementName
+	 */
+	private String readableName(String name){
+		String treeElementName = name;
 		
 		if(bundle.containsKey(name)){
-			TreeElementName = bundle.getString(name);
+			treeElementName = bundle.getString(name);
 		} else if(name.contains(" ")) {
 			String names[] = name.split(" ");
 			name = names[0];
 			if(bundle.containsKey(name)){
-				TreeElementName = bundle.getString(name);
+				treeElementName = bundle.getString(name);
 			} 
 		} 
-		return TreeElementName;
+		return treeElementName;
 	}
 	
+	/**
+	 * expands tree recursive with help of tree method
+	 * depends on variable expanded
+	 */
 	private void ExpandTree2(){
 		SBase document = controller.getDoc();
 		TreeNode root = document.getRoot();
@@ -88,6 +128,6 @@ public class SBTabTreeController implements Initializable {
 		root2.setExpanded(expanded);
 		treeView.setRoot(root2);
 
-		tree(root, document, root2, expanded);
+		tree(root, document, root2);
 	}
 }

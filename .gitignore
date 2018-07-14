@@ -4,5 +4,4 @@
 *.gen
 .project
 .classpath
-.properties
 /bin/

@@ -2,15 +2,12 @@ package de.sbtab.view;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 import org.sbml.jsbml.SBMLDocument;
 
@@ -35,8 +32,8 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class SBTabMenuController implements Initializable {
-	SBTabMainView mainView;
-	SBTabController controller;
+	private SBTabMainView mainView;
+	private SBTabController controller;
 	private boolean unsavedChanges;
 	
 	public SBTabMenuController() {
@@ -219,7 +216,7 @@ public class SBTabMenuController implements Initializable {
 	@FXML
 	void doValidate(ActionEvent event) {
 		//boolean valid = SBTabController.validate(doc);// TODO: Implement validate
-		int errors = SBTabController.numErrors(mainView.getDoc());
+		int errors = controller.numErrors(mainView.getDoc());
 		if (errors == 0) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -472,27 +469,22 @@ public class SBTabMenuController implements Initializable {
 	 * Choose file from file dialog and get the file path.
 	 */
 	private String chooseFile() {
-		Reader reader = null;
-		Properties theProperties = new Properties();
-		try {
-			if (!(new File(".properties").exists())) {
-				controller.setProperties();
-			}
-			reader = new FileReader(".properties");
-			theProperties.load(reader);
-			theProperties.list(System.out);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    Preferences thePreferences =  Preferences.userNodeForPackage(SBTabController.class);
 		final FileChooser fileChooser = new FileChooser();
 		String filePath = "";
 		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML Files", "*.xml"),
 				new ExtensionFilter("GZip Files", "*.gz"));
 		fileChooser.setTitle("Choose SBML or XML File.");
-		fileChooser.setInitialDirectory(new File(theProperties.getProperty("FilePath")));
+		String lastOutputDir = thePreferences.get("last_output_dir", "");
+		if (lastOutputDir != null) {
+			fileChooser.setInitialDirectory( new File(lastOutputDir));
+		}
 		File file = fileChooser.showOpenDialog(null);
 		if (file != null) {
 			filePath = file.getAbsolutePath();
+			if (thePreferences.get("last_output_dir", "") == "") {
+				controller.setPreferences(filePath);
+			}
 			return filePath;
 		}
 		return null;
