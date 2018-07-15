@@ -54,6 +54,8 @@ public class SBTabReactionTable extends SBTabViewAbstractTable
 		tableView.getColumns().add(defineColumn("Name", SBTabReactionWrapper::getReactionName, SBTabReactionWrapper::setReactionName));
 		tableView.getColumns().add(defineColumn("Id", SBTabReactionWrapper::getReactionId, SBTabReactionWrapper::setReactionId));
 		tableView.getColumns().add(defineColumn("SBO Term", SBTabReactionWrapper::getSBOTerm, SBTabReactionWrapper::setSBOTerm));
+		tableView.getColumns().add(defineColumn("Compartment", SBTabReactionWrapper::getCompartment, SBTabReactionWrapper::setCompartment));
+		//tableView.getColumns().add(defineColumn("KineticLaw", SBTabReactionWrapper::getKineticLaw, SBTabReactionWrapper::setKineticLaw));
 		tableView.getItems().setAll(data);
 		tableView.setEditable(true);
 
