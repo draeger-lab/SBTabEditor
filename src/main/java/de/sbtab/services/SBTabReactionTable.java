@@ -10,9 +10,13 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 /**
- * Generates TableView of JSBML Reaction by using <p>SBTabReactionWrapper<p/>
- * */
-public class SBTabReactionTable extends SBTabViewAbstractTable implements SBTabTableFactory<Reaction, SBTabReactionWrapper> {
+ * Generates TableView of JSBML Reaction by using
+ * <p>
+ * SBTabReactionWrapper
+ * <p/>
+ */
+public class SBTabReactionTable extends SBTabViewAbstractTable
+		implements SBTabTableFactory<Reaction, SBTabReactionWrapper> {
 
 	public SBTabReactionTable(SBase doc) {
 		super(doc);
@@ -43,13 +47,13 @@ public class SBTabReactionTable extends SBTabViewAbstractTable implements SBTabT
 
 	/**
 	 * Rearrange data to appropriate columns
-	 * */
+	 */
 	private TableView<SBTabReactionWrapper> generateTableColumns(final ObservableList<SBTabReactionWrapper> data) {
 		TableView<SBTabReactionWrapper> tableView = new TableView<SBTabReactionWrapper>();
 		// TODO: figure out what fields do we need to work with
-		tableView.getColumns().add(defineColumn("Name", SBTabReactionWrapper::getReactionName));	
-		tableView.getColumns().add(defineColumn("Id", SBTabReactionWrapper::getReactionId));	
-		tableView.getColumns().add(defineColumn("SBO Term", SBTabReactionWrapper::getSBOTerm));
+		tableView.getColumns().add(defineColumn("Name", SBTabReactionWrapper::getReactionName, SBTabReactionWrapper::setReactionName));
+		tableView.getColumns().add(defineColumn("Id", SBTabReactionWrapper::getReactionId, SBTabReactionWrapper::setReactionId));
+		tableView.getColumns().add(defineColumn("SBO Term", SBTabReactionWrapper::getSBOTerm, SBTabReactionWrapper::setSBOTerm));
 		tableView.getItems().setAll(data);
 		tableView.setEditable(true);
 
