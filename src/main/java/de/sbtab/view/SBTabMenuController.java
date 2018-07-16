@@ -16,11 +16,16 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.TextArea;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -29,6 +34,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class SBTabMenuController implements Initializable {
@@ -327,6 +333,7 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doDocumentation(ActionEvent event) {
+	  handleDocumentation();
 	}
 
 	@FXML
@@ -487,4 +494,24 @@ public class SBTabMenuController implements Initializable {
 		}
 		return null;
 	}
+  private void handleDocumentation() {
+    String theDocumentationName = "Documentation.html";
+    URL url = this.getClass().getResource(theDocumentationName);
+    Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+    Stage stage = new Stage();
+    WebView browser = new WebView();
+    WebEngine webEngine = browser.getEngine();
+    webEngine.load(url.toString());
+
+    StackPane root = new StackPane();
+    root.getChildren().add(browser);
+
+    Scene scene = new Scene(root);
+
+    stage.setTitle("SBTabEditor Documentation");
+    stage.setScene(scene);
+    stage.setWidth(0.4*primaryScreenBounds.getWidth());
+    stage.setHeight(0.4*primaryScreenBounds.getHeight());
+    stage.show();
+  }
 }
