@@ -76,9 +76,7 @@ public class SBTabMainView extends Application {
 		treeLoader.setController(new SBTabTreeController(controller));
 		treeLoader.setResources(bundle);
 		MenuBar menuBar = (MenuBar) menuLoader.load();
-		Node treeView = (Node) treeLoader.load();
 		root.setTop(menuBar);
-		root.setLeft(treeView);
 		reInit();
 	}
 
@@ -140,6 +138,7 @@ public class SBTabMainView extends Application {
 
 	public void setDoc(SBMLDocument doc) {
 		this.doc = doc;
+		this.controller.setDoc(doc);
 	}
 
 	public SBMLDocument getDoc() {

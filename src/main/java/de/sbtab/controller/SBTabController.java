@@ -30,6 +30,10 @@ public class SBTabController {
 	public SBMLDocument getDoc() {
 		return doc;
 	}
+	
+	public void setDoc(SBMLDocument doc) {
+		this.doc = doc;
+	}
 
 	/**
 	 * Set Preferences for the programm, at the moment only the file path is saved.

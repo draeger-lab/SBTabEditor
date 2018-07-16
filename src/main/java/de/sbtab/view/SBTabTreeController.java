@@ -19,7 +19,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 public class SBTabTreeController implements Initializable {
-	SBTabController controller;
+	private SBTabController controller;
 	
 	public SBTabTreeController(SBTabController controller) {
 		this.controller = controller;
@@ -35,7 +35,7 @@ public class SBTabTreeController implements Initializable {
 	
 	public Boolean expanded = false;
 	
-	SBTabMainView mainView;
+	private SBTabMainView mainView;
 	
 	public SBTabTreeController(SBTabMainView mainView) {
 		this.mainView = mainView;
