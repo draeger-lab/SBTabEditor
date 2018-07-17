@@ -5,8 +5,8 @@ package de.sbtab.services;
  * */
 public enum TableType {
 	// Should be discussed which do we need
-	REACTION,
-	SPECIE,
-	COMPARTEMENT,
+	REACTIONS,
+	SPECIES,
+	COMPARTEMENTS,
 	//
 }

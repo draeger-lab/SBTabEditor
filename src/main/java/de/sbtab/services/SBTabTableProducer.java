@@ -4,9 +4,6 @@ import java.util.HashMap;
 
 import org.sbml.jsbml.SBase;
 
-import de.sbtab.containers.SBTabCompartmentWrapper;
-import de.sbtab.containers.SBTabReactionWrapper;
-import de.sbtab.containers.SBTabSpeciesWrapper;
 import javafx.scene.control.TableView;
 
 /**
@@ -32,14 +29,14 @@ public class SBTabTableProducer {
 			return tablePull.get(type);
 		} else {
 			switch (type) {
-			case REACTION:
-				tablePull.put(TableType.REACTION, new SBTabReactionTable(doc).makeTableView());
+			case REACTIONS:
+				tablePull.put(TableType.REACTIONS, new SBTabReactionTable(doc).makeTableView());
 				return tablePull.get(type);
-			case COMPARTEMENT:
-				tablePull.put(TableType.COMPARTEMENT, new SBTabCompartmentTable(doc).makeTableView());
+			case COMPARTEMENTS:
+				tablePull.put(TableType.COMPARTEMENTS, new SBTabCompartmentTable(doc).makeTableView());
 				return tablePull.get(type);
-			case SPECIE:
-				tablePull.put(TableType.SPECIE, new SBTabSpeciesTable(doc).makeTableView());
+			case SPECIES:
+				tablePull.put(TableType.SPECIES, new SBTabSpeciesTable(doc).makeTableView());
 				return tablePull.get(type);
 			// TODO: add cases for another table factories
 			default:
