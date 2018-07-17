@@ -1,5 +1,6 @@
 package de.sbtab.utils;
 
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -29,13 +30,13 @@ public class SBTabTabsComposer {
 	 **/
 	public void generateTab(Node node, String name) {
 		if (isTabExists(name)) {
-			// change focus on this tab
+			setFocusOnTab(name);
 		} else {
 			Tab tab = new Tab();
 			tab.setText(name);
 			tab.setContent(node);
 			tabPane.getTabs().add(tab);
-			// change focus on this tab
+			setFocusOnTab(name);
 		}
 	}
 	
@@ -47,5 +48,18 @@ public class SBTabTabsComposer {
 	private boolean isTabExists(String name) {
 		return tabPane.getTabs().stream()
 				.anyMatch(elem -> elem.textProperty().get().equalsIgnoreCase(name));
+	}
+	
+	/**
+	 * Focus tab depending on the name of it
+	 * @param name name of a tab to focus
+	 * */
+	private void setFocusOnTab(String name) {
+		ObservableList<Tab> tabs = tabPane.getTabs();
+		for (int i = 0; i < tabs.size(); i++) {
+			if (tabs.get(i).textProperty().get().equalsIgnoreCase(name)) {
+				tabPane.getSelectionModel().select(i);
+			}
+		}
 	}
 }
