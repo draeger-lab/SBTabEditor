@@ -47,9 +47,9 @@ public class SBTabSpeciesTable extends SBTabViewAbstractTable implements SBTabTa
 	private TableView<SBTabSpeciesWrapper> generateTableColumns(final ObservableList<SBTabSpeciesWrapper> data) {
 		TableView<SBTabSpeciesWrapper> tableView = new TableView<SBTabSpeciesWrapper>();
 		// TODO: figure out what fields do we need to work with
-		tableView.getColumns().add(defineColumn("Name", SBTabSpeciesWrapper::getSpeciesName));	
-		tableView.getColumns().add(defineColumn("Id", SBTabSpeciesWrapper::getSpeciesId));	
-		tableView.getColumns().add(defineColumn("SBO Term", SBTabSpeciesWrapper::getSpeciesSBOTerm));
+		tableView.getColumns().add(defineColumn("Name", SBTabSpeciesWrapper::getSpeciesName, SBTabSpeciesWrapper::setSpeciesName));	
+		tableView.getColumns().add(defineColumn("Id", SBTabSpeciesWrapper::getSpeciesId, SBTabSpeciesWrapper::setSpeciesId));	
+		tableView.getColumns().add(defineColumn("SBO Term", SBTabSpeciesWrapper::getSpeciesSBOTerm, SBTabSpeciesWrapper::setSpeciesSBOTerm));
 		tableView.getItems().setAll(data);
 		tableView.setEditable(true);
 

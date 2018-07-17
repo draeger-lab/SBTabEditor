@@ -47,9 +47,9 @@ public class SBTabCompartmentTable extends SBTabViewAbstractTable implements SBT
 	private TableView<SBTabCompartmentWrapper> generateTableColumns(final ObservableList<SBTabCompartmentWrapper> data) {
 		TableView<SBTabCompartmentWrapper> tableView = new TableView<SBTabCompartmentWrapper>();
 		// TODO: figure out what fields do we need to work with
-		tableView.getColumns().add(defineColumn("Name", SBTabCompartmentWrapper::getCompartmentName));	
-		tableView.getColumns().add(defineColumn("Id", SBTabCompartmentWrapper::getCompartmentId));	
-		tableView.getColumns().add(defineColumn("SBO Term", SBTabCompartmentWrapper::getCompartmentSBOTerm));
+		tableView.getColumns().add(defineColumn("Name", SBTabCompartmentWrapper::getCompartmentName, SBTabCompartmentWrapper::setCompartmentName));	
+		tableView.getColumns().add(defineColumn("Id", SBTabCompartmentWrapper::getCompartmentId, SBTabCompartmentWrapper::setCompartmentId));	
+		tableView.getColumns().add(defineColumn("SBO Term", SBTabCompartmentWrapper::getCompartmentSBOTerm, SBTabCompartmentWrapper::setCompartmentSBOTerm));
 		tableView.getItems().setAll(data);
 		tableView.setEditable(true);
 

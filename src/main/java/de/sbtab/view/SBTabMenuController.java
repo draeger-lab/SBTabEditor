@@ -1,18 +1,17 @@
 package de.sbtab.view;
 
-import java.awt.Label;
-import java.awt.TextArea;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
+import java.awt.Desktop;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.sbml.jsbml.SBMLDocument;
 
@@ -21,9 +20,17 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.control.TextArea;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
@@ -31,23 +38,28 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class SBTabMenuController implements Initializable {
-	SBTabMainView mainView;
+	private SBTabMainView mainView;
+	private SBTabController controller;
 	private boolean unsavedChanges;
 	
 	public SBTabMenuController() {
 		//
 	}
 	
-	public SBTabMenuController(SBTabMainView mainView) {
+	public SBTabMenuController(SBTabMainView mainView, SBTabController controller) {
 		this.mainView = mainView;
+		this.controller = controller;
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		if (mainView.getDoc()==null){
 		lockMenu(true);
+		}
 	}
 
 	// View and Edit Menu as objects:
@@ -176,7 +188,7 @@ public class SBTabMenuController implements Initializable {
 		}
 	}
 	private void startNewWindow(){
-		SBMLDocument newDoc = SBTabController.read(chooseFile());
+		SBMLDocument newDoc = controller.read(chooseFile());
 		Stage newStage = new Stage();
 		SBTabMainView newGUI = new SBTabMainView();
 		newGUI.setDoc(newDoc);
@@ -214,8 +226,8 @@ public class SBTabMenuController implements Initializable {
 	@FXML
 	void doValidate(ActionEvent event) {
 		//boolean valid = SBTabController.validate(doc);// TODO: Implement validate
-		boolean valid=true;//as long as  validate doesn't work properly
-		if (valid) {
+		int errors = controller.numErrors(mainView.getDoc());
+		if (errors == 0) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 			alert.setGraphic(new ImageView(this.getClass().getResource("ApproveIcon_64.png").toString()));
@@ -228,7 +240,7 @@ public class SBTabMenuController implements Initializable {
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Exception Dialog");
-			alert.setHeaderText("You have " + SBTabController.numErrors(mainView.getDoc()) + "Errors in your Document.");
+			alert.setHeaderText("You have " + errors + "Errors in your Document.");
 			alert.setContentText("List of all Errors");
 
 			Exception ex = new FileNotFoundException("Error");
@@ -244,17 +256,15 @@ public class SBTabMenuController implements Initializable {
 			TextArea textArea = new TextArea(exceptionText);
 			textArea.setEditable(false);
 
-			textArea.setSize((int) Double.MAX_VALUE, (int) Double.MAX_VALUE);
-			// Cannot be resolved to a field for unknown reason
-			// GridPane.setVgrow(textArea, Priority.ALWAYS);
-			// GridPane.setHgrow(textArea, Priority.ALWAYS);
+			textArea.setMaxWidth(Double.MAX_VALUE);
+			textArea.setMaxHeight(Double.MAX_VALUE);
+			GridPane.setVgrow(textArea, Priority.ALWAYS);
+			GridPane.setHgrow(textArea, Priority.ALWAYS);
 
 			GridPane expContent = new GridPane();
 			expContent.setMaxWidth(Double.MAX_VALUE);
-			// despite all tutorials and Documentations the add functions states that it
-			// needs a node
-			// expContent.add(label, 0, 0);
-			// expContent.add(textArea, 0, 1);
+			expContent.add(label, 0, 0);
+			expContent.add(textArea, 0, 1);
 
 			// Set expandable Exception into the dialog pane.
 			alert.getDialogPane().setExpandableContent(expContent);
@@ -326,11 +336,15 @@ public class SBTabMenuController implements Initializable {
 	// Help menu action methods:
 
 	@FXML
-	void doDocumentation(ActionEvent event) {
+	void doDocumentation(ActionEvent event) throws IOException, URISyntaxException {
+		Desktop d = Desktop.getDesktop();
+		d.browse(new URI("http://www.google.com"));
 	}
 
 	@FXML
-	void doWebSearch(ActionEvent event) {
+	void doWebSearch(ActionEvent event) throws IOException, URISyntaxException {
+		Desktop d = Desktop.getDesktop();
+		d.browse(new URI("http://www.google.com"));
 	}
 
 	// Handler methods:
@@ -360,7 +374,7 @@ public class SBTabMenuController implements Initializable {
 		    @Override 
 			public Void call() {
 				if (filePath != null) {
-					mainView.setDoc(SBTabController.read(filePath));
+					mainView.setDoc(controller.read(filePath));
 				}
 				return null;
 			}
@@ -385,11 +399,11 @@ public class SBTabMenuController implements Initializable {
 	}
 
 	private void handleSave() {
-		SBMLDocument doc = SBTabController.getDoc();
-		File filePath = new File(SBTabController.getFilePath());
+		SBMLDocument doc = controller.getDoc();
+		File filePath = new File(controller.getFilePath());
 		String theProjectName = mainView.getTheProjectName();
 		String theVersion = mainView.getTheVersion();
-		SBTabController.save(doc, filePath, theProjectName, theVersion);
+		controller.save(doc, filePath, theProjectName, theVersion);
 		unsavedChanges=true;
 	}
 	
@@ -469,29 +483,42 @@ public class SBTabMenuController implements Initializable {
 	 * Choose file from file dialog and get the file path.
 	 */
 	private String chooseFile() {
-		Reader reader = null;
-		Properties theProperties = new Properties();
-		try {
-			if (!(new File(".properties").exists())) {
-				SBTabController.setProperties();
-			}
-			reader = new FileReader(".properties");
-			theProperties.load(reader);
-			theProperties.list(System.out);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    Preferences thePreferences =  Preferences.userNodeForPackage(SBTabController.class);
 		final FileChooser fileChooser = new FileChooser();
 		String filePath = "";
 		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML Files", "*.xml"),
 				new ExtensionFilter("GZip Files", "*.gz"));
 		fileChooser.setTitle("Choose SBML or XML File.");
-		fileChooser.setInitialDirectory(new File(theProperties.getProperty("FilePath")));
+		String lastOutputDir = thePreferences.get("last_output_dir", "user.home");
+			fileChooser.setInitialDirectory( new File(lastOutputDir));
 		File file = fileChooser.showOpenDialog(null);
 		if (file != null) {
 			filePath = file.getAbsolutePath();
+			if (thePreferences.get("last_output_dir", "") == "") {
+				controller.setPreferences(filePath);
+			}
 			return filePath;
 		}
 		return null;
 	}
+  private void handleDocumentation() {
+    String theDocumentationName = "Documentation.html";
+    URL url = this.getClass().getResource(theDocumentationName);
+    Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+    Stage stage = new Stage();
+    WebView browser = new WebView();
+    WebEngine webEngine = browser.getEngine();
+    webEngine.load(url.toString());
+
+    StackPane root = new StackPane();
+    root.getChildren().add(browser);
+
+    Scene scene = new Scene(root);
+
+    stage.setTitle("SBTabEditor Documentation");
+    stage.setScene(scene);
+    stage.setWidth(0.4*primaryScreenBounds.getWidth());
+    stage.setHeight(0.4*primaryScreenBounds.getHeight());
+    stage.show();
+  }
 }
