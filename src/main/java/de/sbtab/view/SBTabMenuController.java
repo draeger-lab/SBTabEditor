@@ -242,6 +242,9 @@ public class SBTabMenuController implements Initializable {
 			alert.setTitle("Exception Dialog");
 			alert.setHeaderText("You have " + errors + "Errors in your Document.");
 			alert.setContentText("List of all Errors");
+			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+			alert.setGraphic(new ImageView(this.getClass().getResource("DisaproveIcon_64.png").toString()));
 
 			Exception ex = new FileNotFoundException("Error");
 
