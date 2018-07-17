@@ -10,14 +10,11 @@ import org.sbml.jsbml.util.ResourceManager;
 
 import de.sbtab.controller.SBTabController;
 import de.sbtab.services.SBTabTableProducer;
-import de.sbtab.services.TableType;
+import de.sbtab.utils.SBTabTableHandler;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -31,6 +28,7 @@ public class SBTabMainView extends Application {
 	private BorderPane root = new BorderPane();
 	private SBTabTableProducer tableProducer;
 	private ResourceBundle bundle = ResourceManager.getBundle("de.sbtab.view.SBTabTreeElementNames");
+	private SBTabTableHandler tableHandler;
 	private static final String THE_PROJECT_NAME = "TabMod";
 	private static final String THE_VERSION = "1.1";
 
@@ -96,23 +94,10 @@ public class SBTabMainView extends Application {
 		if (doc != null) {
 			tableProducer = new SBTabTableProducer(doc);
 			assignStatusBar("Ready.", 0D);
-
-			TabPane tabPane = new TabPane();
-			root.setCenter(tabPane);
-			
-			Tab tab = new Tab();
-			tab.setText("Reaction");
-			tab.setContent(tableProducer.getTableView(TableType.REACTION));
-			tabPane.getTabs().add(tab);
-			
-			Tab tab2 = new Tab();
-			tab2.setText("Compartments");
-			tab2.setContent(tableProducer.getTableView(TableType.COMPARTEMENT));
-			tabPane.getTabs().add(tab2);
-				
 			try {
 				treeLoader.setLocation(getClass().getResource("SBTabTree.fxml"));
-				treeLoader.setController(new SBTabTreeController(controller));
+				tableHandler = new SBTabTableHandler(tableProducer, root);
+				treeLoader.setController(new SBTabTreeController(controller, tableHandler));
 				treeLoader.setResources(bundle);
 				root.setLeft(treeLoader.load());
 			} catch (IOException e) {
