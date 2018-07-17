@@ -1,4 +1,4 @@
-# SBTabEditor<sup>0.1.3</sup>
+# SBTabEditor<sup>0.1.4</sup>
 [![License (MIT)](https://img.shields.io/badge/license-MIT-blue.svg?style=plastic)](http://opensource.org/licenses/MIT)
 <img align="right" src="src/main/resources/de/sbtab/view/Icon_256.png"/>
 
