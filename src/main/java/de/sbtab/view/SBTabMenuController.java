@@ -188,16 +188,31 @@ public class SBTabMenuController implements Initializable {
 		}
 	}
 	private void startNewWindow(){
-		SBMLDocument newDoc = controller.read(chooseFile());
-		Stage newStage = new Stage();
+		String filePath = chooseFile();
 		SBTabMainView newGUI = new SBTabMainView();
-		newGUI.setDoc(newDoc);
-		try {
-			newGUI.start(newStage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+		Task<Void> task = new Task<Void>() {
+		    @Override 
+			public Void call() {
+				if (filePath != null) {
+					newGUI.setDoc(controller.read(filePath));
+				}
+				return null;
+			}
+		    @Override 
+		    public void succeeded() {
+		    	super.succeeded();
+		    	if (filePath != null) {
+		    		Stage newStage = new Stage();
+		    		try {
+		    			newGUI.start(newStage);
+		    		} catch (Exception e) {
+		    			e.printStackTrace();
+		    		}
+				}
+		    }};
+		Thread thread = new Thread(task);
+		thread.setDaemon(true);
+		thread.start();		
 	}
 
 	private void lockMenu(boolean bool) {
@@ -244,7 +259,7 @@ public class SBTabMenuController implements Initializable {
 			alert.setContentText("List of all Errors");
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-			alert.setGraphic(new ImageView(this.getClass().getResource("DisaproveIcon_64.png").toString()));
+			alert.setGraphic(new ImageView(this.getClass().getResource("DisapproveIcon_64.png").toString()));
 
 			Exception ex = new FileNotFoundException("Error");
 
@@ -340,8 +355,7 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doDocumentation(ActionEvent event) throws IOException, URISyntaxException {
-		Desktop d = Desktop.getDesktop();
-		d.browse(new URI("http://www.google.com"));
+		handleDocumentation();
 	}
 
 	@FXML
@@ -519,6 +533,7 @@ public class SBTabMenuController implements Initializable {
     Scene scene = new Scene(root);
 
     stage.setTitle("SBTabEditor Documentation");
+    stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
     stage.setScene(scene);
     stage.setWidth(0.4*primaryScreenBounds.getWidth());
     stage.setHeight(0.4*primaryScreenBounds.getHeight());
