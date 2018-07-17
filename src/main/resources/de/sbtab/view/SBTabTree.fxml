@@ -16,7 +16,7 @@
          <opaqueInsets>
             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
          </opaqueInsets></TextField>
-         <Button fx:id="expandButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#doExpandTree" text="Expand Tree" />
+         <Button fx:id="expandButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#doExpandTree" prefHeight="25.0" prefWidth="243.0" text="Expand Tree" textAlignment="CENTER" />
 		<TreeView fx:id="treeView" prefHeight="419.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
