@@ -23,14 +23,29 @@ public class SBTabTabsComposer {
 	/**
 	 * TODO: should not generate already generated tabs; 
 	 * 		 focus on some tab should be changed when generated
-	 * Generates a tab wit some name
+	 * Generates a tab with some name
 	 * @param name text to be shown on tab 
 	 * @node content to show
 	 **/
 	public void generateTab(Node node, String name) {
-		Tab tab = new Tab();
-		tab.setText(name);
-		tab.setContent(node);
-		tabPane.getTabs().add(tab);
+		if (isTabExists(name)) {
+			// change focus on this tab
+		} else {
+			Tab tab = new Tab();
+			tab.setText(name);
+			tab.setContent(node);
+			tabPane.getTabs().add(tab);
+			// change focus on this tab
+		}
+	}
+	
+	/**
+	 * Used to indicate if tab with this name already exists
+	 * @param name string to compare
+	 * 
+	 * */
+	private boolean isTabExists(String name) {
+		return tabPane.getTabs().stream()
+				.anyMatch(elem -> elem.textProperty().get().equalsIgnoreCase(name));
 	}
 }
