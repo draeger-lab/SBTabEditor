@@ -38,6 +38,9 @@ public class SBTabTableProducer {
 			case SPECIES:
 				tablePull.put(TableType.SPECIES, new SBTabSpeciesTable(doc).makeTableView());
 				return tablePull.get(type);
+			case UNITDEFINITIONS:
+				tablePull.put(TableType.UNITDEFINITIONS, new SBTabUnitDefinitionTable(doc).makeTableView());
+				return tablePull.get(type);
 			// TODO: add cases for another table factories
 			default:
 				break;

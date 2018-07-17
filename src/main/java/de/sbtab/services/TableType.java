@@ -8,5 +8,6 @@ public enum TableType {
 	REACTIONS,
 	SPECIES,
 	COMPARTMENTS,
+	UNITDEFINITIONS,
 	//
 }
