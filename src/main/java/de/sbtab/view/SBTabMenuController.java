@@ -2,12 +2,16 @@ package de.sbtab.view;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
+import java.awt.Desktop;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.sbml.jsbml.SBMLDocument;
 
@@ -332,12 +336,15 @@ public class SBTabMenuController implements Initializable {
 	// Help menu action methods:
 
 	@FXML
-	void doDocumentation(ActionEvent event) {
-	  handleDocumentation();
+	void doDocumentation(ActionEvent event) throws IOException, URISyntaxException {
+		Desktop d = Desktop.getDesktop();
+		d.browse(new URI("http://www.google.com"));
 	}
 
 	@FXML
-	void doWebSearch(ActionEvent event) {
+	void doWebSearch(ActionEvent event) throws IOException, URISyntaxException {
+		Desktop d = Desktop.getDesktop();
+		d.browse(new URI("http://www.google.com"));
 	}
 
 	// Handler methods:
