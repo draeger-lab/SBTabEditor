@@ -121,21 +121,21 @@ public class SBTabMainView extends Application {
 			tableProducer = new SBTabTableProducer(doc);
 			assignStatusBar("Ready.", 0D);
 			try {
+				treeLoader = new FXMLLoader();
 				treeLoader.setLocation(getClass().getResource("SBTabTree.fxml"));
 				tableHandler = new SBTabTableHandler(tableProducer, root);
 				treeLoader.setController(new SBTabTreeController(controller, tableHandler));
 				treeLoader.setResources(bundle);
 				root.setLeft(treeLoader.load());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
 
 	public void clearView(String message) {
-		root.setCenter(null);
 		root.setLeft(null);
+		root.setCenter(null);
 		assignStatusBar(message, 0D);
 	}
 
