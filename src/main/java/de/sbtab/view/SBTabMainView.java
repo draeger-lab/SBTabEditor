@@ -46,16 +46,23 @@ public class SBTabMainView extends Application {
 	public void start(Stage stage) throws Exception {
 		if (isDocumentLoaded()) {
 			setViewOnFile();
-		} else {
+		} 
+		else {	
 			List<String> Parameters = this.getParameters().getRaw();
+			
 			if (!Parameters.isEmpty()) {
 				doc = controller.read(Parameters.get(0));
-			}
-			if (isDocumentLoaded()) {
+				
+			    if (isDocumentLoaded()) {
 				setViewOnFile();
-			} else {
+			    }
+			    else {
 				System.out.println("invalid command, please enter a path to a valid .xml or .gz file next time!");
 				setViewDefault();
+			    }
+			}
+			else {
+				setViewDefault();	
 			}
 		}
 
