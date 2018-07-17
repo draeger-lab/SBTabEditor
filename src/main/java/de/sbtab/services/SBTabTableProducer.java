@@ -32,8 +32,8 @@ public class SBTabTableProducer {
 			case REACTIONS:
 				tablePull.put(TableType.REACTIONS, new SBTabReactionTable(doc).makeTableView());
 				return tablePull.get(type);
-			case COMPARTEMENTS:
-				tablePull.put(TableType.COMPARTEMENTS, new SBTabCompartmentTable(doc).makeTableView());
+			case COMPARTMENTS:
+				tablePull.put(TableType.COMPARTMENTS, new SBTabCompartmentTable(doc).makeTableView());
 				return tablePull.get(type);
 			case SPECIES:
 				tablePull.put(TableType.SPECIES, new SBTabSpeciesTable(doc).makeTableView());

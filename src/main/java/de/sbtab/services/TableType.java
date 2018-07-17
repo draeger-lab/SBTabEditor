@@ -7,6 +7,6 @@ public enum TableType {
 	// Should be discussed which do we need
 	REACTIONS,
 	SPECIES,
-	COMPARTEMENTS,
+	COMPARTMENTS,
 	//
 }
