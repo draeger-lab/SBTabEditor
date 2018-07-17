@@ -3,6 +3,7 @@ package de.sbtab.view;
 import java.io.IOException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 import org.controlsfx.control.StatusBar;
 import org.sbml.jsbml.SBMLDocument;
@@ -18,9 +19,17 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class SBTabMainView extends Application {
-
+	
+	private static final double DEFAULT_WIDTH = 800;
+	private static final double DEFAULT_HEIGHT = 600;
+	private static final String WINDOW_WIDTH = "Window_Width";
+	private static final String WINDOW_HEIGHT = "Window_Height";
+	private static final String THE_PROJECT_NAME = "TabMod";
+	private static final String THE_VERSION = "1.4";
+	
 	private SBMLDocument doc;
 	private SBTabController controller = new SBTabController();
 	private FXMLLoader menuLoader = new FXMLLoader();
@@ -29,8 +38,6 @@ public class SBTabMainView extends Application {
 	private SBTabTableProducer tableProducer;
 	private ResourceBundle bundle = ResourceManager.getBundle("de.sbtab.view.SBTabTreeElementNames");
 	private SBTabTableHandler tableHandler;
-	private static final String THE_PROJECT_NAME = "TabMod";
-	private static final String THE_VERSION = "1.1";
 
 	public SBTabMainView() {
 	}
@@ -52,7 +59,7 @@ public class SBTabMainView extends Application {
 			}
 		}
 
-		Scene scene = new Scene(root, 640, 480);
+		Scene scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
 		// Add icons from resources to the Icon-List of this stage.
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_32.png")));
@@ -64,7 +71,19 @@ public class SBTabMainView extends Application {
 		stage.setScene(scene);
 		stage.sizeToScene();
 		stage.show();
+		saveWindowSize(stage);
+	}
 
+	private void saveWindowSize(Stage stage) {
+		Preferences preferences = Preferences.userNodeForPackage(SBTabController.class);
+        double width = preferences.getDouble(WINDOW_WIDTH, DEFAULT_WIDTH);
+        double height = preferences.getDouble(WINDOW_HEIGHT, DEFAULT_HEIGHT);
+        stage.setWidth(width);
+        stage.setHeight(height);
+		stage.setOnCloseRequest((final WindowEvent event) -> {
+            preferences.putDouble(WINDOW_WIDTH, stage.getWidth());
+            preferences.putDouble(WINDOW_HEIGHT, stage.getHeight());
+        });
 	}
 
 	public void setViewOnFile() throws Exception {
