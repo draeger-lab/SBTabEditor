@@ -142,6 +142,12 @@ public class SBTabTreeController implements Initializable {
 						rootAsItem.getChildren().add(nodeAsItem);
 						tree(node, document, nodeAsItem);
 					}
+					if (rootAsItem.toString().equals("TreeItem [ value: Unit definitions ]")){
+						TreeItem<String> nodeAsItem = new TreeItem<String>(node.toString());
+						rootAsItem.setExpanded(expanded);
+						rootAsItem.getChildren().add(nodeAsItem);
+						tree(node, document, nodeAsItem);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -167,33 +173,37 @@ public class SBTabTreeController implements Initializable {
 				
 				// check if for example name= is specified and split String where name is
 				if (name.contains("name=\"")){
-					String names2[] = name.split("name=\"");
-					String names3[] = names2[1].split("\"");
-					treeElementName += " " + names3[0];
+					treeElementName += cutString("name=\"", name);
 				} else {
 					if (name.contains("id=\"")){
-						String names2[] = name.split("id=\"");
-						String names3[] = names2[1].split("\"");
-						treeElementName += " " + names3[0];
+						treeElementName += cutString("id=\"", name);
 					} else {
 						if (name.contains("idRef=\"")){
-							String names2[] = name.split("Ref=\"");
-							String names3[] = names2[1].split("\"");
-							treeElementName += " " + names3[0];
+							treeElementName += cutString("idRef=\"", name);
 						} else {
 							if (name.contains("species=\"")){
-								String names2[] = name.split("species=\"");
-								String names3[] = names2[1].split("\"");
-								treeElementName += " " + names3[0];
+								treeElementName += cutString("species=\"", name);
 							}
 						}
 					} 
 				} 		
-			} else if(name.contains("Millimoles")){
-				treeElementName = name;
-			}
+			} 
 		}return treeElementName;
 
+	}
+	
+	/**
+	 * cuts name at position and "
+	 * 
+	 * @param position
+	 * @param name
+	 * @return rightName
+	 */
+	private String cutString(String position, String name){
+		String firstCut[] = name.split(position);
+		String secondCut[] = firstCut[1].split("\"");
+		String rightName = " " + secondCut[0];
+		return rightName;
 	}
 
 	/**
