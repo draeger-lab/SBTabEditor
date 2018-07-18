@@ -107,7 +107,7 @@ public class SBTabTreeController implements Initializable {
 	public static <T extends Enum<T>> T getEnumFromString(Class<T> c, String string) {
 	    if( c != null && string != null ) {
 	        try {
-	            return Enum.valueOf(c, string.trim().toUpperCase());
+	            return Enum.valueOf(c, string.trim().replaceAll(" ", "_").toUpperCase());
 	        } catch(IllegalArgumentException ex) {
 	        	//
 	        }
