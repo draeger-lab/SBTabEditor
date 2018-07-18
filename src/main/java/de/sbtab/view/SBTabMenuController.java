@@ -240,7 +240,7 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doValidate(ActionEvent event) {
-		//boolean valid = SBTabController.validate(doc);// TODO: Implement validate
+		// TODO: Implement validate
 		int errors = controller.numErrors(mainView.getDoc());
 		if (errors == 0) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -261,17 +261,9 @@ public class SBTabMenuController implements Initializable {
 			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
 			alert.setGraphic(new ImageView(this.getClass().getResource("DisapproveIcon_64.png").toString()));
 
-			Exception ex = new FileNotFoundException("Error");
-
-			// Create expandable Exception.
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			ex.printStackTrace(pw);
-			String exceptionText = sw.toString();
-
 			Label label = new Label("The exception stacktrace was:");
 
-			TextArea textArea = new TextArea(exceptionText);
+			TextArea textArea = new TextArea(controller.stringValidator(mainView.getDoc()));
 			textArea.setEditable(false);
 
 			textArea.setMaxWidth(Double.MAX_VALUE);

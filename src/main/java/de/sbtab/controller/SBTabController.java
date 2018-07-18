@@ -3,17 +3,18 @@ package de.sbtab.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Objects;
+import java.util.prefs.Preferences;
 import java.util.zip.GZIPInputStream;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.sbml.jsbml.SBMLDocument;
+import org.sbml.jsbml.SBMLError;
 import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.TidySBMLWriter;
 
 import javafx.concurrent.Task;
-
-import java.util.prefs.Preferences;
 
 public class SBTabController {
 
@@ -116,19 +117,32 @@ public class SBTabController {
 	 * 
 	 * @param doc
 	 *            is the input SBML-File
-	 * @return boolean true for valid Document else false plus Logger errors
+	 * @return a String of Errors
 	 */
-	public boolean validate(SBMLDocument doc) {
+	public static String stringValidator(SBMLDocument doc) {
 		// the number of Errors of a SBMLFile
-		int numErrors = doc.checkConsistencyOffline();
+		int numErrors = doc.checkConsistency();
+		String s = "";
 		if (numErrors == 0) {
-			return true;
+			return null;
 		} else {
 			// get each error and show it
 			for (int i = 0; i < numErrors; i++) {
-				LOGGER.error(doc.getError(i));
+				SBMLError e = doc.getError(i);
+				Level l;
+				if(e.isError()) {
+					l = Level.ERROR;
+				}else if(e.isFatal()) {
+					l = Level.FATAL;
+				}else if(e.isWarning()) {
+					l = Level.WARN;
+					s += " WARNING: ";
+				} else {
+					l = Level.INFO;
+				}
+				s += e.getMessage().toString();
 			}
-			return false;
+			return s;
 		}
 	}
 
@@ -139,19 +153,7 @@ public class SBTabController {
 	 * @return Number of Errors
 	 */
 	public int numErrors(SBMLDocument doc) {
-		return doc.checkConsistencyOffline();
-	}
-
-	/**
-	 * Testmethod to get a String-Type Error Code
-	 * 
-	 * @param doc
-	 * @return String-Error
-	 */
-	public String errorToString(SBMLDocument doc) {
-		String StringError = null;
-		StringError = doc.getError(0).toString();
-		return StringError;
+		return doc.checkConsistency();
 	}
 
 	/**
