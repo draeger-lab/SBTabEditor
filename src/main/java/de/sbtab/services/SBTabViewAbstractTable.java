@@ -14,9 +14,14 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.WritableValue;
 import javafx.event.EventHandler;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.input.*;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 import javafx.util.converter.DefaultStringConverter;
 
@@ -58,6 +63,38 @@ public abstract class SBTabViewAbstractTable {
 			}
 		};
 		col.setOnEditCommit(x);
+		
+		//NODES
+		TextField field = new TextField("Example");
+		
+		Text txtNode = new Text("Example");
+		txtNode.setX(80);
+		txtNode.setY(140);
+		
+		//Context Menu
+		ContextMenu context = new ContextMenu();
+		
+		//Menu Items
+		MenuItem item1 = new MenuItem("add column");
+		MenuItem item2 = new MenuItem("delete column");
+		MenuItem item3 = new MenuItem("show column");
+		MenuItem item4 = new MenuItem("hide column");
+		
+		//add Item to Context Menu
+		context.getItems().addAll(item1, item2, item3, item4);
+		
+		//Set Context Menu to Control
+		col.setContextMenu(context);
+		
+		col.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent t) {
+				if(t.getButton() == MouseButton.SECONDARY) {
+					context.show(txtNode, t.getScreenX(), t.getScreenY());
+					
+				}
+			}
+		});
 
 		return col;
 	}
