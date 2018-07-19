@@ -35,6 +35,6 @@ public class SBTabTableHandler {
 	 * Convert string to low case and capitalize it. Example: "REACTION" -> "Reaction"
 	 * */
 	private String capitalizeString(TableType type) {
-		return type.toString().substring(0,1).toUpperCase() + type.toString().substring(1).toLowerCase();
+		return (type.toString().substring(0,1).toUpperCase() + type.toString().substring(1).toLowerCase()).replaceAll("_", " ");
 	}
 }
