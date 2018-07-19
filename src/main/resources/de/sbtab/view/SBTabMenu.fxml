@@ -19,7 +19,7 @@
                 <MenuItem id="NewItem" accelerator="Shortcut+N" mnemonicParsing="true" onAction="#doNew" text="_New" />
                 <MenuItem fx:id="OpenItem" accelerator="Shortcut+O" mnemonicParsing="true" onAction="#doOpen" text="_Open" />
                 <MenuItem fx:id="SaveItem" accelerator="Shortcut+S" mnemonicParsing="true" onAction="#doSave" text="_Save" />
-                <MenuItem fx:id="SaveAsItem" mnemonicParsing="true" onAction="#doSave" text="_Save as" />
+                <MenuItem fx:id="SaveAsItem" mnemonicParsing="true" onAction="#doSaveAs" text="_Save as" />
                 <MenuItem fx:id="ImportItem" mnemonicParsing="true" onAction="#doImport" text="_Import" />
                 <MenuItem fx:id="ExportItem" mnemonicParsing="true" onAction="#doExport" text="_Export" /> 
                 <SeparatorMenuItem />

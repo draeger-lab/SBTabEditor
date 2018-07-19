@@ -145,7 +145,11 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doNew(ActionEvent event) {
-		handleNew();
+		if(!mainView.isDocumentLoaded()) {
+			handleNew();
+		} else {
+			showOnDoubleOpenDialog(true);
+		}
 	}
 
 	@FXML
@@ -153,11 +157,11 @@ public class SBTabMenuController implements Initializable {
 		if(!mainView.isDocumentLoaded()) {
 			handleOpen();
 		} else {
-			showOnDoubleOpenDialog();
+			showOnDoubleOpenDialog(false);
 		}
 	}
 
-	private void showOnDoubleOpenDialog() {
+	private void showOnDoubleOpenDialog(boolean newClicked) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
@@ -177,19 +181,28 @@ public class SBTabMenuController implements Initializable {
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeNew) {
-			startNewWindow();
-		
+			if (newClicked){
+				startNewWindowNew();
+			}
+			else{
+			    startNewWindowOpen();
+			}
 		}
 		if (result.get() == buttonTypeClose) {
 			handleClose();
 			mainView.clearView("No file specified.");
 			lockMenu(true);
+			if (newClicked){
+			handleNew();
+			}
+			else{
 			handleOpen();
+			}
 		}
 		else {
 		}
 	}
-	private void startNewWindow(){
+	private void startNewWindowOpen(){
 		String filePath = chooseFile();
 		SBTabMainView newGUI = new SBTabMainView();
 		Task<Void> task = new Task<Void>() {
@@ -212,6 +225,31 @@ public class SBTabMenuController implements Initializable {
 		    		}
 				}
 		    }};
+		Thread thread = new Thread(task);
+		thread.setDaemon(true);
+		thread.start();		
+	}
+	
+	private void startNewWindowNew(){
+		SBTabMainView newGUI = new SBTabMainView();
+		Task<Void> task = new Task<Void>() {
+		    @Override 
+			public Void call() {
+		    	SBMLDocument newDoc = new SBMLDocument(3, 1);
+				newGUI.setDoc(newDoc);
+				return null;
+			}
+		    @Override 
+		    public void succeeded() {
+		    	super.succeeded();
+		    		Stage newStage = new Stage();
+		    		try {
+		    			newGUI.start(newStage);
+		    		} catch (Exception e) {
+		    			e.printStackTrace();
+		    		}
+				}
+		    };
 		Thread thread = new Thread(task);
 		thread.setDaemon(true);
 		thread.start();		
