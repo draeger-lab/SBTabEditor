@@ -353,7 +353,7 @@ public class SBTabMenuController implements Initializable {
 	@FXML
 	void doWebSearch(ActionEvent event) throws IOException, URISyntaxException {
 		Desktop d = Desktop.getDesktop();
-		d.browse(new URI("http://www.google.com"));
+		d.browse(new URI("http://bigg.ucsd.edu/"));
 	}
 
 	// Handler methods:
