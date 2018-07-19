@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -573,8 +574,19 @@ public class SBTabMenuController implements Initializable {
 		return null;
 	}
   private void handleDocumentation() {
-    String theDocumentationName = "Documentation.html";
-    URL url = this.getClass().getResource(theDocumentationName);
+    URL url;
+    try
+    {
+      url = new URL("https://github.com/draeger-lab/SBTabEditor/wiki");
+      URLConnection connection = url.openConnection();
+      connection.connect();
+      System.out.println("Internet Connected");
+    }catch (Exception e){
+      System.out.println("Sorry, No Internet Connection");
+      String theDocumentationName = "Documentation.html";
+      url = this.getClass().getResource(theDocumentationName);
+    }
+
     Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
     Stage stage = new Stage();
     WebView browser = new WebView();
@@ -592,5 +604,6 @@ public class SBTabMenuController implements Initializable {
     stage.setWidth(0.4*primaryScreenBounds.getWidth());
     stage.setHeight(0.4*primaryScreenBounds.getHeight());
     stage.show();
+  }
   }
 }
