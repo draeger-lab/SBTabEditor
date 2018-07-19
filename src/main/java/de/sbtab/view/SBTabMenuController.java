@@ -45,6 +45,7 @@ public class SBTabMenuController implements Initializable {
 	private SBTabMainView mainView;
 	private SBTabController controller;
 	private boolean unsavedChanges;
+	private boolean newFile;
 	
 	public SBTabMenuController() {
 		//
@@ -79,6 +80,9 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	private MenuItem SaveItem;
+	
+	@FXML
+	private MenuItem SaveAsItem;
 
 	@FXML
 	private MenuItem QuitItem;
@@ -94,8 +98,6 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	private MenuItem ValidateItem;
-	
-	//TODO: add closeItem and referring methods that close the file but not the stage and blocks the menu again.
 
 	// edit MenuItems:
 	@FXML
@@ -227,6 +229,11 @@ public class SBTabMenuController implements Initializable {
 	@FXML
 	void doSave(ActionEvent event) {
 		handleSave();
+	}
+	
+	@FXML
+	void doSaveAs(ActionEvent event) {
+		handleSaveAs();
 	}
 
 	@FXML
@@ -363,14 +370,25 @@ public class SBTabMenuController implements Initializable {
 			@Override
 			public Void call() {
 				try {
-					System.out.println("new");
-					// TODO new
+					SBMLDocument newDoc = new SBMLDocument(3, 1);
+					mainView.setDoc(newDoc);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
 				return null;
 			}
+		    @Override
+		    protected void running() {
+		    	super.running();
+		    	mainView.assignStatusBar("Creating a new .SBML-file", -1D);
+		    }
+		    @Override 
+		    public void succeeded() {
+		    	super.succeeded();
+					lockMenu(false);
+					mainView.reInit();	
+					newFile=true;
+		    }
 		};
 		Thread th = new Thread(task);
 		th.setDaemon(true);
@@ -408,12 +426,17 @@ public class SBTabMenuController implements Initializable {
 	}
 
 	private void handleSave() {
-		SBMLDocument doc = controller.getDoc();
-		File filePath = new File(controller.getFilePath());
-		String theProjectName = mainView.getTheProjectName();
-		String theVersion = mainView.getTheVersion();
-		controller.save(doc, filePath, theProjectName, theVersion);
-		unsavedChanges=true;
+		if (!newFile) {
+			SBMLDocument doc = controller.getDoc();
+			File filePath = new File(controller.getFilePath());
+			String theProjectName = mainView.getTheProjectName();
+			String theVersion = mainView.getTheVersion();
+			controller.save(doc, filePath, theProjectName, theVersion);
+			unsavedChanges=false;
+		}
+		else{
+			handleSaveAs();			
+		}
 	}
 	
 	private void handleQuit() {
@@ -485,9 +508,10 @@ public class SBTabMenuController implements Initializable {
 			lockMenu(true);
 		}
 	}
+	//TODO:Implement SaveAs
+	private void handleSaveAs(){
+	}
 	
-	
-
 	/*
 	 * Choose file from file dialog and get the file path.
 	 */
