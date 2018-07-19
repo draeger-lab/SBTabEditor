@@ -2,6 +2,8 @@ package de.sbtab.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Objects;
 import java.util.prefs.Preferences;
 import java.util.zip.GZIPInputStream;
@@ -174,5 +176,21 @@ public class SBTabController {
 
 		return theFileExtension;
 
+	}
+	
+	public URL getDocumentation(){
+	  URL url;
+    try
+    {
+      url = new URL("https://github.com/draeger-lab/SBTabEditor/wiki");
+      URLConnection connection = url.openConnection();
+      connection.connect();
+      System.out.println("Internet Connected");
+    }catch (Exception e){
+      System.out.println("Sorry, No Internet Connection");
+      String theDocumentationName = "Documentation.html";
+      url = this.getClass().getResource(theDocumentationName);
+    }
+    return url;
 	}
 }
