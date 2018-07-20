@@ -30,5 +30,6 @@ public enum TableType {
 	SPECIES,
 	COMPARTMENTS,
 	UNIT_DEFINITIONS,
+	PARAMETERS,
 	//
 }

@@ -41,6 +41,9 @@ public class SBTabTableProducer {
 			case UNIT_DEFINITIONS:
 				tablePull.put(TableType.UNIT_DEFINITIONS, new SBTabUnitDefinitionTable(doc).makeTableView());
 				return tablePull.get(type);
+			case PARAMETERS:
+				tablePull.put(TableType.PARAMETERS, new SBTabParameterTable(doc).makeTableView());
+				return tablePull.get(type);
 			// TODO: add cases for another table factories
 			default:
 				break;
