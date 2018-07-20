@@ -404,7 +404,7 @@ public class SBTabMenuController implements Initializable {
 		stage.setWidth(250);
 		Scene scene = new Scene(new Group());
 		
-		Label text = new Label("Click checkbox to show column.");
+		Label text = new Label("Select checkbox to show column.");
 		text.setPadding(new Insets(10));
 
 		VBox vBox = new VBox();
@@ -676,7 +676,7 @@ public class SBTabMenuController implements Initializable {
 	}
 	
 	private void handleChecked(){
-		String[] TableNames = {"REACTIONS", "SPECIES", "COMPARTMENTS", "UNIT_DEFINITIONS" };
+		String[] TableNames = {"REACTIONS", "SPECIES", "COMPARTMENTS", "UNIT_DEFINITIONS", "PARAMETERS" };
 
 		for (int k = 0; k < TableNames.length; k++) {
 			TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView

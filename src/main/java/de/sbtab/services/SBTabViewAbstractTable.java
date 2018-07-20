@@ -1,18 +1,14 @@
 package de.sbtab.services;
 
-import java.lang.reflect.Method;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.sbml.jsbml.SBase;
 
-import de.sbtab.containers.SBTabReactionWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.beans.value.WritableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
@@ -79,6 +75,12 @@ public abstract class SBTabViewAbstractTable {
 		MenuItem item2 = new MenuItem("delete column");
 		MenuItem item3 = new MenuItem("show column");
 		MenuItem item4 = new MenuItem("hide column");
+		
+		item4.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override public void handle(ActionEvent e) {
+		        col.setVisible(false);
+		    }
+		});
 		
 		//add Item to Context Menu
 		context.getItems().addAll(item1, item2, item3, item4);
