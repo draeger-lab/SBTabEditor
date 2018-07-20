@@ -23,7 +23,6 @@ public class SBTabUnitDefinitionWrapper implements SBTabElement {
 		// TODO: figure out what fields do we need to work with
 		unitDefinitionName = new SimpleStringProperty(unitDefinition.getName());		
 		unitDefinitionId = new SimpleStringProperty(unitDefinition.getId());
-		unitDefinitionSBOTerm = new SimpleStringProperty(unitDefinition.getSBOTermID());
 	}
 	
 
@@ -49,13 +48,5 @@ public class SBTabUnitDefinitionWrapper implements SBTabElement {
 
 	public void setUnitDefinitionId(StringProperty unitDefinitionId) {
 		this.unitDefinitionId = unitDefinitionId;
-	}
-
-	public StringProperty getUnitDefinitionSBOTerm() {
-		return unitDefinitionSBOTerm;
-	}
-
-	public void setUnitDefinitionSBOTerm(StringProperty unitDefinitionSBOTerm) {
-		this.unitDefinitionSBOTerm = unitDefinitionSBOTerm;
 	}
 }

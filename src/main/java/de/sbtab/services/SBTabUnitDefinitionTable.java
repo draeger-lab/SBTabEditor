@@ -49,7 +49,6 @@ public class SBTabUnitDefinitionTable extends SBTabViewAbstractTable implements 
 		// TODO: figure out what fields do we need to work with
 		tableView.getColumns().add(defineColumn("Name", SBTabUnitDefinitionWrapper::getUnitDefinitionName, SBTabUnitDefinitionWrapper::setUnitDefinitionName));	
 		tableView.getColumns().add(defineColumn("Id", SBTabUnitDefinitionWrapper::getUnitDefinitionId, SBTabUnitDefinitionWrapper::setUnitDefinitionId));	
-		tableView.getColumns().add(defineColumn("SBO Term", SBTabUnitDefinitionWrapper::getUnitDefinitionSBOTerm, SBTabUnitDefinitionWrapper::setUnitDefinitionSBOTerm));
 		tableView.getItems().setAll(data);
 		tableView.setEditable(true);
 
