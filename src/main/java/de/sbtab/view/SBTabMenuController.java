@@ -441,19 +441,7 @@ public class SBTabMenuController implements Initializable {
 		buttonOk.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				String[] TableNames = {"REACTIONS", "SPECIES", "COMPARTMENTS", "UNIT_DEFINITIONS" };
-
-				for (int k = 0; k < TableNames.length; k++) {
-					TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView
-							.getTableProducer().getTableView(Enum.valueOf(TableType.class, TableNames[k]));
-
-					for (int i = 0; i < checked.length; i++) {
-						int size = tableView.getColumns().size();
-						if (size > i) {
-							tableView.getColumns().get(i).setVisible(!checked[i]);
-						}
-					}
-				}
+				handleChecked();
 				stage.hide();
 			}
 		});
@@ -477,6 +465,10 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doShowHiddenColumns(ActionEvent event) {
+		for(int i = 0; i < checked.length; i++){
+			checked[i] = false;
+		}
+		handleChecked();
 	}
 	// Help menu action methods:
 
@@ -685,5 +677,21 @@ public class SBTabMenuController implements Initializable {
 		stage.setWidth(0.4 * primaryScreenBounds.getWidth());
 		stage.setHeight(0.4 * primaryScreenBounds.getHeight());
 		stage.show();
+	}
+	
+	private void handleChecked(){
+		String[] TableNames = {"REACTIONS", "SPECIES", "COMPARTMENTS", "UNIT_DEFINITIONS" };
+
+		for (int k = 0; k < TableNames.length; k++) {
+			TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView
+					.getTableProducer().getTableView(Enum.valueOf(TableType.class, TableNames[k]));
+
+			for (int i = 0; i < checked.length; i++) {
+				int size = tableView.getColumns().size();
+				if (size > i) {
+					tableView.getColumns().get(i).setVisible(!checked[i]);
+				}
+			}
+		}
 	}
 }
