@@ -16,27 +16,40 @@ import java.net.URISyntaxException;
 
 import org.sbml.jsbml.SBMLDocument;
 
+import de.sbtab.containers.SBTabReactionWrapper;
 import de.sbtab.controller.SBTabController;
+import de.sbtab.services.TableType;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.TextArea;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Screen;
@@ -47,11 +60,11 @@ public class SBTabMenuController implements Initializable {
 	private SBTabController controller;
 	private boolean unsavedChanges;
 	private boolean newFile;
-	
+
 	public SBTabMenuController() {
 		//
 	}
-	
+
 	public SBTabMenuController(SBTabMainView mainView, SBTabController controller) {
 		this.mainView = mainView;
 		this.controller = controller;
@@ -59,8 +72,8 @@ public class SBTabMenuController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		if (mainView.getDoc()==null){
-		lockMenu(true);
+		if (mainView.getDoc() == null) {
+			lockMenu(true);
 		}
 	}
 
@@ -81,7 +94,7 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	private MenuItem SaveItem;
-	
+
 	@FXML
 	private MenuItem SaveAsItem;
 
@@ -93,7 +106,7 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	private MenuItem ExportItem;
-	
+
 	@FXML
 	private MenuItem CloseItem;
 
@@ -146,7 +159,7 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doNew(ActionEvent event) {
-		if(!mainView.isDocumentLoaded()) {
+		if (!mainView.isDocumentLoaded()) {
 			handleNew();
 		} else {
 			showOnDoubleOpenDialog(true);
@@ -155,7 +168,7 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doOpen(ActionEvent event) {
-		if(!mainView.isDocumentLoaded()) {
+		if (!mainView.isDocumentLoaded()) {
 			handleOpen();
 		} else {
 			showOnDoubleOpenDialog(false);
@@ -168,92 +181,96 @@ public class SBTabMenuController implements Initializable {
 		stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
 		alert.setGraphic(new ImageView(this.getClass().getResource("AlertIcon_64.png").toString()));
 		alert.setTitle("Open another file");
-		alert.setHeaderText("To open another file a new Session of TabMod must be started");// TODO: Add appropriate
-																							// text/ Implement
-																							// abstract dialogs
+		alert.setHeaderText("To open another file a new Session of TabMod must be started");// TODO:
+																							// Add
+																							// appropriate
+																							// text/
+																							// Implement
+																							// abstract
+																							// dialogs
 		alert.setContentText("Do you want to start a new Session to open another file?");
 
 		ButtonType buttonTypeNew = new ButtonType("New session");
 		ButtonType buttonTypeClose = new ButtonType("close current file");
 		ButtonType buttonTypeCancel = new ButtonType("Cancel");
-		
 
-		alert.getButtonTypes().setAll(buttonTypeNew, buttonTypeClose ,buttonTypeCancel);
+		alert.getButtonTypes().setAll(buttonTypeNew, buttonTypeClose, buttonTypeCancel);
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeNew) {
-			if (newClicked){
+			if (newClicked) {
 				startNewWindowNew();
-			}
-			else{
-			    startNewWindowOpen();
+			} else {
+				startNewWindowOpen();
 			}
 		}
 		if (result.get() == buttonTypeClose) {
 			handleClose();
 			mainView.clearView("No file specified.");
 			lockMenu(true);
-			if (newClicked){
-			handleNew();
+			if (newClicked) {
+				handleNew();
+			} else {
+				handleOpen();
 			}
-			else{
-			handleOpen();
-			}
-		}
-		else {
+		} else {
 		}
 	}
-	private void startNewWindowOpen(){
+
+	private void startNewWindowOpen() {
 		String filePath = chooseFile();
 		SBTabMainView newGUI = new SBTabMainView();
 		Task<Void> task = new Task<Void>() {
-		    @Override 
+			@Override
 			public Void call() {
 				if (filePath != null) {
 					newGUI.setDoc(controller.read(filePath));
 				}
 				return null;
 			}
-		    @Override 
-		    public void succeeded() {
-		    	super.succeeded();
-		    	if (filePath != null) {
-		    		Stage newStage = new Stage();
-		    		try {
-		    			newGUI.start(newStage);
-		    		} catch (Exception e) {
-		    			e.printStackTrace();
-		    		}
+
+			@Override
+			public void succeeded() {
+				super.succeeded();
+				if (filePath != null) {
+					Stage newStage = new Stage();
+					try {
+						newGUI.start(newStage);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-		    }};
+			}
+		};
 		Thread thread = new Thread(task);
 		thread.setDaemon(true);
-		thread.start();		
+		thread.start();
 	}
-	
-	private void startNewWindowNew(){
+
+	private void startNewWindowNew() {
 		SBTabMainView newGUI = new SBTabMainView();
 		Task<Void> task = new Task<Void>() {
-		    @Override 
+			@Override
 			public Void call() {
-		    	SBMLDocument newDoc = new SBMLDocument(3, 1);
+				SBMLDocument newDoc = new SBMLDocument(3, 1);
 				newGUI.setDoc(newDoc);
 				return null;
 			}
-		    @Override 
-		    public void succeeded() {
-		    	super.succeeded();
-		    		Stage newStage = new Stage();
-		    		try {
-		    			newGUI.start(newStage);
-		    		} catch (Exception e) {
-		    			e.printStackTrace();
-		    		}
+
+			@Override
+			public void succeeded() {
+				super.succeeded();
+				Stage newStage = new Stage();
+				try {
+					newGUI.start(newStage);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-		    };
+			}
+		};
 		Thread thread = new Thread(task);
 		thread.setDaemon(true);
-		thread.start();		
+		thread.start();
 	}
 
 	private void lockMenu(boolean bool) {
@@ -269,7 +286,7 @@ public class SBTabMenuController implements Initializable {
 	void doSave(ActionEvent event) {
 		handleSave();
 	}
-	
+
 	@FXML
 	void doSaveAs(ActionEvent event) {
 		handleSaveAs();
@@ -334,13 +351,11 @@ public class SBTabMenuController implements Initializable {
 	void doQuit(ActionEvent event) {
 		handleQuit();
 	}
-	
-	
+
 	@FXML
 	void doClose(ActionEvent event) {
 		handleClose();
 	}
-	
 
 	// edit menu action methods
 	@FXML
@@ -382,8 +397,82 @@ public class SBTabMenuController implements Initializable {
 
 	}
 
+	private boolean[] checked = { false, false, false, false };
+
 	@FXML
 	void doHideColumns(ActionEvent event) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+		stage.setTitle("Hide columns");
+		stage.setWidth(250);
+		Scene scene = new Scene(new Group());
+		
+		Label text = new Label("Click checkbox to hide column.");
+		text.setPadding(new Insets(10));
+
+		VBox vBox = new VBox();
+		vBox.setSpacing(5);
+		vBox.setPadding(new Insets(10));
+
+		String[] checkBoxNames = { "Name", "Id", "SBOTerm", "Compartments" };
+		for (int i = 0; i < checkBoxNames.length; i++) {
+			CheckBox cb = new CheckBox(checkBoxNames[i]);
+			cb.setSelected(checked[i]);
+			final int x = i;
+			cb.selectedProperty().addListener(new ChangeListener<Boolean>() {
+				public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
+					checked[x] = new_val;
+				}
+			});
+			vBox.getChildren().add(cb);
+		}
+		
+		HBox hBox = new HBox(5);
+		hBox.setPadding(new Insets(10));
+
+		Button buttonOk = new Button("Hide columns");
+		buttonOk.setPrefWidth(110);
+		Button buttonCancel = new Button("Cancel");
+		buttonCancel.setPrefWidth(110);
+
+		hBox.getChildren().addAll(buttonOk, buttonCancel);
+		
+		buttonOk.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				String[] TableNames = {"REACTIONS", "SPECIES", "COMPARTMENTS", "UNIT_DEFINITIONS" };
+
+				for (int k = 0; k < TableNames.length; k++) {
+					TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView
+							.getTableProducer().getTableView(Enum.valueOf(TableType.class, TableNames[k]));
+
+					for (int i = 0; i < checked.length; i++) {
+						int size = tableView.getColumns().size();
+						if (size > i) {
+							tableView.getColumns().get(i).setVisible(!checked[i]);
+						}
+					}
+				}
+				stage.hide();
+			}
+		});
+		
+		buttonCancel.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				stage.hide();
+			}
+		});
+
+		BorderPane root = new BorderPane();
+		root.setTop(text);
+		root.setCenter(vBox);
+		root.setBottom(hBox);
+
+		((Group) scene.getRoot()).getChildren().addAll(root);
+		stage.setScene(scene);
+		stage.show();
 	}
 
 	@FXML
@@ -416,18 +505,20 @@ public class SBTabMenuController implements Initializable {
 				}
 				return null;
 			}
-		    @Override
-		    protected void running() {
-		    	super.running();
-		    	mainView.assignStatusBar("Creating a new .SBML-file", -1D);
-		    }
-		    @Override 
-		    public void succeeded() {
-		    	super.succeeded();
-					lockMenu(false);
-					mainView.reInit();	
-					newFile=true;
-		    }
+
+			@Override
+			protected void running() {
+				super.running();
+				mainView.assignStatusBar("Creating a new .SBML-file", -1D);
+			}
+
+			@Override
+			public void succeeded() {
+				super.succeeded();
+				lockMenu(false);
+				mainView.reInit();
+				newFile = true;
+			}
 		};
 		Thread th = new Thread(task);
 		th.setDaemon(true);
@@ -437,28 +528,31 @@ public class SBTabMenuController implements Initializable {
 	public void handleOpen() {
 		String filePath = chooseFile();
 		Task<Void> task = new Task<Void>() {
-		    @Override 
+			@Override
 			public Void call() {
 				if (filePath != null) {
 					mainView.setDoc(controller.read(filePath));
 				}
 				return null;
 			}
-		    @Override
-		    protected void running() {
-		    	if (filePath != null) {
-		    	super.running();
-		    	mainView.assignStatusBar("Loading: " + filePath, -1D);
-		    	}
-		    }
-		    @Override 
-		    public void succeeded() {
-		    	super.succeeded();
-		    	if (filePath != null) {
-					lockMenu(false);
-					mainView.reInit();				
+
+			@Override
+			protected void running() {
+				if (filePath != null) {
+					super.running();
+					mainView.assignStatusBar("Loading: " + filePath, -1D);
 				}
-		    }};
+			}
+
+			@Override
+			public void succeeded() {
+				super.succeeded();
+				if (filePath != null) {
+					lockMenu(false);
+					mainView.reInit();
+				}
+			}
+		};
 		Thread thread = new Thread(task);
 		thread.setDaemon(true);
 		thread.start();
@@ -471,13 +565,12 @@ public class SBTabMenuController implements Initializable {
 			String theProjectName = mainView.getTheProjectName();
 			String theVersion = mainView.getTheVersion();
 			controller.save(doc, filePath, theProjectName, theVersion);
-			unsavedChanges=false;
-		}
-		else{
-			handleSaveAs();			
+			unsavedChanges = false;
+		} else {
+			handleSaveAs();
 		}
 	}
-	
+
 	private void handleQuit() {
 		if (unsavedChanges) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -504,12 +597,11 @@ public class SBTabMenuController implements Initializable {
 				System.exit(0);
 			} else {
 			}
-		}
-		else {
-			System.exit(0);		
+		} else {
+			System.exit(0);
 		}
 	}
-	
+
 	private void handleClose() {
 		if (unsavedChanges) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -540,29 +632,29 @@ public class SBTabMenuController implements Initializable {
 				lockMenu(true);
 			} else {
 			}
-		}
-		else{
+		} else {
 			mainView.setDoc(null);
 			mainView.clearView("No file specified.");
 			lockMenu(true);
 		}
 	}
-	//TODO:Implement SaveAs
-	private void handleSaveAs(){
+
+	// TODO:Implement SaveAs
+	private void handleSaveAs() {
 	}
-	
+
 	/*
 	 * Choose file from file dialog and get the file path.
 	 */
 	private String chooseFile() {
-    Preferences thePreferences =  Preferences.userNodeForPackage(SBTabController.class);
+		Preferences thePreferences = Preferences.userNodeForPackage(SBTabController.class);
 		final FileChooser fileChooser = new FileChooser();
 		String filePath = "";
 		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML Files", "*.xml"),
 				new ExtensionFilter("GZip Files", "*.gz"));
 		fileChooser.setTitle("Choose SBML or XML File.");
 		String lastOutputDir = thePreferences.get("last_output_dir", System.getProperty("user.home"));
-			fileChooser.setInitialDirectory( new File(lastOutputDir));
+		fileChooser.setInitialDirectory(new File(lastOutputDir));
 		File file = fileChooser.showOpenDialog(null);
 		if (file != null) {
 			filePath = file.getAbsolutePath();
@@ -573,24 +665,25 @@ public class SBTabMenuController implements Initializable {
 		}
 		return null;
 	}
-  private void handleDocumentation() {
-    URL url = controller.getDocumentation();
-    Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-    Stage stage = new Stage();
-    WebView browser = new WebView();
-    WebEngine webEngine = browser.getEngine();
-    webEngine.load(url.toString());
 
-    StackPane root = new StackPane();
-    root.getChildren().add(browser);
+	private void handleDocumentation() {
+		URL url = controller.getDocumentation();
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		Stage stage = new Stage();
+		WebView browser = new WebView();
+		WebEngine webEngine = browser.getEngine();
+		webEngine.load(url.toString());
 
-    Scene scene = new Scene(root);
+		StackPane root = new StackPane();
+		root.getChildren().add(browser);
 
-    stage.setTitle("SBTabEditor Documentation");
-    stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-    stage.setScene(scene);
-    stage.setWidth(0.4*primaryScreenBounds.getWidth());
-    stage.setHeight(0.4*primaryScreenBounds.getHeight());
-    stage.show();
-  }
+		Scene scene = new Scene(root);
+
+		stage.setTitle("SBTabEditor Documentation");
+		stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+		stage.setScene(scene);
+		stage.setWidth(0.4 * primaryScreenBounds.getWidth());
+		stage.setHeight(0.4 * primaryScreenBounds.getHeight());
+		stage.show();
+	}
 }

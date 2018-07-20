@@ -155,6 +155,10 @@ public class SBTabMainView extends Application {
 	public SBMLDocument getDoc() {
 		return doc;
 	}
+	
+	public SBTabTableProducer getTableProducer(){
+		return tableProducer;
+	}
 
 	public void assignStatusBar(String message, Double progressState) {
 		StatusBar sb = new StatusBar();
