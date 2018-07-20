@@ -1,4 +1,4 @@
-package de.sbtab.main;
+package de.sbtab.component;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
