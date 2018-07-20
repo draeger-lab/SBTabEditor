@@ -1,12 +1,8 @@
 package de.sbtab.view;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -397,7 +393,7 @@ public class SBTabMenuController implements Initializable {
 
 	}
 
-	private boolean[] checked = { false, false, false, false };
+	private boolean[] checked = { true, true, true, true };
 
 	@FXML
 	void doHideColumns(ActionEvent event) {
@@ -408,7 +404,7 @@ public class SBTabMenuController implements Initializable {
 		stage.setWidth(250);
 		Scene scene = new Scene(new Group());
 		
-		Label text = new Label("Click checkbox to hide column.");
+		Label text = new Label("Click checkbox to show column.");
 		text.setPadding(new Insets(10));
 
 		VBox vBox = new VBox();
@@ -431,7 +427,7 @@ public class SBTabMenuController implements Initializable {
 		HBox hBox = new HBox(5);
 		hBox.setPadding(new Insets(10));
 
-		Button buttonOk = new Button("Hide columns");
+		Button buttonOk = new Button("Show columns");
 		buttonOk.setPrefWidth(110);
 		Button buttonCancel = new Button("Cancel");
 		buttonCancel.setPrefWidth(110);
@@ -466,7 +462,7 @@ public class SBTabMenuController implements Initializable {
 	@FXML
 	void doShowHiddenColumns(ActionEvent event) {
 		for(int i = 0; i < checked.length; i++){
-			checked[i] = false;
+			checked[i] = true;
 		}
 		handleChecked();
 	}
@@ -689,7 +685,7 @@ public class SBTabMenuController implements Initializable {
 			for (int i = 0; i < checked.length; i++) {
 				int size = tableView.getColumns().size();
 				if (size > i) {
-					tableView.getColumns().get(i).setVisible(!checked[i]);
+					tableView.getColumns().get(i).setVisible(checked[i]);
 				}
 			}
 		}
