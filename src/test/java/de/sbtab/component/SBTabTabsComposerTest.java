@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.sbtab.utils.SBTabTabsComposer;
-import javafx.embed.swing.JFXPanel;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 
@@ -16,10 +15,11 @@ class SBTabTabsComposerTest {
 	private static SBTabTabsComposer composer;
 	private static BorderPane node = new BorderPane();
 	
+	@SuppressWarnings("restriction")
 	@BeforeAll
 	static void setUp() {
 		// initiate JavaFxRuntime
-		final JFXPanel fxPanel = new JFXPanel();
+		com.sun.javafx.application.PlatformImpl.startup(()->{});
 		composer = new SBTabTabsComposer(node);
 	}
 
