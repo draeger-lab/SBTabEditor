@@ -38,7 +38,6 @@ public class SBTabMainView extends Application {
 	private SBTabTableProducer tableProducer;
 	private ResourceBundle bundle = ResourceManager.getBundle("de.sbtab.view.SBTabTreeElementNames");
 	private SBTabTableHandler tableHandler;
-	private String docFilePath = "";
 
 	public SBTabMainView() {
 	}
@@ -76,7 +75,7 @@ public class SBTabMainView extends Application {
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_256.png")));
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_48.ico")));
 
-		stage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + docFilePath);
+		stage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION);
 		stage.setScene(scene);
 		stage.sizeToScene();
 		stage.show();
@@ -158,14 +157,6 @@ public class SBTabMainView extends Application {
 		return doc;
 	}
 	
-	public String getDocFilePath() {
-		return docFilePath;
-	}
-	
-	public void setDocFilePath(String path) {
-		controller.setFilePath(path);
-	}
-	
 	public SBTabTableProducer getTableProducer(){
 		return tableProducer;
 	}
@@ -183,5 +174,9 @@ public class SBTabMainView extends Application {
 
 	public SBTabController getController() {
 		return controller;
+	}
+
+	public void setFilePath(String filePath) {
+		controller.setFilePath(filePath);	
 	}
 }

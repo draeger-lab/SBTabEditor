@@ -221,6 +221,7 @@ public class SBTabMenuController implements Initializable {
 			public Void call() {
 				if (filePath != null) {
 					newGUI.setDoc(controller.read(filePath));
+					newGUI.setFilePath(filePath);
 				}
 				return null;
 			}
@@ -276,6 +277,7 @@ public class SBTabMenuController implements Initializable {
 		ValidateItem.setDisable(bool);
 		ExportItem.setDisable(bool);
 		CloseItem.setDisable(bool);
+		SaveAsItem.setDisable(bool);
 	}
 
 	@FXML
@@ -538,7 +540,8 @@ public class SBTabMenuController implements Initializable {
 				if (filePath != null) {
 					lockMenu(false);
 					controller.setFilePath(filePath);
-					mainView.reInit();			
+					mainView.reInit();
+					newFile=false;
 				}
 			}
 		};
@@ -549,7 +552,7 @@ public class SBTabMenuController implements Initializable {
 
 	private void handleSave() {
 		if (!newFile) {
-			SBMLDocument doc = controller.getDoc();
+			SBMLDocument doc = mainView.getDoc();
 			File filePath = new File(controller.getFilePath());
 			String theProjectName = mainView.getTheProjectName();
 			String theVersion = mainView.getTheVersion();
@@ -631,8 +634,8 @@ public class SBTabMenuController implements Initializable {
 
 	private void handleSaveAs() {
 		String filePath = chooseSaveLocation();
-		mainView.setDocFilePath(filePath);
 		if (filePath!=null){
+		controller.setFilePath(filePath);
 		newFile=false;
 		handleSave();
 		}
@@ -641,7 +644,8 @@ public class SBTabMenuController implements Initializable {
 	private String chooseSaveLocation() {
 		Preferences thePreferences = Preferences.userNodeForPackage(SBTabController.class);
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Specify a file to save");   
+		fileChooser.setTitle("Specify a directory and a name to save as");
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Document", "*.xml"));
 		String filePath = "";
 		File file =fileChooser.showSaveDialog(null);
 		String lastOutputDir = thePreferences.get("last_output_dir", System.getProperty("user.home"));
