@@ -193,4 +193,8 @@ public class SBTabController {
     }
     return url;
 	}
+
+	public void setFilePath(String path) {
+		filePath = path;	
+	}
 }
