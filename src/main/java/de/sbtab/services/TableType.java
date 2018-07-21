@@ -18,7 +18,7 @@ package de.sbtab.services;
  * Why naming rules are important?
  * <p>
  * The {@link de.sbtab.utils.SBTabTabsComposer} creates new tabs based on the name of the jfx 
- * {@code TextLabel} of corresponding {@code TreeItem} in {@code TreeView}TreeView. The
+ * {@code TextLabel} of corresponding {@code TreeItem} in {@code TreeView}. The
  * name of the {@code Tab} is translated into the corresponding {@code TableType}, 
  * depending on that {@link de.sbtab.services.SBTabTableProducer} generates necessary 
  * {@code TableView} for displaying it in the {@code Tab}.

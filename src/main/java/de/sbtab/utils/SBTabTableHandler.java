@@ -5,7 +5,7 @@ import de.sbtab.services.TableType;
 import javafx.scene.layout.BorderPane;
 
 /**
- * Used to handle click events in <p>SBTabTreeController</p>
+ * Used to handle events in {@link de.sbtab.view.SBTabTreeController}
  * @author zakharc
  * 
  * */
