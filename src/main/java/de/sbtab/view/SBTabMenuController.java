@@ -537,7 +537,8 @@ public class SBTabMenuController implements Initializable {
 				super.succeeded();
 				if (filePath != null) {
 					lockMenu(false);
-					mainView.reInit();
+					controller.setFilePath(filePath);
+					mainView.reInit();			
 				}
 			}
 		};
@@ -627,8 +628,32 @@ public class SBTabMenuController implements Initializable {
 		}
 	}
 
-	// TODO:Implement SaveAs
+
 	private void handleSaveAs() {
+		String filePath = chooseSaveLocation();
+		mainView.setDocFilePath(filePath);
+		if (filePath!=null){
+		newFile=false;
+		handleSave();
+		}
+	}
+	
+	private String chooseSaveLocation() {
+		Preferences thePreferences = Preferences.userNodeForPackage(SBTabController.class);
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Specify a file to save");   
+		String filePath = "";
+		File file =fileChooser.showSaveDialog(null);
+		String lastOutputDir = thePreferences.get("last_output_dir", System.getProperty("user.home"));
+		fileChooser.setInitialDirectory(new File(lastOutputDir));
+		if (file != null) {
+			filePath = file.getAbsolutePath();
+			if (thePreferences.get("last_output_dir", "") == "") {
+				controller.setPreferences(filePath);
+			}
+			return filePath;
+		}
+		else {return null;}		
 	}
 
 	/*
