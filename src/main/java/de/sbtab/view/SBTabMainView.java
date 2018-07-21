@@ -75,7 +75,12 @@ public class SBTabMainView extends Application {
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_256.png")));
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_48.ico")));
 
-		stage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION);
+		if (isDocumentLoaded()) {
+		    stage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + doc.getName());
+		}
+		else {
+			stage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION);	
+		}
 		stage.setScene(scene);
 		stage.sizeToScene();
 		stage.show();
