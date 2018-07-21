@@ -7,7 +7,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 
 /**
- * Used to create and control tabs in jfx <p>Node</p>
+ * Used to create and control tabs in jfx {@code Node}
  * @author zakharc
  * 
  * */
@@ -22,11 +22,10 @@ public class SBTabTabsComposer {
 	}
 
 	/**
-	 * TODO: should not generate already generated tabs; 
-	 * 		 focus on some tab should be changed when generated
 	 * Generates a tab with some name
 	 * @param name text to be shown on tab 
 	 * @node content to show
+	 * 
 	 **/
 	public void generateTab(Node node, String name) {
 		if (isTabExists(name)) {
@@ -45,7 +44,7 @@ public class SBTabTabsComposer {
 	 * @param name string to compare
 	 * 
 	 * */
-	private boolean isTabExists(String name) {
+	public boolean isTabExists(String name) {
 		return tabPane.getTabs().stream()
 				.anyMatch(elem -> elem.textProperty().get().equalsIgnoreCase(name));
 	}
@@ -53,6 +52,7 @@ public class SBTabTabsComposer {
 	/**
 	 * Focus tab depending on the name of it
 	 * @param name name of a tab to focus
+	 * 
 	 * */
 	private void setFocusOnTab(String name) {
 		ObservableList<Tab> tabs = tabPane.getTabs();
@@ -61,5 +61,13 @@ public class SBTabTabsComposer {
 				tabPane.getSelectionModel().select(i);
 			}
 		}
+	}
+
+	/**
+	 * Returns state of table pull at this moment of time
+	 * @return the tabPane
+	 */
+	public TabPane getTabPane() {
+		return tabPane;
 	}
 }

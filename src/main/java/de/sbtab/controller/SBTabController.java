@@ -18,12 +18,16 @@ import org.sbml.jsbml.TidySBMLWriter;
 
 import javafx.concurrent.Task;
 
+/**
+ * Used to perform interactions on {@link SBase} objects. The controller receives the input,
+ * optionally validates it, passes the input to the model.
+ * 
+ * */
 public class SBTabController {
 
 	private static final transient Logger LOGGER = LogManager.getLogger(SBTabController.class);
 	private SBMLDocument doc;
 	private String filePath = null;
-	// declare my variable at the top of my Java class
 	private static Preferences prefs;
 
 	public String getFilePath() {
@@ -39,7 +43,7 @@ public class SBTabController {
 	}
 
 	/**
-	 * Set Preferences for the programm, at the moment only the file path is saved.
+	 * Set Preferences for the program, at the moment only the file path is saved.
 	 */
 	public void setPreferences(String filePath) {
 		// create a Preferences instance (somewhere later in the code)
