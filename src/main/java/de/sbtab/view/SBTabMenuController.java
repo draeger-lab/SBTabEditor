@@ -50,6 +50,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class SBTabMenuController implements Initializable {
 	private SBTabMainView mainView;
@@ -71,6 +72,11 @@ public class SBTabMenuController implements Initializable {
 		if (mainView.getDoc() == null) {
 			lockMenu(true);
 		}
+		//TODO: prevent closing of stage
+		mainView.getStage().setOnCloseRequest(event -> {		
+			event.consume();
+			handleClose();
+		});
 	}
 
 	// View and Edit Menu as objects:
@@ -250,6 +256,7 @@ public class SBTabMenuController implements Initializable {
 			@Override
 			public Void call() {
 				SBMLDocument newDoc = new SBMLDocument(3, 1);
+				newDoc.setName("new document");
 				newGUI.setDoc(newDoc);
 				return null;
 			}
@@ -296,7 +303,6 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doExport(ActionEvent event) {
-
 	}
 
 	@FXML
@@ -489,6 +495,7 @@ public class SBTabMenuController implements Initializable {
 			public Void call() {
 				try {
 					SBMLDocument newDoc = new SBMLDocument(3, 1);
+					newDoc.setName("new document");
 					mainView.setDoc(newDoc);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -506,6 +513,7 @@ public class SBTabMenuController implements Initializable {
 			public void succeeded() {
 				super.succeeded();
 				lockMenu(false);
+				mainView.updateTitle();
 				mainView.reInit();
 				newFile = true;
 			}
@@ -540,6 +548,7 @@ public class SBTabMenuController implements Initializable {
 				if (filePath != null) {
 					lockMenu(false);
 					controller.setFilePath(filePath);
+					mainView.updateTitle();
 					mainView.reInit();
 					newFile=false;
 				}
@@ -616,16 +625,20 @@ public class SBTabMenuController implements Initializable {
 
 				// TODO: implement save.
 				mainView.setDoc(null);
+				mainView.updateTitle();
 				mainView.clearView("No file specified.");
 				lockMenu(true);
 			} else if (result.get() == buttonTypeDontSave) {
 				mainView.setDoc(null);
+				mainView.updateTitle();
 				mainView.clearView("No file specified.");
 				lockMenu(true);
+			
 			} else {
 			}
 		} else {
 			mainView.setDoc(null);
+			mainView.updateTitle();
 			mainView.clearView("No file specified.");
 			lockMenu(true);
 		}
@@ -637,7 +650,10 @@ public class SBTabMenuController implements Initializable {
 		if (filePath!=null){
 		controller.setFilePath(filePath);
 		newFile=false;
-		handleSave();
+		handleSave();		
+		mainView.getDoc().setName(new File(filePath).getName());
+		mainView.updateTitle();
+		
 		}
 	}
 	

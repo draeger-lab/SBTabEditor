@@ -13,8 +13,11 @@ import de.sbtab.controller.SBTabController;
 import de.sbtab.services.SBTabTableProducer;
 import de.sbtab.utils.SBTabTableHandler;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -38,12 +41,14 @@ public class SBTabMainView extends Application {
 	private SBTabTableProducer tableProducer;
 	private ResourceBundle bundle = ResourceManager.getBundle("de.sbtab.view.SBTabTreeElementNames");
 	private SBTabTableHandler tableHandler;
+	private Stage thisStage;
 
 	public SBTabMainView() {
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		thisStage = stage;
 		if (isDocumentLoaded()) {
 			setViewOnFile();
 		} 
@@ -181,7 +186,20 @@ public class SBTabMainView extends Application {
 		return controller;
 	}
 
+	public Stage getStage() {	
+		return thisStage;
+	}
+
 	public void setFilePath(String filePath) {
 		controller.setFilePath(filePath);	
+	}
+	
+	public void updateTitle() {
+		if (isDocumentLoaded()) {
+		    thisStage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + doc.getName());
+		}
+		else {
+			thisStage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION);	
+		}
 	}
 }
