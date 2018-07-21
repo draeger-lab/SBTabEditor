@@ -6,7 +6,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	SBTabTest.class
+	SBTabTest.class,
+	SBTabControllerTest.class,
+	SBTabTabsComposerTest.class,
+	//
 })
 public class SBTabComponentTests {
 	// the class remains empty,
