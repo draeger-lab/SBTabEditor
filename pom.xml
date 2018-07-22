@@ -18,6 +18,50 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
 
+	<developers>
+	    <developer>
+			<id>FranziskaDaumueller</id>
+			<name>Franziska Daumüller</name>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>		
+	    <developer>
+			<id>GranitGuri</id>
+			<name>Granit Guri</name>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>		
+	    <developer>
+			<id>MelinaMaier</id>
+			<name>Melina Maier</name>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+	    <developer>
+			<id>AntonJuliusRabe</id>
+			<name>Anton Rabe</name>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>			
+	    <developer>
+			<id>JuliWanner</id>
+			<name>Julian Wanner</name>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+	    <developer>
+			<id>zakharc</id>
+			<name>Mykola Zakharchuk</name>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>		
+    </developers>
 	<dependencies>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -117,6 +161,14 @@
 						<version>5.1.0</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.7.1</version>
+				<configuration>
+					<outputDirectory>src/site</outputDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
