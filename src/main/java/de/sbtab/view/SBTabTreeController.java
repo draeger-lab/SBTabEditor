@@ -14,13 +14,16 @@ import de.sbtab.utils.SBTabTableHandler;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class SBTabTreeController implements Initializable {
@@ -35,6 +38,9 @@ public class SBTabTreeController implements Initializable {
 
 	@FXML
 	private Button expandButton;
+
+	@FXML
+	private VBox treeVBox;
 
 	private ResourceBundle bundle;
 
@@ -53,27 +59,6 @@ public class SBTabTreeController implements Initializable {
 		this.handler = handler;
 	}
 
-	@FXML
-	void doExpandTree(ActionEvent event) {
-		Task<Void> task = new Task<Void>() {
-			@Override
-			protected Void call() throws Exception {
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						expanded ^= true;
-						ExpandTree2();
-					}
-				});
-				return null;
-			}
-		};
-
-		Thread th = new Thread(task);
-		th.setDaemon(true);
-		th.start();
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle value) {
 		bundle = ResourceManager.getBundle("de.sbtab.view.SBTabTreeElementNames");
@@ -83,6 +68,20 @@ public class SBTabTreeController implements Initializable {
 		treeView.setRoot(rootAsItem);
 		tree(root, document, rootAsItem);
 		treeView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> handleTreeLabelSelected(event));
+
+		treeVBox.setPadding(new Insets(5));
+		treeVBox.setFillWidth(true);
+		
+		treeVBox.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
+			double x = treeVBox.getPrefWidth();
+			
+			@Override
+			public void handle(MouseEvent t) {
+				double change = t.getX();
+				treeVBox.setPrefWidth(treeVBox.getPrefWidth() + change - x);
+				x = change;
+			}
+		});
 	}
 
 	/**
@@ -142,7 +141,7 @@ public class SBTabTreeController implements Initializable {
 						rootAsItem.getChildren().add(nodeAsItem);
 						tree(node, document, nodeAsItem);
 					}
-					if (rootAsItem.toString().equals("TreeItem [ value: Unit definitions ]")){
+					if (rootAsItem.toString().equals("TreeItem [ value: Unit definitions ]")) {
 						TreeItem<String> nodeAsItem = new TreeItem<String>(node.toString());
 						rootAsItem.setExpanded(expanded);
 						rootAsItem.getChildren().add(nodeAsItem);
@@ -167,31 +166,27 @@ public class SBTabTreeController implements Initializable {
 		if (bundle.containsKey(name)) {
 			treeElementName = bundle.getString(name);
 		} else if (name.contains(" ")) {
-			String names[] = name.split(" ");		
+			String names[] = name.split(" ");
 			if (bundle.containsKey(names[0])) {
 				treeElementName = bundle.getString(names[0]);
-				
-				// check if for example name= is specified and split String where name is
-				if (name.contains("name=\"")){
+
+				// check if for example name= is specified and split String
+				// where name is
+				if (name.contains("name=\"")) {
 					treeElementName += cutString("name=\"", name);
-				} else {
-					if (name.contains("id=\"")){
-						treeElementName += cutString("id=\"", name);
-					} else {
-						if (name.contains("idRef=\"")){
-							treeElementName += cutString("idRef=\"", name);
-						} else {
-							if (name.contains("species=\"")){
-								treeElementName += cutString("species=\"", name);
-							}
-						}
-					} 
-				} 		
-			} 
-		}return treeElementName;
+				} else if (name.contains("id=\"")) {
+					treeElementName += cutString("id=\"", name);
+				} else if (name.contains("idRef=\"")) {
+					treeElementName += cutString("idRef=\"", name);
+				} else if (name.contains("species=\"")) {
+					treeElementName += cutString("species=\"", name);
+				}
+			}
+		}
+		return treeElementName;
 
 	}
-	
+
 	/**
 	 * cuts name at position and "
 	 * 
@@ -199,11 +194,32 @@ public class SBTabTreeController implements Initializable {
 	 * @param name
 	 * @return rightName
 	 */
-	private String cutString(String position, String name){
+	private String cutString(String position, String name) {
 		String firstCut[] = name.split(position);
 		String secondCut[] = firstCut[1].split("\"");
 		String rightName = " " + secondCut[0];
 		return rightName;
+	}
+	
+	@FXML
+	void doExpandTree(ActionEvent event) {
+		Task<Void> task = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						expanded ^= true;
+						ExpandTree2();
+					}
+				});
+				return null;
+			}
+		};
+
+		Thread th = new Thread(task);
+		th.setDaemon(true);
+		th.start();
 	}
 
 	/**
