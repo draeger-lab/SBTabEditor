@@ -663,7 +663,7 @@ public class SBTabMenuController implements Initializable {
 		fileChooser.setTitle("Specify a directory and a name to save as");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Document", "*.xml"));
 		String filePath = "";
-		File file =fileChooser.showSaveDialog(null);
+		File file =fileChooser.showSaveDialog(mainView.getStage());
 		String lastOutputDir = thePreferences.get("last_output_dir", System.getProperty("user.home"));
 		fileChooser.setInitialDirectory(new File(lastOutputDir));
 		if (file != null) {
@@ -688,7 +688,7 @@ public class SBTabMenuController implements Initializable {
 		fileChooser.setTitle("Choose SBML or XML File.");
 		String lastOutputDir = thePreferences.get("last_output_dir", System.getProperty("user.home"));
 		fileChooser.setInitialDirectory(new File(lastOutputDir));
-		File file = fileChooser.showOpenDialog(null);
+		File file = fileChooser.showOpenDialog(mainView.getStage());
 		if (file != null) {
 			filePath = file.getAbsolutePath();
 			if (thePreferences.get("last_output_dir", "") == "") {
