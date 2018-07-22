@@ -56,9 +56,11 @@ public abstract class SBTabViewAbstractTable {
 				S position = ((S) t.getTableView().getItems().get(t.getTablePosition().getRow()));
 				StringProperty changedValue = new SimpleStringProperty((String) t.getNewValue());
 				setMethod.accept(position, changedValue);
+				col.setId("changed");
 			}
 		};
 		col.setOnEditCommit(x);
+		
 		
 		//NODES
 		TextField field = new TextField("Example");
@@ -97,7 +99,6 @@ public abstract class SBTabViewAbstractTable {
 				}
 			}
 		});
-
 		return col;
 	}
 }

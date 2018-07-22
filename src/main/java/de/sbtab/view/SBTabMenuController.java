@@ -17,6 +17,7 @@ import de.sbtab.controller.SBTabController;
 import de.sbtab.services.TableType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -40,6 +41,7 @@ import javafx.scene.web.WebView;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -55,7 +57,6 @@ import javafx.stage.WindowEvent;
 public class SBTabMenuController implements Initializable {
 	private SBTabMainView mainView;
 	private SBTabController controller;
-	private boolean unsavedChanges;
 	private boolean newFile;
 
 	public SBTabMenuController() {
@@ -72,8 +73,8 @@ public class SBTabMenuController implements Initializable {
 		if (mainView.getDoc() == null) {
 			lockMenu(true);
 		}
-		//TODO: prevent closing of stage
-		mainView.getStage().setOnCloseRequest(event -> {		
+		// TODO: prevent closing of stage
+		mainView.getStage().setOnCloseRequest(event -> {
 			event.consume();
 			handleClose();
 		});
@@ -405,71 +406,13 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doHideColumns(ActionEvent event) {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-		stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-		stage.setTitle("Hide columns");
-		stage.setWidth(250);
-		Scene scene = new Scene(new Group());
-		
-		Label text = new Label("Select checkbox to show column.");
-		text.setPadding(new Insets(10));
-
-		VBox vBox = new VBox();
-		vBox.setSpacing(5);
-		vBox.setPadding(new Insets(10));
-
-		String[] checkBoxNames = { "Name", "Id", "SBOTerm", "Compartments" };
-		for (int i = 0; i < checkBoxNames.length; i++) {
-			CheckBox cb = new CheckBox(checkBoxNames[i]);
-			cb.setSelected(checked[i]);
-			final int x = i;
-			cb.selectedProperty().addListener(new ChangeListener<Boolean>() {
-				public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-					checked[x] = new_val;
-				}
-			});
-			vBox.getChildren().add(cb);
-		}
-		
-		HBox hBox = new HBox(5);
-		hBox.setPadding(new Insets(10));
-
-		Button buttonOk = new Button("Show columns");
-		buttonOk.setPrefWidth(110);
-		Button buttonCancel = new Button("Cancel");
-		buttonCancel.setPrefWidth(110);
-
-		hBox.getChildren().addAll(buttonOk, buttonCancel);
-		
-		buttonOk.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				handleChecked();
-				stage.hide();
-			}
-		});
-		
-		buttonCancel.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				stage.hide();
-			}
-		});
-
-		BorderPane root = new BorderPane();
-		root.setTop(text);
-		root.setCenter(vBox);
-		root.setBottom(hBox);
-
-		((Group) scene.getRoot()).getChildren().addAll(root);
-		stage.setScene(scene);
-		stage.show();
+		handleHideColumns();
 	}
+
 
 	@FXML
 	void doShowHiddenColumns(ActionEvent event) {
-		for(int i = 0; i < checked.length; i++){
+		for (int i = 0; i < checked.length; i++) {
 			checked[i] = true;
 		}
 		handleChecked();
@@ -550,7 +493,7 @@ public class SBTabMenuController implements Initializable {
 					controller.setFilePath(filePath);
 					mainView.updateTitle();
 					mainView.reInit();
-					newFile=false;
+					newFile = false;
 				}
 			}
 		};
@@ -566,14 +509,14 @@ public class SBTabMenuController implements Initializable {
 			String theProjectName = mainView.getTheProjectName();
 			String theVersion = mainView.getTheVersion();
 			controller.save(doc, filePath, theProjectName, theVersion);
-			unsavedChanges = false;
+			setDocUnchanged();
 		} else {
 			handleSaveAs();
 		}
 	}
 
 	private void handleQuit() {
-		if (unsavedChanges) {
+		if (isDocChanged()) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
@@ -604,7 +547,7 @@ public class SBTabMenuController implements Initializable {
 	}
 
 	private void handleClose() {
-		if (unsavedChanges) {
+		if (isDocChanged()) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
@@ -633,7 +576,7 @@ public class SBTabMenuController implements Initializable {
 				mainView.updateTitle();
 				mainView.clearView("No file specified.");
 				lockMenu(true);
-			
+
 			} else {
 			}
 		} else {
@@ -644,26 +587,24 @@ public class SBTabMenuController implements Initializable {
 		}
 	}
 
-
 	private void handleSaveAs() {
 		String filePath = chooseSaveLocation();
-		if (filePath!=null){
-		controller.setFilePath(filePath);
-		newFile=false;
-		handleSave();		
-		mainView.getDoc().setName(new File(filePath).getName());
-		mainView.updateTitle();
-		
+		if (filePath != null) {
+			controller.setFilePath(filePath);
+			newFile = false;
+			handleSave();
+			mainView.getDoc().setName(new File(filePath).getName());
+			mainView.updateTitle();
 		}
 	}
-	
+
 	private String chooseSaveLocation() {
 		Preferences thePreferences = Preferences.userNodeForPackage(SBTabController.class);
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Specify a directory and a name to save as");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Document", "*.xml"));
 		String filePath = "";
-		File file =fileChooser.showSaveDialog(mainView.getStage());
+		File file = fileChooser.showSaveDialog(mainView.getStage());
 		String lastOutputDir = thePreferences.get("last_output_dir", System.getProperty("user.home"));
 		fileChooser.setInitialDirectory(new File(lastOutputDir));
 		if (file != null) {
@@ -672,8 +613,9 @@ public class SBTabMenuController implements Initializable {
 				controller.setPreferences(filePath);
 			}
 			return filePath;
+		} else {
+			return null;
 		}
-		else {return null;}		
 	}
 
 	/*
@@ -698,6 +640,69 @@ public class SBTabMenuController implements Initializable {
 		}
 		return null;
 	}
+	
+	private void handleHideColumns() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+		stage.setTitle("Hide columns");
+		stage.setWidth(250);
+		Scene scene = new Scene(new Group());
+
+		Label text = new Label("Select checkbox to show column.");
+		text.setPadding(new Insets(10));
+
+		VBox vBox = new VBox();
+		vBox.setSpacing(5);
+		vBox.setPadding(new Insets(10));
+
+		String[] checkBoxNames = { "Name", "Id", "SBOTerm", "Compartments" };
+		for (int i = 0; i < checkBoxNames.length; i++) {
+			CheckBox cb = new CheckBox(checkBoxNames[i]);
+			cb.setSelected(checked[i]);
+			final int x = i;
+			cb.selectedProperty().addListener(new ChangeListener<Boolean>() {
+				public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
+					checked[x] = new_val;
+				}
+			});
+			vBox.getChildren().add(cb);
+		}
+
+		HBox hBox = new HBox(5);
+		hBox.setPadding(new Insets(10));
+
+		Button buttonOk = new Button("Show columns");
+		buttonOk.setPrefWidth(110);
+		Button buttonCancel = new Button("Cancel");
+		buttonCancel.setPrefWidth(110);
+
+		hBox.getChildren().addAll(buttonOk, buttonCancel);
+
+		buttonOk.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				handleChecked();
+				stage.hide();
+			}
+		});
+
+		buttonCancel.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				stage.hide();
+			}
+		});
+
+		BorderPane root = new BorderPane();
+		root.setTop(text);
+		root.setCenter(vBox);
+		root.setBottom(hBox);
+
+		((Group) scene.getRoot()).getChildren().addAll(root);
+		stage.setScene(scene);
+		stage.show();
+	}
 
 	private void handleDocumentation() {
 		URL url = controller.getDocumentation();
@@ -719,19 +724,48 @@ public class SBTabMenuController implements Initializable {
 		stage.setHeight(0.4 * primaryScreenBounds.getHeight());
 		stage.show();
 	}
-	
-	private void handleChecked(){
-		String[] TableNames = {"REACTIONS", "SPECIES", "COMPARTMENTS", "UNIT_DEFINITIONS", "PARAMETERS" };
+
+	private void handleChecked() {
+		String[] TableNames = { "REACTIONS", "SPECIES", "COMPARTMENTS", "UNIT_DEFINITIONS", "PARAMETERS" };
 
 		for (int k = 0; k < TableNames.length; k++) {
-			TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView
-					.getTableProducer().getTableView(Enum.valueOf(TableType.class, TableNames[k]));
+			TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView.getTableProducer()
+					.getTableView(Enum.valueOf(TableType.class, TableNames[k]));
 
 			for (int i = 0; i < checked.length; i++) {
 				int size = tableView.getColumns().size();
 				if (size > i) {
 					tableView.getColumns().get(i).setVisible(checked[i]);
 				}
+			}
+		}
+	}
+	
+	private boolean isDocChanged() {
+		String[] TableNames = { "REACTIONS", "SPECIES", "COMPARTMENTS", "UNIT_DEFINITIONS", "PARAMETERS" };
+
+		for (int k = 0; k < TableNames.length; k++) {
+			TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView.getTableProducer()
+					.getTableView(Enum.valueOf(TableType.class, TableNames[k]));
+			ObservableList<TableColumn<SBTabReactionWrapper, ?>> currentColumns = tableView.getColumns();
+			for (int i=0; i<currentColumns.size(); i++) {
+				if (tableView.getColumns().get(i).getId() == "changed") {
+					return true;
+				}	
+			}
+		}
+		return false;
+	}
+	
+	private void setDocUnchanged() {
+		String[] TableNames = { "REACTIONS", "SPECIES", "COMPARTMENTS", "UNIT_DEFINITIONS", "PARAMETERS" };
+
+		for (int k = 0; k < TableNames.length; k++) {
+			TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView.getTableProducer()
+					.getTableView(Enum.valueOf(TableType.class, TableNames[k]));
+			ObservableList<TableColumn<SBTabReactionWrapper, ?>> currentColumns = tableView.getColumns();
+			for (int i=0; i<currentColumns.size(); i++) {
+				currentColumns.get(i).setId("noChanges");
 			}
 		}
 	}
