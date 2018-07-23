@@ -3,6 +3,7 @@ package de.sbtab.view;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -508,8 +509,13 @@ public class SBTabMenuController implements Initializable {
 			File filePath = new File(controller.getFilePath());
 			String theProjectName = mainView.getTheProjectName();
 			String theVersion = mainView.getTheVersion();
+			if (Objects.equals(controller.getFileExtension(filePath), ".xml")) {
 			controller.save(doc, filePath, theProjectName, theVersion);
 			setDocUnchanged();
+			}
+			else {
+				handleSaveAs();
+			}
 		} else {
 			handleSaveAs();
 		}
