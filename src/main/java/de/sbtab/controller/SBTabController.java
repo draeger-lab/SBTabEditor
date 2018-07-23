@@ -164,7 +164,7 @@ public class SBTabController {
 	 * @param File
 	 * @return File Extension
 	 */
-	private String getFileExtension(File file) {
+	public String getFileExtension(File file) {
 		String theFileExtension = "";
 		try {
 			if (file != null && file.exists()) {
