@@ -106,6 +106,7 @@ public class SBTabController {
 			if (Objects.equals(getFileExtension(theSBMLFile), ".gz")) {
 				try {
 					doc = SBMLReader.read(new GZIPInputStream(new FileInputStream(filePath)));
+					doc.setName(theSBMLFile.getName());
 				} catch (Exception e) {
 					LOGGER.error("Unable to read gz file.", e);
 				}
