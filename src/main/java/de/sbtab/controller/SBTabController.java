@@ -22,189 +22,194 @@ import javafx.concurrent.Task;
 
 public class SBTabController {
 
-	private static final transient Logger LOGGER = LogManager.getLogger(SBTabController.class);
-	private SBMLDocument doc;
-	private String filePath = null;
-	// declare my variable at the top of my Java class
-	private static Preferences prefs;
+  private static final transient Logger LOGGER = LogManager.getLogger(SBTabController.class);
+  private SBMLDocument doc;
+  private String filePath = null;
+  // declare my variable at the top of my Java class
+  private static Preferences prefs;
 
-	public String getFilePath() {
-		return filePath;
-	}
+  public String getFilePath() {
+    return filePath;
+  }
 
-	public SBMLDocument getDoc() {
-		return doc;
-	}
-	
-	public void setDoc(SBMLDocument doc) {
-		this.doc = doc;
-	}
+  public SBMLDocument getDoc() {
+    return doc;
+  }
 
-	/**
-	 * Set Preferences for the programm, at the moment only the file path is saved.
-	 */
-	public void setPreferences(String filePath) {
-		// create a Preferences instance (somewhere later in the code)
-		prefs = Preferences.userNodeForPackage(SBTabController.class);
-		if (filePath != null) {
-			String folderPath = (new File(filePath)).getParent();
-			prefs.put("last_output_dir", folderPath);
-		} else {
-			prefs.put("last_output_dir", System.getProperty("user.home"));
-		}
-	}
+  public void setDoc(SBMLDocument doc) {
+    this.doc = doc;
+  }
 
-	/**
-	 * Save SBML document to a {@link File}.
-	 * 
-	 * @param doc
-	 *            the {@link SBMLDocument} to be written
-	 * @param path
-	 *            absolute path to {@link SBMLDocument}
-	 * @param name
-	 *            name of {@link SBMLDocument}
-	 * @param version
-	 *            version of {@link SBMLDocument}
-	 * 
-	 */
-	public void save(SBMLDocument doc, File path, String name, String version) {
-		Task<Void> task = new Task<Void>() {
-			@Override
-			public Void call() {
-				try {
-					TidySBMLWriter.write(doc, path, name, version);
-				} catch (Exception e) {
-					LOGGER.error("Unable to write sbml file", e);
-				}
-				return null;
-			}
-		};
-		Thread th = new Thread(task);
-		th.setDaemon(true);
-		th.start();
-	}
+  /**
+   * Set Preferences for the programm, at the moment only the file path is saved.
+   */
+  public void setPreferences(String filePath) {
+    // create a Preferences instance (somewhere later in the code)
+    prefs = Preferences.userNodeForPackage(SBTabController.class);
+    if (filePath != null) {
+      String folderPath = (new File(filePath)).getParent();
+      prefs.put("last_output_dir", folderPath);
+    } else {
+      prefs.put("last_output_dir", System.getProperty("user.home"));
+    }
+  }
 
-	/**
-	 * Read SBML document from a {@link File}.
-	 * 
-	 * @param absolute
-	 *            path to {@link SBMLDocument}
-	 * @return {@link SBMLDocument}
-	 */
-	public SBMLDocument read(String filePath) {
-		this.filePath = filePath;
-		File theSBMLFile = new File(filePath);
-		boolean isFile = theSBMLFile.isFile();
-		System.out.println(getFileExtension(theSBMLFile));
-		if (isFile) {
-			if (Objects.equals(getFileExtension(theSBMLFile), ".xml")) {
-				try {
-					doc = SBMLReader.read(theSBMLFile);
-					doc.setName(theSBMLFile.getName());
-				} catch (Exception e) {
-					LOGGER.error("Unable to read xml file.", e);
-				}
-			}
-			if (Objects.equals(getFileExtension(theSBMLFile), ".gz")) {
-				try {
-					doc = SBMLReader.read(new GZIPInputStream(new FileInputStream(filePath)));
-					doc.setName(theSBMLFile.getName());
-				} catch (Exception e) {
-					LOGGER.error("Unable to read gz file.", e);
-				}
-			}
-			setPreferences(filePath);
-		}
-		return doc;
-	}
+  /**
+   * Save SBML document to a {@link File}.
+   * 
+   * @param doc
+   *            the {@link SBMLDocument} to be written
+   * @param path
+   *            absolute path to {@link SBMLDocument}
+   * @param name
+   *            name of {@link SBMLDocument}
+   * @param version
+   *            version of {@link SBMLDocument}
+   * 
+   */
+  public void save(SBMLDocument doc, File path, String name, String version) {
+    Task<Void> task = new Task<Void>() {
+      @Override
+      public Void call() {
+        try {
+          TidySBMLWriter.write(doc, path, name, version);
+        } catch (Exception e) {
+          LOGGER.error("Unable to write sbml file", e);
+        }
+        return null;
+      }
+    };
+    Thread th = new Thread(task);
+    th.setDaemon(true);
+    th.start();
+  }
 
-	/**
-	 * Validator of SBML-Files
-	 * 
-	 * @param doc
-	 *            is the input SBML-File
-	 * @return a String of Errors
-	 */
-	public static String stringValidator(SBMLDocument doc) {
-		// the number of Errors of a SBMLFile
-		int numErrors = doc.checkConsistency();
-		String s = "";
-		if (numErrors == 0) {
-			return null;
-		} else {
-			// get each error and show it
-			for (int i = 0; i < numErrors; i++) {
-				SBMLError e = doc.getError(i);
-				Level l;
-				if(e.isError()) {
-					l = Level.ERROR;
-				}else if(e.isFatal()) {
-					l = Level.FATAL;
-				}else if(e.isWarning()) {
-					l = Level.WARN;
-					s += " WARNING: ";
-				} else {
-					l = Level.INFO;
-				}
-				s += e.getMessage().toString();
-			}
-			return s;
-		}
-	}
+  /**
+   * Read SBML document from a {@link File}.
+   * 
+   * @param absolute
+   *            path to {@link SBMLDocument}
+   * @return {@link SBMLDocument}
+   */
+  public SBMLDocument read(String filePath) {
+    this.filePath = filePath;
+    File theSBMLFile = new File(filePath);
+    boolean isFile = theSBMLFile.isFile();
+    System.out.println(getFileExtension(theSBMLFile));
+    if (isFile) {
+      if (Objects.equals(getFileExtension(theSBMLFile), ".xml")) {
+        try {
+          doc = SBMLReader.read(theSBMLFile);
+          doc.setName(theSBMLFile.getName());
+        } catch (Exception e) {
+          LOGGER.error("Unable to read xml file.", e);
+        }
+      }
+      if (Objects.equals(getFileExtension(theSBMLFile), ".gz")) {
+        try {
+          doc = SBMLReader.read(new GZIPInputStream(new FileInputStream(filePath)));
+          doc.setName(theSBMLFile.getName());
+        } catch (Exception e) {
+          LOGGER.error("Unable to read gz file.", e);
+        }
+      }
+      setPreferences(filePath);
+    }
+    return doc;
+  }
 
-	/**
-	 * Number of Errors in Document
-	 * 
-	 * @param doc
-	 * @return Number of Errors
-	 */
-	public int numErrors(SBMLDocument doc) {
-		return doc.checkConsistency();
-	}
+  /**
+   * Validator of SBML-Files
+   * 
+   * @param doc
+   *            is the input SBML-File
+   * @return a String of Errors
+   */
+  public static String stringValidator(SBMLDocument doc) {
+    // the number of Errors of a SBMLFile
+    int numErrors = doc.checkConsistency();
+    String s = "";
+    if (numErrors == 0) {
+      return null;
+    } else {
+      // get each error and show it
+      for (int i = 0; i < numErrors; i++) {
+        SBMLError e = doc.getError(i);
+        Level l;
+        if(e.isError()) {
+          l = Level.ERROR;
+        }else if(e.isFatal()) {
+          l = Level.FATAL;
+        }else if(e.isWarning()) {
+          l = Level.WARN;
+          s += " WARNING: ";
+        } else {
+          l = Level.INFO;
+        }
+        s += e.getMessage().toString();
+      }
+      return s;
+    }
+  }
 
-	/**
-	 * @author Julian Wanner
-	 * @param File
-	 * @return File Extension
-	 */
-	public String getFileExtension(File file) {
-		String theFileExtension = "";
-		try {
-			if (file != null && file.exists()) {
-				String theFileName = file.getName();
-				theFileExtension = theFileName.substring(theFileName.lastIndexOf("."));
-			}
-		} catch (Exception e) {
-			theFileExtension = "";
-		}
+  /**
+   * Number of Errors in Document
+   * 
+   * @param doc
+   * @return Number of Errors
+   */
+  public int numErrors(SBMLDocument doc) {
+    return doc.checkConsistency();
+  }
 
-		return theFileExtension;
+  /**
+   * @author Julian Wanner
+   * @param File
+   * @return File Extension
+   */
+  public String getFileExtension(File file) {
+    String theFileExtension = "";
+    try {
+      if (file != null && file.exists()) {
+        String theFileName = file.getName();
+        theFileExtension = theFileName.substring(theFileName.lastIndexOf("."));
+      }
+    } catch (Exception e) {
+      theFileExtension = "";
+    }
 
-	}
-	
-	public URL getDocumentation(){
-	  URL url;
+    return theFileExtension;
+
+  }
+  /**
+   * Opens Documentation according to specified documentation URL.
+   * if no Internet connection is present a local documentation index.html in the directory docs
+   * @author Julian Wanner
+   * @return URL
+   */
+  public URL getDocumentation(String theDocumentationURL, String theLocalDocumentationPath){
+    URL url;
     try
     {
-      url = new URL("https://github.com/draeger-lab/SBTabEditor/wiki");
+      url = new URL(theDocumentationURL);
       URLConnection connection = url.openConnection();
       connection.connect();
       System.out.println("Internet Connected");
     }catch (Exception e){
       System.out.println("Sorry, No Internet Connection");
-      String theDocumentationName = System.getProperty("user.dir")+"Documentation.html";
+      String theDocumentationName = (theLocalDocumentationPath);
       try {
         url = Paths.get(theDocumentationName).toUri().toURL();
       } catch (MalformedURLException e1) {
-        // TODO Auto-generated catch block
-        url = null;
         e1.printStackTrace();
-      };
+        return null;
+      }
+
     }
     return url;
-	}
+  }
 
-	public void setFilePath(String path) {
-		filePath = path;	
-	}
+  public void setFilePath(String path) {
+    filePath = path;
+  }
 }
