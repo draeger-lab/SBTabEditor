@@ -19,11 +19,11 @@
                 <MenuItem id="NewItem" accelerator="Shortcut+N" mnemonicParsing="true" onAction="#doNew" text="_New" />
                 <MenuItem fx:id="OpenItem" accelerator="Shortcut+O" mnemonicParsing="true" onAction="#doOpen" text="_Open" />
                 <MenuItem fx:id="SaveItem" accelerator="Shortcut+S" mnemonicParsing="true" onAction="#doSave" text="_Save" />
-                <MenuItem fx:id="SaveAsItem" mnemonicParsing="true" onAction="#doSaveAs" text="_Save as" />
+                <MenuItem fx:id="SaveAsItem" accelerator="Shortcut+Alt+S" mnemonicParsing="true" onAction="#doSaveAs" text="_Save as" />
                 <MenuItem fx:id="ImportItem" mnemonicParsing="true" onAction="#doImport" text="_Import" />
                 <MenuItem fx:id="ExportItem" mnemonicParsing="true" onAction="#doExport" text="_Export" /> 
                 <SeparatorMenuItem />
-                <MenuItem fx:id="CloseItem" mnemonicParsing="true" onAction="#doClose" text="_Close" /> 
+                <MenuItem fx:id="CloseItem" accelerator="Shortcut+Alt+Q" mnemonicParsing="true" onAction="#doClose" text="_Close" /> 
                 <SeparatorMenuItem />
                 <MenuItem fx:id="ValidateItem" mnemonicParsing="true" onAction="#doValidate" text="_Validate" />   
                 <SeparatorMenuItem />      
@@ -44,8 +44,8 @@
             <items>
                 <Menu mnemonicParsing="true" text="_Field size">
                    <items>
-                   <MenuItem fx:id="ZoomInItem" accelerator="Shortcut+P" mnemonicParsing="true" onAction="#doZoomIn" text="_Zoom in" />
-                   <MenuItem fx:id="ZoomOutItem" accelerator="Shortcut+M" mnemonicParsing="true" onAction="#doZoomOut" text="_Zoom out" />
+                   <MenuItem fx:id="ZoomInItem" accelerator="Shortcut+Plus" mnemonicParsing="true" onAction="#doZoomIn" text="_Zoom in" />
+                   <MenuItem fx:id="ZoomOutItem" accelerator="Shortcut+Minus" mnemonicParsing="true" onAction="#doZoomOut" text="_Zoom out" />
                    <MenuItem fx:id="SetToItem" mnemonicParsing="true" onAction="#doSetTo" text="_Set to" />
                    </items>
                 </Menu>
