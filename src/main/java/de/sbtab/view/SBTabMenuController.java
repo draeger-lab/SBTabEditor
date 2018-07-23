@@ -609,15 +609,14 @@ public class SBTabMenuController implements Initializable {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Specify a directory and a name to save as");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Document", "*.xml"));
+		fileChooser.setInitialFileName(mainView.getDoc().getName());
+		fileChooser.setInitialDirectory(new File(controller.getFilePath()).getParentFile());
 		String filePath = "";
 		File file = fileChooser.showSaveDialog(mainView.getStage());
 		String lastOutputDir = thePreferences.get("last_output_dir", System.getProperty("user.home"));
 		fileChooser.setInitialDirectory(new File(lastOutputDir));
 		if (file != null) {
 			filePath = file.getAbsolutePath();
-			if (thePreferences.get("last_output_dir", "") == "") {
-				controller.setPreferences(filePath);
-			}
 			return filePath;
 		} else {
 			return null;
