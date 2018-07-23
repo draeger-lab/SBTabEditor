@@ -10,17 +10,17 @@
 
 <!-- author Franziska Daumueller -->
 
-<VBox fx:id="treeVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="treeVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100" prefHeight="420.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<TextField prefHeight="31.0" prefWidth="170.0" promptText="search">
+		<TextField prefHeight="31.0" prefWidth="170.0" minWidth="0.0" promptText="search">
          <opaqueInsets>
             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
          </opaqueInsets></TextField>
-         <Button fx:id="expandButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#doExpandTree" prefHeight="25.0" prefWidth="243.0" maxWidth="1.7976931348623157E308" text="Expand Tree" textAlignment="CENTER">
+         <Button fx:id="expandButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#doExpandTree" prefHeight="25.0" prefWidth="243.0" maxWidth="1.7976931348623157E308" minWidth="0.0" text="Expand Tree" textAlignment="CENTER">
 		<cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor></Button>
-		<TreeView fx:id="treeView" prefHeight="419.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+		<TreeView fx:id="treeView" prefHeight="419.0" prefWidth="200.0" minWidth="0.0" VBox.vgrow="ALWAYS">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor></TreeView>

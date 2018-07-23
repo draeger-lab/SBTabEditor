@@ -108,7 +108,7 @@ public class SBTabMainView extends Application {
 		menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
 		treeLoader.setLocation(getClass().getResource("SBTabTree.fxml"));
 		menuLoader.setController(new SBTabMenuController(this, controller));
-		treeLoader.setController(new SBTabTreeController(controller));
+		treeLoader.setController(new SBTabTreeController(controller, tableHandler, this));
 		treeLoader.setResources(bundle);
 		MenuBar menuBar = (MenuBar) menuLoader.load();
 		root.setTop(menuBar);
@@ -135,7 +135,7 @@ public class SBTabMainView extends Application {
 				treeLoader = new FXMLLoader();
 				treeLoader.setLocation(getClass().getResource("SBTabTree.fxml"));
 				tableHandler = new SBTabTableHandler(tableProducer, root);
-				treeLoader.setController(new SBTabTreeController(controller, tableHandler));
+				treeLoader.setController(new SBTabTreeController(controller, tableHandler, this));
 				treeLoader.setResources(bundle);
 				root.setLeft(treeLoader.load());
 			} catch (IOException e) {
@@ -188,6 +188,10 @@ public class SBTabMainView extends Application {
 
 	public Stage getStage() {	
 		return thisStage;
+	}
+	
+	public BorderPane getRoot(){
+		return root;
 	}
 
 	public void setFilePath(String filePath) {

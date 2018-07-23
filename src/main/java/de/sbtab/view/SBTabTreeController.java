@@ -28,9 +28,13 @@ import javafx.scene.text.Text;
 
 public class SBTabTreeController implements Initializable {
 	private SBTabController controller;
-
-	public SBTabTreeController(SBTabController controller) {
+	private SBTabMainView mainView;
+	private SBTabTableHandler handler;
+	
+	public SBTabTreeController(SBTabController controller, SBTabTableHandler handler, SBTabMainView mainView) {
 		this.controller = controller;
+		this.handler = handler;
+		this.mainView = mainView;
 	}
 
 	@FXML
@@ -45,19 +49,6 @@ public class SBTabTreeController implements Initializable {
 	private ResourceBundle bundle;
 
 	public Boolean expanded = false;
-
-	private SBTabMainView mainView;
-
-	private SBTabTableHandler handler;
-
-	public SBTabTreeController(SBTabMainView mainView) {
-		this.mainView = mainView;
-	}
-
-	public SBTabTreeController(SBTabController controller, SBTabTableHandler handler) {
-		this.controller = controller;
-		this.handler = handler;
-	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle value) {
@@ -78,8 +69,12 @@ public class SBTabTreeController implements Initializable {
 			@Override
 			public void handle(MouseEvent t) {
 				double change = t.getX();
-				treeVBox.setPrefWidth(treeVBox.getPrefWidth() + change - x);
-				x = change;
+				double newWidth = treeVBox.getPrefWidth() + change - x;
+				if (newWidth < mainView.getRoot().getWidth()) {
+					treeVBox.setPrefWidth(newWidth);
+					x = change;
+				}
+				
 			}
 		});
 	}
