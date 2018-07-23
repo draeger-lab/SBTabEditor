@@ -42,7 +42,7 @@ public abstract class SBTabViewAbstractTable {
 		col.setCellValueFactory(cellData -> property.apply(cellData.getValue()));
 		col.setEditable(true);
 		col.setCellFactory(TextFieldTableCell.forTableColumn((StringConverter) new DefaultStringConverter()));
-		col.setOnEditCommit(e -> editCell(setMethod, e));
+		col.setOnEditCommit(e -> {editCell(setMethod, e); col.setId("changed");});
 		col.setContextMenu(popUp
 				// TODO: add functionality for every item
 				.addMenuBarItem("add column", e -> {})

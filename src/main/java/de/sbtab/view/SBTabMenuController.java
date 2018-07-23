@@ -54,12 +54,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class SBTabMenuController implements Initializable {
 	private SBTabMainView mainView;
 	private SBTabController controller;
 	private boolean newFile;
+
+	private String[] checkBoxNames = { "Name", "Id", "SBO Term", "Compartment" };
 
 	public SBTabMenuController() {
 		//
@@ -409,7 +410,6 @@ public class SBTabMenuController implements Initializable {
 		handleHideColumns();
 	}
 
-
 	@FXML
 	void doShowHiddenColumns(ActionEvent event) {
 		for (int i = 0; i < checked.length; i++) {
@@ -509,10 +509,9 @@ public class SBTabMenuController implements Initializable {
 			String theProjectName = mainView.getTheProjectName();
 			String theVersion = mainView.getTheVersion();
 			if (Objects.equals(controller.getFileExtension(filePath), ".xml")) {
-			controller.save(doc, filePath, theProjectName, theVersion);
-			setDocUnchanged();
-			}
-			else {
+				controller.save(doc, filePath, theProjectName, theVersion);
+				setDocUnchanged();
+			} else {
 				handleSaveAs();
 			}
 		} else {
@@ -644,7 +643,7 @@ public class SBTabMenuController implements Initializable {
 		}
 		return null;
 	}
-	
+
 	private void handleHideColumns() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -660,7 +659,6 @@ public class SBTabMenuController implements Initializable {
 		vBox.setSpacing(5);
 		vBox.setPadding(new Insets(10));
 
-		String[] checkBoxNames = { "Name", "Id", "SBOTerm", "Compartments" };
 		for (int i = 0; i < checkBoxNames.length; i++) {
 			CheckBox cb = new CheckBox(checkBoxNames[i]);
 			cb.setSelected(checked[i]);
@@ -676,7 +674,7 @@ public class SBTabMenuController implements Initializable {
 		HBox hBox = new HBox(5);
 		hBox.setPadding(new Insets(10));
 
-		Button buttonOk = new Button("Show columns");
+		Button buttonOk = new Button("Ok");
 		buttonOk.setPrefWidth(110);
 		Button buttonCancel = new Button("Cancel");
 		buttonCancel.setPrefWidth(110);
@@ -709,8 +707,8 @@ public class SBTabMenuController implements Initializable {
 	}
 
 	private void handleDocumentation() {
-	  String localDocumentationPath = System.getProperty("user.dir")+"/docs/.html";
-	  String theDocumentationURL = "https://draeger-lab.github.io/SBTabEditor/";
+		String localDocumentationPath = System.getProperty("user.dir") + "/docs/.html";
+		String theDocumentationURL = "https://draeger-lab.github.io/SBTabEditor/";
 		URL url = controller.getDocumentation(theDocumentationURL, localDocumentationPath);
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		Stage stage = new Stage();
@@ -732,45 +730,47 @@ public class SBTabMenuController implements Initializable {
 	}
 
 	private void handleChecked() {
-		String[] TableNames = { "REACTIONS", "SPECIES", "COMPARTMENTS", "UNIT_DEFINITIONS", "PARAMETERS" };
-
+		TableType[] TableNames = TableType.values();
 		for (int k = 0; k < TableNames.length; k++) {
 			TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView.getTableProducer()
-					.getTableView(Enum.valueOf(TableType.class, TableNames[k]));
+					.getTableView(TableNames[k]);
 
-			for (int i = 0; i < checked.length; i++) {
-				int size = tableView.getColumns().size();
-				if (size > i) {
-					tableView.getColumns().get(i).setVisible(checked[i]);
+			int size = tableView.getColumns().size();
+			for (int j = 0; j < checkBoxNames.length; j++) {
+				for (int i = 0; i < size; i++) {
+					TableColumn current = tableView.getColumns().get(i);
+					
+					if (current.getText() == checkBoxNames[j]) {
+						tableView.getColumns().get(i).setVisible(checked[j]);
+						break;
+					}
 				}
 			}
 		}
 	}
-	
-	private boolean isDocChanged() {
-		String[] TableNames = { "REACTIONS", "SPECIES", "COMPARTMENTS", "UNIT_DEFINITIONS", "PARAMETERS" };
 
+	private boolean isDocChanged() {
+		TableType[] TableNames = TableType.values();
 		for (int k = 0; k < TableNames.length; k++) {
 			TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView.getTableProducer()
-					.getTableView(Enum.valueOf(TableType.class, TableNames[k]));
+					.getTableView(TableNames[k]);
 			ObservableList<TableColumn<SBTabReactionWrapper, ?>> currentColumns = tableView.getColumns();
-			for (int i=0; i<currentColumns.size(); i++) {
+			for (int i = 0; i < currentColumns.size(); i++) {
 				if (tableView.getColumns().get(i).getId() == "changed") {
 					return true;
-				}	
+				}
 			}
 		}
 		return false;
 	}
-	
-	private void setDocUnchanged() {
-		String[] TableNames = { "REACTIONS", "SPECIES", "COMPARTMENTS", "UNIT_DEFINITIONS", "PARAMETERS" };
 
+	private void setDocUnchanged() {
+		TableType[] TableNames = TableType.values();
 		for (int k = 0; k < TableNames.length; k++) {
 			TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView.getTableProducer()
-					.getTableView(Enum.valueOf(TableType.class, TableNames[k]));
+					.getTableView(TableNames[k]);
 			ObservableList<TableColumn<SBTabReactionWrapper, ?>> currentColumns = tableView.getColumns();
-			for (int i=0; i<currentColumns.size(); i++) {
+			for (int i = 0; i < currentColumns.size(); i++) {
 				currentColumns.get(i).setId("noChanges");
 			}
 		}

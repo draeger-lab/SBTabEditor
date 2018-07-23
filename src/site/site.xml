@@ -1,0 +1,16 @@
+<project name="SBTabEditor">
+  <bannerLeft>
+    <name>SBTabEditor</name>
+  </bannerLeft>
+  <bannerRight>
+  </bannerRight>
+  <body>
+
+    <menu name="SBTabEditor 0.1.4">
+      <item name="Introduction" href="index.html"/>
+      <item name="Team" href="team.html"/>
+	  <item name="Java Documentation" href="apidocs/index.html"/>	  
+    </menu>
+
+  </body>
+</project>
