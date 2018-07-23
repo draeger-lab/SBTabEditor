@@ -80,4 +80,10 @@ public class SBTabDocument<T> implements TreeNodeChangeListener {
 	public File getFile() {
 		return tempDocFile;
 	}
+	public boolean getChanged() {
+		return changed;
+	}
+	public void setChanged(boolean bool) {
+		changed=bool;
+	}
 }

@@ -76,6 +76,9 @@ public class SBTabMenuController implements Initializable {
 		if (mainView.getDocument() == null) {
 			lockMenu(true);
 		}
+		else if(mainView.getDocument().getFile().getName()=="new file") {
+			newFile=true;
+		}
 		// TODO: prevent closing of stage
 		mainView.getStage().setOnCloseRequest(event -> {
 			event.consume();
@@ -504,11 +507,11 @@ public class SBTabMenuController implements Initializable {
 
 	private void handleSave() {
 		if (!newFile) {
-			SBMLDocument doc = mainView.getDoc();
-			File filePath = new File(controller.getFilePath());
+			SBMLDocument doc = mainView.getDocument().getTempDoc();
+			File filePath = mainView.getDocument().getFile();
 			String theProjectName = mainView.getTheProjectName();
 			String theVersion = mainView.getTheVersion();
-			if (Objects.equals(controller.getFileExtension(filePath), ".xml")) {
+			if (!Objects.equals(controller.getFileExtension(filePath), ".gz")) {
 				controller.save(doc, filePath, theProjectName, theVersion);
 				setDocUnchanged();
 			} else {
@@ -594,10 +597,9 @@ public class SBTabMenuController implements Initializable {
 	private void handleSaveAs() {
 		String filePath = chooseSaveLocation();
 		if (filePath != null) {
-			controller.setFilePath(filePath);
+			mainView.getDocument().setFile(new File(filePath));
 			newFile = false;
 			handleSave();
-			mainView.getDoc().setName(new File(filePath).getName());
 			mainView.updateTitle();
 		}
 	}
@@ -608,7 +610,6 @@ public class SBTabMenuController implements Initializable {
 		fileChooser.setTitle("Specify a directory and a name to save as");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Document", "*.xml"));
 		fileChooser.setInitialFileName(mainView.getDoc().getName());
-		fileChooser.setInitialDirectory(new File(controller.getFilePath()).getParentFile());
 		String filePath = "";
 		File file = fileChooser.showSaveDialog(mainView.getStage());
 		String lastOutputDir = thePreferences.get("last_output_dir", System.getProperty("user.home"));
@@ -750,29 +751,10 @@ public class SBTabMenuController implements Initializable {
 	}
 
 	private boolean isDocChanged() {
-		TableType[] TableNames = TableType.values();
-		for (int k = 0; k < TableNames.length; k++) {
-			TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView.getTableProducer()
-					.getTableView(TableNames[k]);
-			ObservableList<TableColumn<SBTabReactionWrapper, ?>> currentColumns = tableView.getColumns();
-			for (int i = 0; i < currentColumns.size(); i++) {
-				if (tableView.getColumns().get(i).getId() == "changed") {
-					return true;
-				}
-			}
-		}
-		return false;
+		return mainView.getDocument().getChanged();
 	}
 
 	private void setDocUnchanged() {
-		TableType[] TableNames = TableType.values();
-		for (int k = 0; k < TableNames.length; k++) {
-			TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView.getTableProducer()
-					.getTableView(TableNames[k]);
-			ObservableList<TableColumn<SBTabReactionWrapper, ?>> currentColumns = tableView.getColumns();
-			for (int i = 0; i < currentColumns.size(); i++) {
-				currentColumns.get(i).setId("noChanges");
-			}
-		}
+		mainView.getDocument().setChanged(false);
 	}
 }
