@@ -15,6 +15,7 @@ import org.sbml.jsbml.SBMLDocument;
 
 import de.sbtab.containers.SBTabReactionWrapper;
 import de.sbtab.controller.SBTabController;
+import de.sbtab.controller.SBTabDocument;
 import de.sbtab.services.TableType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -71,7 +72,7 @@ public class SBTabMenuController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		if (mainView.getDoc() == null) {
+		if (mainView.getDocument() == null) {
 			lockMenu(true);
 		}
 		// TODO: prevent closing of stage
@@ -228,8 +229,7 @@ public class SBTabMenuController implements Initializable {
 			@Override
 			public Void call() {
 				if (filePath != null) {
-					newGUI.setDoc(controller.read(filePath));
-					newGUI.setFilePath(filePath);
+					newGUI.setDocument(controller.read(filePath));
 				}
 				return null;
 			}
@@ -257,9 +257,8 @@ public class SBTabMenuController implements Initializable {
 		Task<Void> task = new Task<Void>() {
 			@Override
 			public Void call() {
-				SBMLDocument newDoc = new SBMLDocument(3, 1);
-				newDoc.setName("new document");
-				newGUI.setDoc(newDoc);
+				SBTabDocument<SBMLDocument> newDoc = new SBTabDocument<SBMLDocument>(new SBMLDocument(3, 1),new File("new file"));
+				newGUI.setDocument(newDoc);
 				return null;
 			}
 
@@ -473,7 +472,7 @@ public class SBTabMenuController implements Initializable {
 			@Override
 			public Void call() {
 				if (filePath != null) {
-					mainView.setDoc(controller.read(filePath));
+					mainView.setDocument(controller.read(filePath));
 				}
 				return null;
 			}
@@ -578,7 +577,7 @@ public class SBTabMenuController implements Initializable {
 				mainView.clearView("No file specified.");
 				lockMenu(true);
 			} else if (result.get() == buttonTypeDontSave) {
-				mainView.setDoc(null);
+				mainView.setDocument(null);
 				mainView.updateTitle();
 				mainView.clearView("No file specified.");
 				lockMenu(true);
@@ -586,7 +585,7 @@ public class SBTabMenuController implements Initializable {
 			} else {
 			}
 		} else {
-			mainView.setDoc(null);
+			mainView.setDocument(null);
 			mainView.updateTitle();
 			mainView.clearView("No file specified.");
 			lockMenu(true);

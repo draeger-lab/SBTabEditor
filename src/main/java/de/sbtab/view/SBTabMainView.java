@@ -1,5 +1,6 @@
 package de.sbtab.view;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -10,6 +11,7 @@ import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.util.ResourceManager;
 
 import de.sbtab.controller.SBTabController;
+import de.sbtab.controller.SBTabDocument;
 import de.sbtab.services.SBTabTableProducer;
 import de.sbtab.utils.SBTabTableHandler;
 import javafx.application.Application;
@@ -33,8 +35,9 @@ public class SBTabMainView extends Application {
 	private static final String THE_PROJECT_NAME = "TabMod";
 	private static final String THE_VERSION = "1.4";
 	
-	private SBMLDocument doc;
+	
 	private SBTabController controller = new SBTabController();
+	private SBTabDocument<SBMLDocument> doc;
 	private FXMLLoader menuLoader = new FXMLLoader();
 	private FXMLLoader treeLoader = new FXMLLoader();
 	private BorderPane root = new BorderPane();
@@ -81,7 +84,7 @@ public class SBTabMainView extends Application {
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_48.ico")));
 
 		if (isDocumentLoaded()) {
-		    stage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + doc.getName());
+		    stage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + doc.getFile().getName());
 		}
 		else {
 			stage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION);	
@@ -129,7 +132,7 @@ public class SBTabMainView extends Application {
 	// handleOpen() fixed
 	public void reInit() {
 		if (doc != null) {
-			tableProducer = new SBTabTableProducer(doc);
+			tableProducer = new SBTabTableProducer(doc.getTempDoc());
 			assignStatusBar("Ready.", 0D);
 			try {
 				treeLoader = new FXMLLoader();
@@ -159,12 +162,22 @@ public class SBTabMainView extends Application {
 	}
 
 	public void setDoc(SBMLDocument doc) {
-		this.doc = doc;
+		this.doc= new SBTabDocument<SBMLDocument>(doc,null);
+		this.doc.setTempDoc(doc);
 		this.controller.setDoc(doc);
+	}
+	
+	public void setFile(File file) {
+		this.doc.setFile(file);
+	}
+	
+	public void setDocument (SBTabDocument<SBMLDocument> document) {
+		doc= document;
+		this.controller.setDocument(document);
 	}
 
 	public SBMLDocument getDoc() {
-		return doc;
+		return doc.getTempDoc();
 	}
 	
 	public SBTabTableProducer getTableProducer(){
@@ -200,10 +213,14 @@ public class SBTabMainView extends Application {
 	
 	public void updateTitle() {
 		if (isDocumentLoaded()) {
-		    thisStage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + doc.getName());
+		    thisStage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + doc.getFile().getName());
 		}
 		else {
 			thisStage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION);	
 		}
+	}
+
+	public SBTabDocument<SBMLDocument> getDocument() {
+		return doc;
 	}
 }
