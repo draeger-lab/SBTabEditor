@@ -2,8 +2,10 @@ package de.sbtab.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.prefs.Preferences;
 import java.util.zip.GZIPInputStream;
@@ -190,8 +192,14 @@ public class SBTabController {
       System.out.println("Internet Connected");
     }catch (Exception e){
       System.out.println("Sorry, No Internet Connection");
-      String theDocumentationName = "Documentation.html";
-      url = this.getClass().getResource(theDocumentationName);
+      String theDocumentationName = System.getProperty("user.dir")+"Documentation.html";
+      try {
+        url = Paths.get(theDocumentationName).toUri().toURL();
+      } catch (MalformedURLException e1) {
+        // TODO Auto-generated catch block
+        url = null;
+        e1.printStackTrace();
+      };
     }
     return url;
 	}

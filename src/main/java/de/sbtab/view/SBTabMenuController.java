@@ -710,7 +710,9 @@ public class SBTabMenuController implements Initializable {
 	}
 
 	private void handleDocumentation() {
-		URL url = controller.getDocumentation();
+	  String localDocumentationPath = System.getProperty("user.dir")+"/docs/.html";
+	  String theDocumentationURL = "https://draeger-lab.github.io/SBTabEditor/";
+		URL url = controller.getDocumentation(theDocumentationURL, localDocumentationPath);
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		Stage stage = new Stage();
 		WebView browser = new WebView();

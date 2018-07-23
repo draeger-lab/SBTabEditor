@@ -40,7 +40,7 @@ class SBTabControllerTest {
 
 	@Test
 	void testGetDocumentation() {
-		assertNotNull(controller.getDocumentation());
+		assertNotNull(controller.getDocumentation("https://draeger-lab.github.io/SBTabEditor/", System.getProperty("user.dir")+"/docs/index.html"));
 	}
 	
 	@Test
