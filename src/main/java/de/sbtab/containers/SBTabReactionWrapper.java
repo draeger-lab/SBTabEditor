@@ -23,7 +23,7 @@ public class SBTabReactionWrapper implements SBTabElement {
 	public void initialize() {
 		// TODO: figure out what fields do we need to work with
 		reactionName = new SimpleStringProperty(reaction.getName());
-		reactionId = new SimpleStringProperty(reaction.getDerivedUnits());
+		reactionId = new SimpleStringProperty(reaction.getId());
 		reactionSBOTerm = new SimpleStringProperty(reaction.getSBOTermID());
 	}
 
