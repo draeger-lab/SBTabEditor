@@ -24,12 +24,11 @@ public class SBTabController {
 
   private static final transient Logger LOGGER = LogManager.getLogger(SBTabController.class);
   private SBTabDocument<SBMLDocument> doc =null;
-  private String filePath = null;
   // declare my variable at the top of my Java class
   private static Preferences prefs;
 
   public String getFilePath() {
-    return filePath;
+    return doc.getFile().getAbsolutePath();
   }
 
   public SBMLDocument getDoc() {
@@ -100,7 +99,6 @@ public class SBTabController {
    * @return {@link SBMLDocument}
    */
   public SBTabDocument<SBMLDocument> read(String filePath) {
-    this.filePath = filePath;
     File theSBMLFile = new File(filePath);
     boolean isFile = theSBMLFile.isFile();
     System.out.println(getFileExtension(theSBMLFile));
@@ -217,9 +215,5 @@ public class SBTabController {
 
     }
     return url;
-  }
-
-  public void setFilePath(String path) {
-    filePath = path;
   }
 }

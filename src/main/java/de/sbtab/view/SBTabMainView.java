@@ -63,7 +63,6 @@ public class SBTabMainView extends Application {
 				
 			    if (isDocumentLoaded()) {
 				setViewOnFile();
-				controller.setFilePath(Parameters.get(0));
 			    }
 			    else {
 				System.out.println("invalid command, please enter a path to a valid .xml or .gz file next time!");
@@ -205,10 +204,6 @@ public class SBTabMainView extends Application {
 	
 	public BorderPane getRoot(){
 		return root;
-	}
-
-	public void setFilePath(String filePath) {
-		controller.setFilePath(filePath);	
 	}
 	
 	public void updateTitle() {

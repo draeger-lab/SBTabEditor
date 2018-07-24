@@ -492,7 +492,6 @@ public class SBTabMenuController implements Initializable {
 				super.succeeded();
 				if (filePath != null) {
 					lockMenu(false);
-					controller.setFilePath(filePath);
 					mainView.updateTitle();
 					mainView.reInit();
 					newFile = false;
