@@ -213,7 +213,11 @@ public class SBTabMainView extends Application {
 	
 	public void updateTitle() {
 		if (isDocumentLoaded()) {
+			if (doc.getFile()!=null) {
 		    thisStage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + doc.getFile().getName());
+		} else {
+			thisStage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + "new file");
+		}
 		}
 		else {
 			thisStage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION);	

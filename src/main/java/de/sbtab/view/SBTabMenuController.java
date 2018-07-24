@@ -76,7 +76,7 @@ public class SBTabMenuController implements Initializable {
 		if (mainView.getDocument() == null) {
 			lockMenu(true);
 		}
-		else if(mainView.getDocument().getFile().getName()=="new file") {
+		else if(mainView.getDocument().getFile()==null) {
 			newFile=true;
 		}
 		// TODO: prevent closing of stage
@@ -261,7 +261,7 @@ public class SBTabMenuController implements Initializable {
 		Task<Void> task = new Task<Void>() {
 			@Override
 			public Void call() {
-				SBTabDocument<SBMLDocument> newDoc = new SBTabDocument<SBMLDocument>(new SBMLDocument(3, 1),new File("new file"));
+				SBTabDocument<SBMLDocument> newDoc = new SBTabDocument<SBMLDocument>(new SBMLDocument(3, 1),null);
 				newGUI.setDocument(newDoc);
 				return null;
 			}
@@ -441,8 +441,7 @@ public class SBTabMenuController implements Initializable {
 			public Void call() {
 				try {
 					SBMLDocument newDoc = new SBMLDocument(3, 1);
-					newDoc.setName("new document");
-					mainView.setDoc(newDoc);
+					mainView.setDocument(new SBTabDocument<SBMLDocument>(newDoc, null));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -609,7 +608,12 @@ public class SBTabMenuController implements Initializable {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Specify a directory and a name to save as");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Document", "*.xml"));
-		fileChooser.setInitialFileName(mainView.getDoc().getName());
+		if (newFile) {
+			fileChooser.setInitialFileName("new file");
+		}
+		else {
+		fileChooser.setInitialFileName(mainView.getDocument().getFile().getName());
+		}
 		String filePath = "";
 		File file = fileChooser.showSaveDialog(mainView.getStage());
 		String lastOutputDir = thePreferences.get("last_output_dir", System.getProperty("user.home"));
