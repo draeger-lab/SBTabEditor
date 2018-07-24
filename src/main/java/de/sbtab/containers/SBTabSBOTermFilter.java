@@ -1,12 +1,18 @@
 package de.sbtab.containers;
 
 import org.sbml.jsbml.util.filters.Filter;
+
+import de.sbtab.controller.SBTabController;
+
 import org.sbml.jsbml.SBO;
 import org.sbml.jsbml.SBase;
 
 public class SBTabSBOTermFilter implements Filter{
 	
+//	SBTabController controller;
+//	SBase sbase = controller.getDoc();
 	private int sboTerm;
+	
 	
 	public SBTabSBOTermFilter(int sboterm){
 		this.sboTerm = sboterm;
@@ -14,10 +20,9 @@ public class SBTabSBOTermFilter implements Filter{
 	
 	@Override
 	public boolean accepts(Object o) {
-		//if (sboTerm instanceof SBase)
-		if(o instanceof SBase){
+		//if(sbase.getSBOTermID() != null){
 			return SBO.isChildOf(sboTerm, SBO.getCatalyst());
-		}
-		return false;
+		//}
+		//return false;
 	}
 }
