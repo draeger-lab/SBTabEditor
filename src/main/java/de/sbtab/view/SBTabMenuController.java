@@ -312,48 +312,8 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doValidate(ActionEvent event) {
-		// TODO: Implement validate
-		int errors = controller.numErrors(mainView.getDoc());
-		if (errors == 0) {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			alert.setGraphic(new ImageView(this.getClass().getResource("ApproveIcon_64.png").toString()));
-			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-			alert.setTitle("Validator");
-			alert.setHeaderText(null);
-			alert.setContentText("Your file is a valid .sbml file");
-			alert.showAndWait();
-
-		} else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Exception Dialog");
-			alert.setHeaderText("You have " + errors + "Errors in your Document.");
-			alert.setContentText("List of all Errors");
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-			alert.setGraphic(new ImageView(this.getClass().getResource("DisapproveIcon_64.png").toString()));
-
-			Label label = new Label("The exception stacktrace was:");
-
-			TextArea textArea = new TextArea(controller.stringValidator(mainView.getDoc()));
-			textArea.setEditable(false);
-
-			textArea.setMaxWidth(Double.MAX_VALUE);
-			textArea.setMaxHeight(Double.MAX_VALUE);
-			GridPane.setVgrow(textArea, Priority.ALWAYS);
-			GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-			GridPane expContent = new GridPane();
-			expContent.setMaxWidth(Double.MAX_VALUE);
-			expContent.add(label, 0, 0);
-			expContent.add(textArea, 0, 1);
-
-			// Set expandable Exception into the dialog pane.
-			alert.getDialogPane().setExpandableContent(expContent);
-
-			alert.showAndWait();
-		}
-
+		handleValidate();
+		
 	}
 
 	@FXML
@@ -647,6 +607,64 @@ public class SBTabMenuController implements Initializable {
 		}
 		return null;
 	}
+	
+	private void handleValidate(){
+		Task<Void> task = new Task<Void>() {
+			@Override
+			public Void call() {
+				int errors = controller.numErrors(mainView.getDoc());
+				if (errors == 0) {
+					Alert alert = new Alert(AlertType.CONFIRMATION);
+					Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+					alert.setGraphic(new ImageView(this.getClass().getResource("ApproveIcon_64.png").toString()));
+					stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+					alert.setTitle("Validator");
+					alert.setHeaderText(null);
+					alert.setContentText("Your file is a valid .sbml file");
+					alert.showAndWait();
+
+				} else {
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("Exception Dialog");
+					alert.setHeaderText("You have " + errors + "Errors in your Document.");
+					alert.setContentText("List of all Errors");
+					Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+					stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+					alert.setGraphic(new ImageView(this.getClass().getResource("DisapproveIcon_64.png").toString()));
+
+					Label label = new Label("The exception stacktrace was:");
+
+					TextArea textArea = new TextArea(controller.stringValidator(mainView.getDoc()));
+					textArea.setEditable(false);
+
+					textArea.setMaxWidth(Double.MAX_VALUE);
+					textArea.setMaxHeight(Double.MAX_VALUE);
+					GridPane.setVgrow(textArea, Priority.ALWAYS);
+					GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+					GridPane expContent = new GridPane();
+					expContent.setMaxWidth(Double.MAX_VALUE);
+					expContent.add(label, 0, 0);
+					expContent.add(textArea, 0, 1);
+
+					// Set expandable Exception into the dialog pane.
+					alert.getDialogPane().setExpandableContent(expContent);
+				}
+				
+				return null;
+			}
+
+			@Override
+			protected void running() {
+					super.running();
+					mainView.assignStatusBar("Validating...",-1D);
+			}
+		};
+		Thread thread = new Thread(task);
+		thread.setDaemon(true);
+		thread.start();
+	}
+
 
 	private void handleHideColumns() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
