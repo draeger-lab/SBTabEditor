@@ -95,7 +95,6 @@ public class SBTabController {
     this.filePath = filePath;
     File theSBMLFile = new File(filePath);
     boolean isFile = theSBMLFile.isFile();
-    System.out.println(getFileExtension(theSBMLFile));
     if (isFile) {
       if (Objects.equals(getFileExtension(theSBMLFile), ".xml")) {
         try {

@@ -56,7 +56,7 @@ public class SBTabMainView extends Application {
 			List<String> Parameters = this.getParameters().getRaw();
 			
 			if (!Parameters.isEmpty()) {
-				doc = controller.read(Parameters.get(0));
+//				doc = controller.read(Parameters.get(0));
 				
 			    if (isDocumentLoaded()) {
 				setViewOnFile();
@@ -71,7 +71,7 @@ public class SBTabMainView extends Application {
 				setViewDefault();	
 			}
 		}
-
+		
 		Scene scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
 		// Add icons from resources to the Icon-List of this stage.
