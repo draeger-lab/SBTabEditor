@@ -49,7 +49,7 @@ public class SBTabSpeciesTable extends SBTabViewAbstractTable implements SBTabTa
 		// TODO: figure out what fields do we need to work with
 		tableView.getColumns().add(defineColumn("Name", SBTabSpeciesWrapper::getSpeciesName, SBTabSpeciesWrapper::setSpeciesName));	
 		tableView.getColumns().add(defineColumn("Id", SBTabSpeciesWrapper::getSpeciesId, SBTabSpeciesWrapper::setSpeciesId));	
-		tableView.getColumns().add(defineColumn("SBO Term", SBTabSpeciesWrapper::getSpeciesSBOTerm, SBTabSpeciesWrapper::setSpeciesSBOTerm));
+		tableView.getColumns().add(defineColumn("Compartment", SBTabSpeciesWrapper::getSpeciesCompartment, SBTabSpeciesWrapper::setSpeciesCompartment));
 		tableView.getItems().setAll(data);
 		tableView.setEditable(true);
 

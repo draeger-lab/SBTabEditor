@@ -5,7 +5,7 @@ import de.sbtab.services.TableType;
 import javafx.scene.layout.BorderPane;
 
 /**
- * Used to handle click events in <p>SBTabTreeController</p>
+ * Used to handle events in {@link de.sbtab.view.SBTabTreeController}
  * @author zakharc
  * 
  * */
@@ -35,6 +35,6 @@ public class SBTabTableHandler {
 	 * Convert string to low case and capitalize it. Example: "REACTION" -> "Reaction"
 	 * */
 	private String capitalizeString(TableType type) {
-		return type.toString().substring(0,1).toUpperCase() + type.toString().substring(1).toLowerCase();
+		return (type.toString().substring(0,1).toUpperCase() + type.toString().substring(1).toLowerCase()).replaceAll("_", " ");
 	}
 }

@@ -9,7 +9,7 @@
 	<version>0.1.4</version>
 	<packaging>jar</packaging>
 
-	<name>sbtab</name>
+	<name>SBTabEditor</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,6 +18,64 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
 
+	<developers>
+	    <developer>
+			<id>FranziskaDaumueller</id>
+			<name>Franziska Daumüller</name>
+			<url>https://github.com/FranziskaDaumueller</url>			
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>		
+	    <developer>
+			<id>GranitGuri</id>
+			<name>Granit Guri</name>
+			<url>https://github.com/GranitGuri</url>			
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>		
+	    <developer>
+			<id>MelinaMaier</id>
+			<name>Melina Maier</name>
+			<url>https://github.com/MelinaMaier</url>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+	    <developer>
+			<id>AntonJuliusRabe</id>
+			<name>Anton Rabe</name>
+			<url>https://github.com/AntonJuliusRabe</url>			
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>			
+	    <developer>
+			<id>JuliWanner</id>
+			<name>Julian Wanner</name>
+			<url>https://github.com/JuliWanner</url>			
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+	    <developer>
+			<id>zakharc</id>
+			<name>Mykola Zakharchuk</name>
+			<url>https://github.com/zakharc</url>			
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>		
+	    <developer>
+			<id>draeger</id>
+			<name>Prof. Dr. Andreas Dräger</name>
+			<url>https://github.com/draeger</url>			
+			<roles>
+				<role>Mentor</role>
+			</roles>
+		</developer>			
+    </developers>
 	<dependencies>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -118,6 +176,19 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.7.1</version>
+				<configuration>
+					<outputDirectory>docs</outputDirectory>
+				</configuration>
+			</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.0.1</version>
+      </plugin>		
 		</plugins>
 	</build>
 </project>

@@ -10,7 +10,7 @@ public class SBTabSpeciesWrapper implements SBTabElement {
 	private Species species;
 	private StringProperty speciesName;
 	private StringProperty speciesId;
-	private StringProperty speciesSBOTerm;
+	private StringProperty speciesCompartment;
 	
 	public SBTabSpeciesWrapper(Species species) {
 		if (species != null) {
@@ -23,7 +23,8 @@ public class SBTabSpeciesWrapper implements SBTabElement {
 		// TODO: figure out what fields do we need to work with
 		speciesName = new SimpleStringProperty(species.getName());		
 		speciesId = new SimpleStringProperty(species.getId());
-		speciesSBOTerm = new SimpleStringProperty(species.getSBOTermID());
+		speciesCompartment = new SimpleStringProperty(species.getCompartment());
+		
 	}
 	
 
@@ -51,11 +52,11 @@ public class SBTabSpeciesWrapper implements SBTabElement {
 		this.speciesId = speciesId;
 	}
 
-	public StringProperty getSpeciesSBOTerm() {
-		return speciesSBOTerm;
+	public StringProperty getSpeciesCompartment() {
+		return speciesCompartment;
 	}
 
-	public void setSpeciesSBOTerm(StringProperty speciesSBOTerm) {
-		this.speciesSBOTerm = speciesSBOTerm;
+	public void setSpeciesCompartment(StringProperty speciesCompartment) {
+		this.speciesCompartment = speciesCompartment;
 	}
 }

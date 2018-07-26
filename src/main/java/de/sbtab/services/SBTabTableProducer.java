@@ -32,11 +32,17 @@ public class SBTabTableProducer {
 			case REACTIONS:
 				tablePull.put(TableType.REACTIONS, new SBTabReactionTable(doc).makeTableView());
 				return tablePull.get(type);
-			case COMPARTEMENTS:
-				tablePull.put(TableType.COMPARTEMENTS, new SBTabCompartmentTable(doc).makeTableView());
+			case COMPARTMENTS:
+				tablePull.put(TableType.COMPARTMENTS, new SBTabCompartmentTable(doc).makeTableView());
 				return tablePull.get(type);
 			case SPECIES:
 				tablePull.put(TableType.SPECIES, new SBTabSpeciesTable(doc).makeTableView());
+				return tablePull.get(type);
+			case UNIT_DEFINITIONS:
+				tablePull.put(TableType.UNIT_DEFINITIONS, new SBTabUnitDefinitionTable(doc).makeTableView());
+				return tablePull.get(type);
+			case PARAMETERS:
+				tablePull.put(TableType.PARAMETERS, new SBTabParameterTable(doc).makeTableView());
 				return tablePull.get(type);
 			// TODO: add cases for another table factories
 			default:

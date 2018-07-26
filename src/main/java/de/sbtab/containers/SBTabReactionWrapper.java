@@ -1,5 +1,6 @@
 package de.sbtab.containers;
 
+import org.sbml.jsbml.KineticLaw;
 import org.sbml.jsbml.Reaction;
 
 import de.sbtab.controller.SBTabElement;
@@ -11,9 +12,6 @@ public class SBTabReactionWrapper implements SBTabElement {
 	private StringProperty reactionName;
 	private StringProperty reactionId;
 	private StringProperty reactionSBOTerm;
-	private StringProperty reactionCompartment;
-	//private StringProperty reactionKineticLaw;
-	
 
 	public SBTabReactionWrapper(Reaction reaction) {
 		if (reaction != null) {
@@ -27,8 +25,6 @@ public class SBTabReactionWrapper implements SBTabElement {
 		reactionName = new SimpleStringProperty(reaction.getName());
 		reactionId = new SimpleStringProperty(reaction.getId());
 		reactionSBOTerm = new SimpleStringProperty(reaction.getSBOTermID());
-		reactionCompartment = new SimpleStringProperty(reaction.getCompartment());
-		//reactionKineticLaw = new SimpleStringProperty(reaction.getKineticLaw(), null);
 	}
 
 	private void setReaction(Reaction reaction) {
@@ -62,20 +58,4 @@ public class SBTabReactionWrapper implements SBTabElement {
 	public StringProperty getSBOTerm() {
 		return reactionSBOTerm;
 	}
-
-	public void setCompartment(StringProperty reactionCompartment) {
-		this.reactionCompartment = reactionCompartment;
-	}
-
-	public StringProperty getCompartment() {
-		return reactionCompartment;
-	}
-	
-//	public void setKineticLaw(StringProperty reactionKineticLaw) {
-//		this.reactionKineticLaw = reactionKineticLaw;
-//	}
-//
-//	public StringProperty getKineticLaw() {
-//		return reactionKineticLaw;
-//	}
 }
