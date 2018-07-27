@@ -1,4 +1,4 @@
-package de.sbtab.containers;
+package de.sbtab.utils;
 
 import org.sbml.jsbml.util.filters.Filter;
 

@@ -56,7 +56,7 @@ public class SBTabMainView extends Application {
 			List<String> Parameters = this.getParameters().getRaw();
 			
 			if (!Parameters.isEmpty()) {
-//				doc = controller.read(Parameters.get(0));
+				doc = controller.read(Parameters.get(0));
 				
 			    if (isDocumentLoaded()) {
 				setViewOnFile();

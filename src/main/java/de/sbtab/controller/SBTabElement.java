@@ -10,7 +10,7 @@ public interface SBTabElement{
 	void initialize();
 	
 	/**
-	 * Used to save data to corresponding {@code JSBML} Element
+	 * Used to save data to corresponding {@code JSBML}
 	 * */
-	void savaData();
+	void saveData();
 }

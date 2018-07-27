@@ -10,7 +10,6 @@ public class SBTabUnitDefinitionWrapper implements SBTabElement {
 	private UnitDefinition unitDefinition;
 	private StringProperty unitDefinitionName;
 	private StringProperty unitDefinitionId;
-	private StringProperty unitDefinitionSBOTerm;
 	
 	public SBTabUnitDefinitionWrapper(UnitDefinition unitDefinition) {
 		if (unitDefinition != null) {
@@ -26,7 +25,7 @@ public class SBTabUnitDefinitionWrapper implements SBTabElement {
 	}
 
 	@Override
-	public void savaData() {
+	public void saveData() {
 		unitDefinition.setName(unitDefinitionName.getValueSafe());
 		unitDefinition.setId(unitDefinitionId.getValueSafe());
 	}
@@ -45,6 +44,7 @@ public class SBTabUnitDefinitionWrapper implements SBTabElement {
 
 	public void setUnitDefinitionName(StringProperty unitDefinitionName) {
 		this.unitDefinitionName = unitDefinitionName;
+		saveData();
 	}
 
 	public StringProperty getUnitDefinitionId() {
@@ -53,5 +53,6 @@ public class SBTabUnitDefinitionWrapper implements SBTabElement {
 
 	public void setUnitDefinitionId(StringProperty unitDefinitionId) {
 		this.unitDefinitionId = unitDefinitionId;
+		saveData();
 	}
 }

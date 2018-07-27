@@ -28,12 +28,6 @@ public class SBTabReactionWrapper implements SBTabElement {
 	}
 
 	@Override
-	public void savaData() {
-		reaction.setName(reactionName.getValueSafe());
-		reaction.setId(reactionId.getValueSafe());
-		reaction.setSBOTerm(reactionSBOTerm.getValueSafe());
-	}
-	
 	public void saveData() {
 		reaction.setName(reactionName.getValueSafe());
 		reaction.setId(reactionId.getValueSafe());

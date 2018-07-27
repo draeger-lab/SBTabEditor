@@ -27,7 +27,7 @@ public class SBTabCompartmentWrapper implements SBTabElement {
 	}
 
 	@Override
-	public void savaData() {
+	public void saveData() {
 		compartment.setName(compartmentName.getValueSafe());
 		compartment.setId(compartmentId.getValueSafe());
 		compartment.setSBOTerm(compartmentSBOTerm.getValueSafe());
@@ -47,6 +47,7 @@ public class SBTabCompartmentWrapper implements SBTabElement {
 
 	public void setCompartmentName(StringProperty compartmentName) {
 		this.compartmentName = compartmentName;
+		saveData();
 	}
 
 	public StringProperty getCompartmentId() {
@@ -55,6 +56,7 @@ public class SBTabCompartmentWrapper implements SBTabElement {
 
 	public void setCompartmentId(StringProperty compartmentId) {
 		this.compartmentId = compartmentId;
+		saveData();
 	}
 
 	public StringProperty getCompartmentSBOTerm() {
@@ -63,5 +65,6 @@ public class SBTabCompartmentWrapper implements SBTabElement {
 
 	public void setCompartmentSBOTerm(StringProperty compartmentSBOTerm) {
 		this.compartmentSBOTerm = compartmentSBOTerm;
+		saveData();
 	}
 }
