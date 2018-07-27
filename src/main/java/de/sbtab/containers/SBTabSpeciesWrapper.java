@@ -26,7 +26,13 @@ public class SBTabSpeciesWrapper implements SBTabElement {
 		speciesCompartment = new SimpleStringProperty(species.getCompartment());
 		
 	}
-	
+
+	@Override
+	public void savaData() {
+		species.setName(speciesName.getValueSafe());
+		species.setId(speciesId.getValueSafe());
+		species.setCompartment(speciesCompartment.getValueSafe());
+	}
 
 	public Species getSpecies() {
 		return species;

@@ -24,7 +24,12 @@ public class SBTabUnitDefinitionWrapper implements SBTabElement {
 		unitDefinitionName = new SimpleStringProperty(unitDefinition.getName());		
 		unitDefinitionId = new SimpleStringProperty(unitDefinition.getId());
 	}
-	
+
+	@Override
+	public void savaData() {
+		unitDefinition.setName(unitDefinitionName.getValueSafe());
+		unitDefinition.setId(unitDefinitionId.getValueSafe());
+	}
 
 	public UnitDefinition getUnitDefinition() {
 		return unitDefinition;

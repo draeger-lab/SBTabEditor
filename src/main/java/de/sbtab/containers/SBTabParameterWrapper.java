@@ -25,7 +25,11 @@ public class SBTabParameterWrapper implements SBTabElement {
 		parameterId = new SimpleStringProperty(parameter.getId());
 		parameterSBOTerm = new SimpleStringProperty(parameter.getSBOTermID());
 	}
-	
+
+	@Override
+	public void savaData() {
+		parameter.setName("");
+	}
 
 	public Parameter getParameter() {
 		return parameter;

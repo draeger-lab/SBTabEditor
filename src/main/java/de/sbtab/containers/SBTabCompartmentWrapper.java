@@ -25,7 +25,13 @@ public class SBTabCompartmentWrapper implements SBTabElement {
 		compartmentId = new SimpleStringProperty(compartment.getId());
 		compartmentSBOTerm = new SimpleStringProperty(compartment.getSBOTermID());
 	}
-	
+
+	@Override
+	public void savaData() {
+		compartment.setName(compartmentName.getValueSafe());
+		compartment.setId(compartmentId.getValueSafe());
+		compartment.setSBOTerm(compartmentSBOTerm.getValueSafe());
+	}
 
 	public Compartment getCompartment() {
 		return compartment;
