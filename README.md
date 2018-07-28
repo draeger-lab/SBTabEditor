@@ -1,5 +1,5 @@
 # SBTabEditor<sup>0.1.4</sup>
-[![Version](https://img.shields.io/badge/version-0.1.4-yellow.svg)[![License (MIT)](https://img.shields.io/github/license/mashape/apistatus.svg)](http://opensource.org/licenses/MIT)[![Build Status](https://travis-ci.com/draeger-lab/SBTabEditor.svg?token=ByDn1ybpoXpKvMHXpZD4&branch=master)](https://travis-ci.com/draeger-lab/SBTabEditor)
+![Version](https://img.shields.io/badge/version-0.1.4-yellow.svg) [![License (MIT)](https://img.shields.io/github/license/mashape/apistatus.svg)](http://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.com/draeger-lab/SBTabEditor.svg?token=ByDn1ybpoXpKvMHXpZD4&branch=master)](https://travis-ci.com/draeger-lab/SBTabEditor)
 <img align="right" src="src/main/resources/de/sbtab/view/Icon_256.png"/>
 
 **Free, open-source application to help you read, write, manipulate and validate SBML files**
