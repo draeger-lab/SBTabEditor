@@ -65,6 +65,9 @@ public class SBTabMenuController implements Initializable {
 	private SBTabController controller;
 	private boolean newFile;
 
+	/**
+	 * Contains all column names. Add column names, when new columns are added. 
+	 */
 	private String[] checkBoxNames = { "Name", "Id", "SBO Term", "Compartment" };
 
 	public SBTabMenuController() {
@@ -389,13 +392,26 @@ public class SBTabMenuController implements Initializable {
 
 	}
 
+	/**
+	 * Values in checked are changed, when checkbox is clicked. Add new value, when a new column is added.
+	 */
 	private boolean[] checked = { true, true, true, true };
 
+	/**
+	 * Opens new window with checkboxes for each column. Unchecked columns are hidden.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void doHideColumns(ActionEvent event) {
 		handleHideColumns();
 	}
 
+	/**
+	 * shows all hidden columns 
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void doShowHiddenColumns(ActionEvent event) {
 		for (int i = 0; i < checked.length; i++) {
@@ -716,7 +732,11 @@ public class SBTabMenuController implements Initializable {
 		thread.start();
 	}
 
-
+	/**
+	 * Opens new scene with checkboxes for each column. 
+	 * New columns must be added to {@link SBTabMenuController#checkBoxNames}. 
+	 * Calls {@link SBTabMenuController#handleChecked()} to hide checked columns.
+	 */
 	private void handleHideColumns() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -749,25 +769,13 @@ public class SBTabMenuController implements Initializable {
 
 		Button buttonOk = new Button("Ok");
 		buttonOk.setPrefWidth(110);
+		buttonOk.setOnAction(event -> {handleChecked(); stage.hide();});
+		
 		Button buttonCancel = new Button("Cancel");
 		buttonCancel.setPrefWidth(110);
+		buttonCancel.setOnAction(event -> {stage.hide();});
 
 		hBox.getChildren().addAll(buttonOk, buttonCancel);
-
-		buttonOk.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				handleChecked();
-				stage.hide();
-			}
-		});
-
-		buttonCancel.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				stage.hide();
-			}
-		});
 
 		BorderPane root = new BorderPane();
 		root.setTop(text);
@@ -802,6 +810,9 @@ public class SBTabMenuController implements Initializable {
 		stage.show();
 	}
 
+	/**
+	 * goes through all columns to hide unchecked columns
+	 */
 	private void handleChecked() {
 		TableType[] TableNames = TableType.values();
 		for (int k = 0; k < TableNames.length; k++) {
