@@ -30,7 +30,7 @@ public class SBTabParameterWrapper implements SBTabElement {
 	public void saveData() {
 		parameter.setName(parameterName.getValueSafe());
 		parameter.setId(parameterId.getValueSafe());
-		parameter.setSBOTerm(parameterName.getValueSafe());
+		parameter.setSBOTerm(parameterSBOTerm.getValueSafe());
 	}
 
 	public Parameter getParameter() {
