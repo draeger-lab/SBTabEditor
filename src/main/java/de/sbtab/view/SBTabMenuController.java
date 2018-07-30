@@ -840,7 +840,10 @@ public class SBTabMenuController implements Initializable {
 	 * 
 	 */
 	private boolean isDocChanged() {
+		if (mainView.getDocument()!=null) {
 		return mainView.getDocument().getChanged();
+		}
+		return false;
 	}
 	/**
 	 * This method is called to set the documents property Changed to false
