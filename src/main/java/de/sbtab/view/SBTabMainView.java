@@ -26,6 +26,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * Method that extends javafx Application and can be ran calling launch().
+ * Can also be constructed and be started on a new stage using start().
+ * Contains Methods modifying the stage and loading aspects of the GUI.
+ * 
+ *
+ */
 public class SBTabMainView extends Application {
 	
 	private static final double DEFAULT_WIDTH = 800;
@@ -105,6 +112,10 @@ public class SBTabMainView extends Application {
             preferences.putDouble(WINDOW_HEIGHT, stage.getHeight());
         });
 	}
+	/**
+	 * Loads aspects of the GUI that are necessary to view a file
+	 * @throws Exception
+	 */
 
 	public void setViewOnFile() throws Exception {
 		menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
@@ -116,7 +127,11 @@ public class SBTabMainView extends Application {
 		root.setTop(menuBar);
 		reInit();
 	}
-
+	
+	/**
+	 * Loads default aspects of the GUI (locked menu bar)
+	 * @throws Exception
+	 */
 	public void setViewDefault() throws Exception {
 		menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
 		menuLoader.setController(new SBTabMenuController(this, controller));
@@ -126,9 +141,9 @@ public class SBTabMainView extends Application {
 
 	}
 
-	// TODO: to be removed after redundant static field are eliminated and
-	// concurrency in
-	// handleOpen() fixed
+	/**
+	 * Loads missing aspects of the default view once a file was loaded.
+	 */
 	public void reInit() {
 		if (doc != null) {
 			tableProducer = new SBTabTableProducer(doc.getTempDoc());
@@ -145,6 +160,10 @@ public class SBTabMainView extends Application {
 			}
 		}
 	}
+	/**
+	 * Resets view to default.
+	 * @param message Status Bar Message
+	 */
 
 	public void clearView(String message) {
 		root.setLeft(null);
@@ -159,22 +178,35 @@ public class SBTabMainView extends Application {
 	public String getTheProjectName() {
 		return THE_PROJECT_NAME;
 	}
+	/**
+	 * Sets a new document constructed from a given SBMLDocument as the current document
+	 * @param doc
+	 */
 
 	public void setDoc(SBMLDocument doc) {
 		this.doc= new SBTabDocument<SBMLDocument>(doc,null);
 		this.doc.setTempDoc(doc);
 		this.controller.setDoc(doc);
 	}
-	
+	/**
+	 * Sets the current documents file property to a given file
+	 * @param file
+	 */
 	public void setFile(File file) {
 		this.doc.setFile(file);
 	}
 	
+	/**
+	 * Sets the current documents TempDoc property to a given document
+	 * @param SBMLDocument
+	 */
 	public void setDocument (SBTabDocument<SBMLDocument> document) {
 		doc= document;
 		this.controller.setDocument(document);
 	}
-
+	/**
+	 * Returns the TempDoc property of doc
+	 */
 	public SBMLDocument getDoc() {
 		return doc.getTempDoc();
 	}
@@ -189,6 +221,12 @@ public class SBTabMainView extends Application {
 		sb.setProgress(progressState);
 		this.root.setBottom(sb);
 	}
+	
+	/**
+	 * Information whether a file is currently loaded.
+	 * 
+	 * @return
+	 */
 
 	public boolean isDocumentLoaded() {
 		return doc != null;
@@ -206,6 +244,13 @@ public class SBTabMainView extends Application {
 		return root;
 	}
 	
+	public SBTabDocument<SBMLDocument> getDocument() {
+		return doc;
+	}
+	
+	/**
+	 * Updates the stage title to display file name.
+	 */
 	public void updateTitle() {
 		if (isDocumentLoaded()) {
 			if (doc.getFile()!=null) {
@@ -217,9 +262,5 @@ public class SBTabMainView extends Application {
 		else {
 			thisStage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION);	
 		}
-	}
-
-	public SBTabDocument<SBMLDocument> getDocument() {
-		return doc;
 	}
 }

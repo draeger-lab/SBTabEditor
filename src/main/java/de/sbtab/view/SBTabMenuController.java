@@ -54,7 +54,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
+/**
+ * A class which executes certain methods of the controller class depending on menu bar actions.
+ * contains methods modifying the menu bar and displaying alert dialogs and file chooser dialogs
+ *
+ *
+ */
 public class SBTabMenuController implements Initializable {
 	private SBTabMainView mainView;
 	private SBTabController controller;
@@ -82,7 +87,7 @@ public class SBTabMenuController implements Initializable {
 		// TODO: prevent closing of stage
 		mainView.getStage().setOnCloseRequest(event -> {
 			event.consume();
-			handleClose();
+			handleQuit();
 		});
 	}
 
@@ -598,6 +603,8 @@ public class SBTabMenuController implements Initializable {
 	}
 	/**
 	 * Chooses directory from file dialog and gets the file path.
+	 * 
+	 * @return String filePath
 	 */
 
 	private String chooseSaveLocation() {
@@ -625,6 +632,8 @@ public class SBTabMenuController implements Initializable {
 
 	/**
 	 * Chooses file from file dialog and gets the file path.
+	 * 
+	 * @return String filePath
 	 */
 	private String chooseFile() {
 		Preferences thePreferences = Preferences.userNodeForPackage(SBTabController.class);
