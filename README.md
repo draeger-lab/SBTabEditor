@@ -1,4 +1,4 @@
-# SBTabEditor<sup>0.1.4</sup>
+# SBTabEditor
 ![Version](https://img.shields.io/badge/version-0.1.4-yellow.svg) [![License (MIT)](https://img.shields.io/github/license/mashape/apistatus.svg)](http://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.com/draeger-lab/SBTabEditor.svg?token=ByDn1ybpoXpKvMHXpZD4&branch=master)](https://travis-ci.com/draeger-lab/SBTabEditor)
 <img align="right" src="src/main/resources/de/sbtab/view/Icon_256.png"/>
 
@@ -41,10 +41,10 @@ To create os-specific launcher/installer, call `mvn jfx:native`. Target folder: 
 
 Running process is platform specific. Example `./sbmltab-x.x.x` (running on Unix-like system)
  
-## Documentation:
+## Documentation
 All relevant information you can find on GitHub [Wiki](https://github.com/draeger-lab/SBTabEditor/wiki).
 
-## Third-party libraries, which we are using:
+## Third-party libraries, which we are using
 
 [JSBML](https://github.com/sbmlteam/jsbml): Pure Java library for reading, writing, and manipulating SBML files and data streams.
 
