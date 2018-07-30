@@ -164,25 +164,11 @@ public class SBTabMenuController implements Initializable {
 	@FXML
 	private MenuItem WebSearchItem;
 
-	// file menu action Methods:
-
-	@FXML
-	void doNew(ActionEvent event) {
-		if (!mainView.isDocumentLoaded()) {
-			handleNew();
-		} else {
-			showOnDoubleOpenDialog(true);
-		}
-	}
-
-	@FXML
-	void doOpen(ActionEvent event) {
-		if (!mainView.isDocumentLoaded()) {
-			handleOpen();
-		} else {
-			showOnDoubleOpenDialog(false);
-		}
-	}
+	/**
+	 * Displays a dialog to decide whether to open a new stage or close the current file to be able to open another file
+	 * 
+	 * @param newClicked Information whether a new file should be opened.
+	 */
 
 	private void showOnDoubleOpenDialog(boolean newClicked) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -225,6 +211,9 @@ public class SBTabMenuController implements Initializable {
 		} else {
 		}
 	}
+	/**
+	 * Creates an entirely new stage on another file.
+	 */
 
 	private void startNewWindowOpen() {
 		String filePath = chooseFile();
@@ -255,6 +244,10 @@ public class SBTabMenuController implements Initializable {
 		thread.setDaemon(true);
 		thread.start();
 	}
+	
+	/**
+	 * Creates a new stage and opens a new file on that stage.
+	 */
 
 	private void startNewWindowNew() {
 		SBTabMainView newGUI = new SBTabMainView();
@@ -281,6 +274,11 @@ public class SBTabMenuController implements Initializable {
 		thread.setDaemon(true);
 		thread.start();
 	}
+	/**
+	 * Locks or unlocks menuItems that are irrelevant while no file is loaded.
+	 * 
+	 * @param bool true if the menu should be locked.
+	 */
 
 	private void lockMenu(boolean bool) {
 		ViewMenu.setDisable(bool);
@@ -290,6 +288,26 @@ public class SBTabMenuController implements Initializable {
 		ExportItem.setDisable(bool);
 		CloseItem.setDisable(bool);
 		SaveAsItem.setDisable(bool);
+	}
+	
+	// file menu action Methods:
+	
+	@FXML
+	void doNew(ActionEvent event) {
+		if (!mainView.isDocumentLoaded()) {
+			handleNew();
+		} else {
+			showOnDoubleOpenDialog(true);
+		}
+	}
+
+	@FXML
+	void doOpen(ActionEvent event) {
+		if (!mainView.isDocumentLoaded()) {
+			handleOpen();
+		} else {
+			showOnDoubleOpenDialog(false);
+		}
 	}
 
 	@FXML
@@ -394,7 +412,9 @@ public class SBTabMenuController implements Initializable {
 	}
 
 	// Handler methods:
-
+    /**
+     * Creates a new SBMLDocument as the current file
+     */
 	private void handleNew() {
 		Task<Void> task = new Task<Void>() {
 			@Override
@@ -427,6 +447,9 @@ public class SBTabMenuController implements Initializable {
 		th.setDaemon(true);
 		th.start();
 	}
+	/**
+	 * Opens a new file specified by the user.
+	 */
 
 	public void handleOpen() {
 		String filePath = chooseFile();
@@ -462,6 +485,9 @@ public class SBTabMenuController implements Initializable {
 		thread.setDaemon(true);
 		thread.start();
 	}
+	/**
+	 * Saves the file currently edited.
+	 */
 
 	private void handleSave() {
 		if (!newFile) {
@@ -479,6 +505,9 @@ public class SBTabMenuController implements Initializable {
 			handleSaveAs();
 		}
 	}
+	/**
+	 * closes the entire stage displays a dialog if a file has unsaved changes
+	 */
 
 	private void handleQuit() {
 		if (isDocChanged()) {
@@ -510,6 +539,9 @@ public class SBTabMenuController implements Initializable {
 			System.exit(0);
 		}
 	}
+	/**
+	 * Closes the current file if it doesn't have any unsaved changes and resets view to default
+	 */
 
 	private void handleClose() {
 		if (isDocChanged()) {
@@ -551,6 +583,9 @@ public class SBTabMenuController implements Initializable {
 			lockMenu(true);
 		}
 	}
+	/**
+	 * Saves a file on a new file path specified by the user.
+	 */
 
 	private void handleSaveAs() {
 		String filePath = chooseSaveLocation();
@@ -561,6 +596,9 @@ public class SBTabMenuController implements Initializable {
 			mainView.updateTitle();
 		}
 	}
+	/**
+	 * Chooses directory from file dialog and gets the file path.
+	 */
 
 	private String chooseSaveLocation() {
 		Preferences thePreferences = Preferences.userNodeForPackage(SBTabController.class);
@@ -585,8 +623,8 @@ public class SBTabMenuController implements Initializable {
 		}
 	}
 
-	/*
-	 * Choose file from file dialog and get the file path.
+	/**
+	 * Chooses file from file dialog and gets the file path.
 	 */
 	private String chooseFile() {
 		Preferences thePreferences = Preferences.userNodeForPackage(SBTabController.class);
@@ -609,7 +647,9 @@ public class SBTabMenuController implements Initializable {
 		}
 		return null;
 	}
-	
+	/**
+	 * Calls controller-methods to check whether a document is valid and displays an alert-dialog to inform the user about validation process
+	 */
 	private void handleValidate(){
 		Task<Void> task = new Task<Void>() {
 			@Override
@@ -772,10 +812,20 @@ public class SBTabMenuController implements Initializable {
 			}
 		}
 	}
-
+	
+	/**
+	 * This method is called to gain information whether the document has any unsaved changes.
+	 * 
+	 * @return boolean true if the Document was changed.
+	 * 
+	 */
 	private boolean isDocChanged() {
 		return mainView.getDocument().getChanged();
 	}
+	/**
+	 * This method is called to set the documents property Changed to false
+	 * 
+	 */
 
 	private void setDocUnchanged() {
 		mainView.getDocument().setChanged(false);
