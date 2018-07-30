@@ -23,21 +23,28 @@ import javafx.concurrent.Task;
 public class SBTabController {
 
   private static final transient Logger LOGGER = LogManager.getLogger(SBTabController.class);
-  private SBMLDocument doc;
-  private String filePath = null;
+  private SBTabDocument<SBMLDocument> doc =null;
   // declare my variable at the top of my Java class
   private static Preferences prefs;
 
   public String getFilePath() {
-    return filePath;
+    return doc.getFile().getAbsolutePath();
   }
 
   public SBMLDocument getDoc() {
-    return doc;
+    return doc.getTempDoc();
+  }
+  
+  public SBTabDocument<SBMLDocument> getDocument() {
+	    return doc;
+	  }
+  
+  public void setDocument(SBTabDocument<SBMLDocument> document) {
+	  doc=document;
   }
 
   public void setDoc(SBMLDocument doc) {
-    this.doc = doc;
+    this.doc.setTempDoc(doc);
   }
 
   /**
@@ -91,23 +98,24 @@ public class SBTabController {
    *            path to {@link SBMLDocument}
    * @return {@link SBMLDocument}
    */
-  public SBMLDocument read(String filePath) {
-    this.filePath = filePath;
+  public SBTabDocument<SBMLDocument> read(String filePath) {
     File theSBMLFile = new File(filePath);
     boolean isFile = theSBMLFile.isFile();
     if (isFile) {
       if (Objects.equals(getFileExtension(theSBMLFile), ".xml")) {
         try {
-          doc = SBMLReader.read(theSBMLFile);
-          doc.setName(theSBMLFile.getName());
+          doc= new SBTabDocument<SBMLDocument>(
+          SBMLReader.read(theSBMLFile),
+          theSBMLFile);
         } catch (Exception e) {
           LOGGER.error("Unable to read xml file.", e);
         }
       }
       if (Objects.equals(getFileExtension(theSBMLFile), ".gz")) {
         try {
-          doc = SBMLReader.read(new GZIPInputStream(new FileInputStream(filePath)));
-          doc.setName(theSBMLFile.getName());
+          doc= new SBTabDocument<SBMLDocument>(
+          SBMLReader.read(new GZIPInputStream(new FileInputStream(filePath))),
+          theSBMLFile);
         } catch (Exception e) {
           LOGGER.error("Unable to read gz file.", e);
         }
@@ -206,9 +214,5 @@ public class SBTabController {
 
     }
     return url;
-  }
-
-  public void setFilePath(String path) {
-    filePath = path;
   }
 }

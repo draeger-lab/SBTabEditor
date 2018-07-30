@@ -7,6 +7,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.sbml.jsbml.util.TreeNodeChangeListener;
 import org.sbml.jsbml.AbstractTreeNode;
+import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.util.TreeNodeRemovedEvent;
 
 public class SBTabDocument<T> implements TreeNodeChangeListener {
@@ -15,7 +16,7 @@ public class SBTabDocument<T> implements TreeNodeChangeListener {
 
 	private T tempDoc;
 
-	private String pathtempDoc;
+	private File tempDocFile;
 
 	boolean changed;
 
@@ -26,10 +27,10 @@ public class SBTabDocument<T> implements TreeNodeChangeListener {
 	 * 
 	 * @param pathDoc
 	 */
-	public SBTabDocument(T doc, String pathDoc) {
+	public SBTabDocument(T doc,File file) {
 		try {
 			tempDoc = doc;
-			pathtempDoc = pathDoc;
+			tempDocFile = file;
 			
 //			File temp = File.createTempFile("temp-file-name", ".tmp");			
 //			String absolutePath = temp.getAbsolutePath();
@@ -66,5 +67,26 @@ public class SBTabDocument<T> implements TreeNodeChangeListener {
 		System.out.println("Child of " + parent.toString() + " removed");
 		changed = true;
 	}
-
+	
+	public void setTempDoc(T doc) {
+		tempDoc=doc;
+	}
+	public T getTempDoc() {
+		return tempDoc;
+	}
+	public void setFile(File file) {
+		tempDocFile=file;
+	}
+	public File getFile() {
+		if (tempDocFile!=null) {
+		return tempDocFile;
+		}
+		else return null;
+	}
+	public boolean getChanged() {
+		return changed;
+	}
+	public void setChanged(boolean bool) {
+		changed=bool;
+	}
 }

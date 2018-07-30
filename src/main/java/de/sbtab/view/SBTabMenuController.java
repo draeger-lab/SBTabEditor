@@ -15,6 +15,7 @@ import org.sbml.jsbml.SBMLDocument;
 
 import de.sbtab.containers.SBTabReactionWrapper;
 import de.sbtab.controller.SBTabController;
+import de.sbtab.controller.SBTabDocument;
 import de.sbtab.services.TableType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -72,8 +73,11 @@ public class SBTabMenuController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		if (mainView.getDoc() == null) {
+		if (mainView.getDocument() == null) {
 			lockMenu(true);
+		}
+		else if(mainView.getDocument().getFile()==null) {
+			newFile=true;
 		}
 		// TODO: prevent closing of stage
 		mainView.getStage().setOnCloseRequest(event -> {
@@ -229,8 +233,7 @@ public class SBTabMenuController implements Initializable {
 			@Override
 			public Void call() {
 				if (filePath != null) {
-					newGUI.setDoc(controller.read(filePath));
-					newGUI.setFilePath(filePath);
+					newGUI.setDocument(controller.read(filePath));
 				}
 				return null;
 			}
@@ -258,9 +261,8 @@ public class SBTabMenuController implements Initializable {
 		Task<Void> task = new Task<Void>() {
 			@Override
 			public Void call() {
-				SBMLDocument newDoc = new SBMLDocument(3, 1);
-				newDoc.setName("new document");
-				newGUI.setDoc(newDoc);
+				SBTabDocument<SBMLDocument> newDoc = new SBTabDocument<SBMLDocument>(new SBMLDocument(3, 1),null);
+				newGUI.setDocument(newDoc);
 				return null;
 			}
 
@@ -310,48 +312,8 @@ public class SBTabMenuController implements Initializable {
 
 	@FXML
 	void doValidate(ActionEvent event) {
-		// TODO: Implement validate
-		int errors = controller.numErrors(mainView.getDoc());
-		if (errors == 0) {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			alert.setGraphic(new ImageView(this.getClass().getResource("ApproveIcon_64.png").toString()));
-			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-			alert.setTitle("Validator");
-			alert.setHeaderText(null);
-			alert.setContentText("Your file is a valid .sbml file");
-			alert.showAndWait();
-
-		} else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Exception Dialog");
-			alert.setHeaderText("You have " + errors + "Errors in your Document.");
-			alert.setContentText("List of all Errors");
-			Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
-			alert.setGraphic(new ImageView(this.getClass().getResource("DisapproveIcon_64.png").toString()));
-
-			Label label = new Label("The exception stacktrace was:");
-
-			TextArea textArea = new TextArea(controller.stringValidator(mainView.getDoc()));
-			textArea.setEditable(false);
-
-			textArea.setMaxWidth(Double.MAX_VALUE);
-			textArea.setMaxHeight(Double.MAX_VALUE);
-			GridPane.setVgrow(textArea, Priority.ALWAYS);
-			GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-			GridPane expContent = new GridPane();
-			expContent.setMaxWidth(Double.MAX_VALUE);
-			expContent.add(label, 0, 0);
-			expContent.add(textArea, 0, 1);
-
-			// Set expandable Exception into the dialog pane.
-			alert.getDialogPane().setExpandableContent(expContent);
-
-			alert.showAndWait();
-		}
-
+		handleValidate();
+		
 	}
 
 	@FXML
@@ -439,8 +401,7 @@ public class SBTabMenuController implements Initializable {
 			public Void call() {
 				try {
 					SBMLDocument newDoc = new SBMLDocument(3, 1);
-					newDoc.setName("new document");
-					mainView.setDoc(newDoc);
+					mainView.setDocument(new SBTabDocument<SBMLDocument>(newDoc, null));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -473,7 +434,7 @@ public class SBTabMenuController implements Initializable {
 			@Override
 			public Void call() {
 				if (filePath != null) {
-					mainView.setDoc(controller.read(filePath));
+					mainView.setDocument(controller.read(filePath));
 				}
 				return null;
 			}
@@ -491,7 +452,6 @@ public class SBTabMenuController implements Initializable {
 				super.succeeded();
 				if (filePath != null) {
 					lockMenu(false);
-					controller.setFilePath(filePath);
 					mainView.updateTitle();
 					mainView.reInit();
 					newFile = false;
@@ -505,11 +465,11 @@ public class SBTabMenuController implements Initializable {
 
 	private void handleSave() {
 		if (!newFile) {
-			SBMLDocument doc = mainView.getDoc();
-			File filePath = new File(controller.getFilePath());
+			SBMLDocument doc = mainView.getDocument().getTempDoc();
+			File filePath = mainView.getDocument().getFile();
 			String theProjectName = mainView.getTheProjectName();
 			String theVersion = mainView.getTheVersion();
-			if (Objects.equals(controller.getFileExtension(filePath), ".xml")) {
+			if (!Objects.equals(controller.getFileExtension(filePath), ".gz")) {
 				controller.save(doc, filePath, theProjectName, theVersion);
 				setDocUnchanged();
 			} else {
@@ -577,7 +537,7 @@ public class SBTabMenuController implements Initializable {
 				mainView.clearView("No file specified.");
 				lockMenu(true);
 			} else if (result.get() == buttonTypeDontSave) {
-				mainView.setDoc(null);
+				mainView.setDocument(null);
 				mainView.updateTitle();
 				mainView.clearView("No file specified.");
 				lockMenu(true);
@@ -585,7 +545,7 @@ public class SBTabMenuController implements Initializable {
 			} else {
 			}
 		} else {
-			mainView.setDoc(null);
+			mainView.setDocument(null);
 			mainView.updateTitle();
 			mainView.clearView("No file specified.");
 			lockMenu(true);
@@ -595,10 +555,9 @@ public class SBTabMenuController implements Initializable {
 	private void handleSaveAs() {
 		String filePath = chooseSaveLocation();
 		if (filePath != null) {
-			controller.setFilePath(filePath);
+			mainView.getDocument().setFile(new File(filePath));
 			newFile = false;
 			handleSave();
-			mainView.getDoc().setName(new File(filePath).getName());
 			mainView.updateTitle();
 		}
 	}
@@ -608,8 +567,12 @@ public class SBTabMenuController implements Initializable {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Specify a directory and a name to save as");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Document", "*.xml"));
-		fileChooser.setInitialFileName(mainView.getDoc().getName());
-		fileChooser.setInitialDirectory(new File(controller.getFilePath()).getParentFile());
+		if (newFile) {
+			fileChooser.setInitialFileName("new file");
+		}
+		else {
+		fileChooser.setInitialFileName(mainView.getDocument().getFile().getName());
+		}
 		String filePath = "";
 		File file = fileChooser.showSaveDialog(mainView.getStage());
 		String lastOutputDir = thePreferences.get("last_output_dir", System.getProperty("user.home"));
@@ -646,6 +609,64 @@ public class SBTabMenuController implements Initializable {
 		}
 		return null;
 	}
+	
+	private void handleValidate(){
+		Task<Void> task = new Task<Void>() {
+			@Override
+			public Void call() {
+				int errors = controller.numErrors(mainView.getDoc());
+				if (errors == 0) {
+					Alert alert = new Alert(AlertType.CONFIRMATION);
+					Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+					alert.setGraphic(new ImageView(this.getClass().getResource("ApproveIcon_64.png").toString()));
+					stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+					alert.setTitle("Validator");
+					alert.setHeaderText(null);
+					alert.setContentText("Your file is a valid .sbml file");
+					alert.showAndWait();
+
+				} else {
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("Exception Dialog");
+					alert.setHeaderText("You have " + errors + "Errors in your Document.");
+					alert.setContentText("List of all Errors");
+					Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+					stage.getIcons().add(new Image(this.getClass().getResourceAsStream("Icon_32.png")));
+					alert.setGraphic(new ImageView(this.getClass().getResource("DisapproveIcon_64.png").toString()));
+
+					Label label = new Label("The exception stacktrace was:");
+
+					TextArea textArea = new TextArea(controller.stringValidator(mainView.getDoc()));
+					textArea.setEditable(false);
+
+					textArea.setMaxWidth(Double.MAX_VALUE);
+					textArea.setMaxHeight(Double.MAX_VALUE);
+					GridPane.setVgrow(textArea, Priority.ALWAYS);
+					GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+					GridPane expContent = new GridPane();
+					expContent.setMaxWidth(Double.MAX_VALUE);
+					expContent.add(label, 0, 0);
+					expContent.add(textArea, 0, 1);
+
+					// Set expandable Exception into the dialog pane.
+					alert.getDialogPane().setExpandableContent(expContent);
+				}
+				
+				return null;
+			}
+
+			@Override
+			protected void running() {
+					super.running();
+					mainView.assignStatusBar("Validating...",-1D);
+			}
+		};
+		Thread thread = new Thread(task);
+		thread.setDaemon(true);
+		thread.start();
+	}
+
 
 	private void handleHideColumns() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -753,29 +774,10 @@ public class SBTabMenuController implements Initializable {
 	}
 
 	private boolean isDocChanged() {
-		TableType[] TableNames = TableType.values();
-		for (int k = 0; k < TableNames.length; k++) {
-			TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView.getTableProducer()
-					.getTableView(TableNames[k]);
-			ObservableList<TableColumn<SBTabReactionWrapper, ?>> currentColumns = tableView.getColumns();
-			for (int i = 0; i < currentColumns.size(); i++) {
-				if (tableView.getColumns().get(i).getId() == "changed") {
-					return true;
-				}
-			}
-		}
-		return false;
+		return mainView.getDocument().getChanged();
 	}
 
 	private void setDocUnchanged() {
-		TableType[] TableNames = TableType.values();
-		for (int k = 0; k < TableNames.length; k++) {
-			TableView<SBTabReactionWrapper> tableView = (TableView<SBTabReactionWrapper>) mainView.getTableProducer()
-					.getTableView(TableNames[k]);
-			ObservableList<TableColumn<SBTabReactionWrapper, ?>> currentColumns = tableView.getColumns();
-			for (int i = 0; i < currentColumns.size(); i++) {
-				currentColumns.get(i).setId("noChanges");
-			}
-		}
+		mainView.getDocument().setChanged(false);
 	}
 }
