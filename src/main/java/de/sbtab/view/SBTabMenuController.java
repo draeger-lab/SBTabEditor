@@ -751,6 +751,11 @@ public class SBTabMenuController implements Initializable {
 		VBox vBox = new VBox();
 		vBox.setSpacing(5);
 		vBox.setPadding(new Insets(10));
+		
+		boolean oldChecked[] = new boolean[checked.length];
+		for (int k = 0; k < checked.length; k++) {
+			oldChecked[k] = checked[k];
+		}
 
 		for (int i = 0; i < checkBoxNames.length; i++) {
 			CheckBox cb = new CheckBox(checkBoxNames[i]);
@@ -773,7 +778,7 @@ public class SBTabMenuController implements Initializable {
 		
 		Button buttonCancel = new Button("Cancel");
 		buttonCancel.setPrefWidth(110);
-		buttonCancel.setOnAction(event -> {stage.hide();});
+		buttonCancel.setOnAction(event -> {stage.hide(); checked = oldChecked;});
 
 		hBox.getChildren().addAll(buttonOk, buttonCancel);
 
