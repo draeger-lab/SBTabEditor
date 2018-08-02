@@ -42,6 +42,8 @@ public class SBTabController {
 
   /**
    * Set Preferences for the programm, at the moment only the file path is saved.
+   * @param filePath 
+   * 				Absolute Path of the last open dialog.
    */
   public void setPreferences(String filePath) {
     // create a Preferences instance (somewhere later in the code)
@@ -162,9 +164,9 @@ public class SBTabController {
   }
 
   /**
-   * @author Julian Wanner
-   * @param File
-   * @return File Extension
+   * File extension of a given file.
+   * @param File is the given file {@link File}
+   * @return File Extension is the corresponding file extension. {@link String}
    */
   public String getFileExtension(File file) {
     String theFileExtension = "";
@@ -183,8 +185,11 @@ public class SBTabController {
   /**
    * Opens Documentation according to specified documentation URL.
    * if no Internet connection is present a local documentation index.html in the directory docs
-   * @author Julian Wanner
-   * @return URL
+   * @param theDocumentationURL 
+   * is the online URL for the Documentation{@link String}
+   * @param theLocalDocumentationPath 
+   * is the absolute path for the documentation if theres no internet connection {@link String}.
+   * @return url {@link URL);
    */
   public URL getDocumentation(String theDocumentationURL, String theLocalDocumentationPath){
     URL url;
