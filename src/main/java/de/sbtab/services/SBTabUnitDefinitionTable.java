@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 /**
- * Generates TableView of JSBML UnitDefinition by using <p>SBTabUnitDefinitionWrapper</p>
+ * Generates TableView of JSBML UnitDefinition by using {@code SBTabUnitDefinitionWrapper}
  * */
 public class SBTabUnitDefinitionTable extends SBTabViewAbstractTable implements SBTabTableFactory<UnitDefinition, SBTabUnitDefinitionWrapper> {
 

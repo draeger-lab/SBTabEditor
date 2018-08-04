@@ -96,12 +96,9 @@ public class SBTabTreeController implements Initializable {
 	/**
 	 * A common method for all enums since they can't have another base class
 	 * 
-	 * @param <T>
-	 *            Enum type
-	 * @param c
-	 *            enum type. All enums must be all caps.
-	 * @param string
-	 *            case insensitive
+	 * @param <T> Enum type
+	 * @param c enum type. All enums must be all caps.
+	 * @param string case insensitive
 	 * @return corresponding enum, or null
 	 * @author zakharc
 	 */

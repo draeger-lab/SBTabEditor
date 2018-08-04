@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 /**
- * Generates TableView of JSBML Compartment by using <p>SBTabCompartmentWrapper</p>
+ * Generates TableView of JSBML Compartment by using {@code SBTabCompartmentWrapper}
  * */
 public class SBTabCompartmentTable extends SBTabViewAbstractTable implements SBTabTableFactory<Compartment, SBTabCompartmentWrapper> {
 
