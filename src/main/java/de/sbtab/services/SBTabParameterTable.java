@@ -10,10 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 /**
- * Generates TableView of JSBML Parameter by using
- * <p>
- * SBTabParameterWrapper
- * <p/>
+ * Generates TableView of JSBML Parameter by using {@code SBTabParameterWrapper}
  */
 public class SBTabParameterTable extends SBTabViewAbstractTable
 		implements SBTabTableFactory<Parameter, SBTabParameterWrapper> {

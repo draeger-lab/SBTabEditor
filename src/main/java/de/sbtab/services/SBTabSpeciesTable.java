@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 /**
- * Generates TableView of JSBML Species by using <p>SBTabSpeciesWrapper</p>
+ * Generates TableView of JSBML Species by using {@code SBTabSpeciesWrapper}
  * */
 public class SBTabSpeciesTable extends SBTabViewAbstractTable implements SBTabTableFactory<Species, SBTabSpeciesWrapper> {
 

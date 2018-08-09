@@ -22,8 +22,8 @@ public class SBTabTableHandler {
 	}
 	
 	/**
-	 * Generates new table and initializes it in <p>Parent</p> base class for all nodes.  
-	 * Different tables are separated with help of <p>TableComposer</p>
+	 * Generates new table and initializes it in {@code Parent} base class for all nodes.  
+	 * Different tables are separated with help of {@link de.sbtab.services.SBTabTableProducer}
 	 * */
 	public void createTable(TableType type) {
 		if (type != null) {

@@ -32,7 +32,7 @@ class SBTabControllerTest {
 	@Test
 	void testSave() {
 		File path = new File(new File(PATH_TO_TEST_FILE_XML).getParentFile().getPath() + "/ExampleFile2");
-		SBMLDocument doc = controller.read(PATH_TO_TEST_FILE_XML);
+		SBMLDocument doc = controller.read(PATH_TO_TEST_FILE_XML).getTempDoc();
 		controller.save(doc, path, DUMMY_VALUE, DUMMY_VALUE);
 		// TODO: test when save fixed
 		//assertTrue(path.exists());

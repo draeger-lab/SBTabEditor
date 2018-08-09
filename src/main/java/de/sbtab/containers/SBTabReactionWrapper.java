@@ -27,6 +27,13 @@ public class SBTabReactionWrapper implements SBTabElement {
 		reactionSBOTerm = new SimpleStringProperty(reaction.getSBOTermID());
 	}
 
+	@Override
+	public void saveData() {
+		reaction.setName(reactionName.getValueSafe());
+		reaction.setId(reactionId.getValueSafe());
+		reaction.setSBOTerm(reactionSBOTerm.getValueSafe());
+	}
+
 	private void setReaction(Reaction reaction) {
 		this.reaction = reaction;
 	}
@@ -37,6 +44,7 @@ public class SBTabReactionWrapper implements SBTabElement {
 
 	public void setReactionName(StringProperty reactionName) {
 		this.reactionName = reactionName;
+		saveData();
 	}
 
 	public StringProperty getReactionName() {
@@ -45,6 +53,7 @@ public class SBTabReactionWrapper implements SBTabElement {
 
 	public void setReactionId(StringProperty reactionId) {
 		this.reactionId = reactionId;
+		saveData();
 	}
 
 	public StringProperty getReactionId() {
@@ -53,6 +62,7 @@ public class SBTabReactionWrapper implements SBTabElement {
 
 	public void setSBOTerm(StringProperty reactionSBOTerm) {
 		this.reactionSBOTerm = reactionSBOTerm;
+		saveData();
 	}
 
 	public StringProperty getSBOTerm() {

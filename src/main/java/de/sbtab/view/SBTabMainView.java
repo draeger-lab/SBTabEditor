@@ -1,5 +1,6 @@
 package de.sbtab.view;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -10,20 +11,25 @@ import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.util.ResourceManager;
 
 import de.sbtab.controller.SBTabController;
+import de.sbtab.controller.SBTabDocument;
 import de.sbtab.services.SBTabTableProducer;
 import de.sbtab.utils.SBTabTableHandler;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * Method that extends javafx Application and can be ran calling launch().
+ * Can also be constructed and be started on a new stage using start().
+ * Contains Methods modifying the stage and loading aspects of the GUI.
+ * 
+ *
+ */
 public class SBTabMainView extends Application {
 	
 	private static final double DEFAULT_WIDTH = 800;
@@ -31,10 +37,11 @@ public class SBTabMainView extends Application {
 	private static final String WINDOW_WIDTH = "Window_Width";
 	private static final String WINDOW_HEIGHT = "Window_Height";
 	private static final String THE_PROJECT_NAME = "TabMod";
-	private static final String THE_VERSION = "1.4";
+	private static final String THE_VERSION = "1.6";
 	
-	private SBMLDocument doc;
+	
 	private SBTabController controller = new SBTabController();
+	private SBTabDocument<SBMLDocument> doc;
 	private FXMLLoader menuLoader = new FXMLLoader();
 	private FXMLLoader treeLoader = new FXMLLoader();
 	private BorderPane root = new BorderPane();
@@ -56,11 +63,10 @@ public class SBTabMainView extends Application {
 			List<String> Parameters = this.getParameters().getRaw();
 			
 			if (!Parameters.isEmpty()) {
-//				doc = controller.read(Parameters.get(0));
+				doc = controller.read(Parameters.get(0));
 				
 			    if (isDocumentLoaded()) {
 				setViewOnFile();
-				controller.setFilePath(Parameters.get(0));
 			    }
 			    else {
 				System.out.println("invalid command, please enter a path to a valid .xml or .gz file next time!");
@@ -81,7 +87,7 @@ public class SBTabMainView extends Application {
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("Icon_48.ico")));
 
 		if (isDocumentLoaded()) {
-		    stage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + doc.getName());
+		    stage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + doc.getFile().getName());
 		}
 		else {
 			stage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION);	
@@ -103,6 +109,10 @@ public class SBTabMainView extends Application {
             preferences.putDouble(WINDOW_HEIGHT, stage.getHeight());
         });
 	}
+	/**
+	 * Loads aspects of the GUI that are necessary to view a file
+	 * @throws Exception
+	 */
 
 	public void setViewOnFile() throws Exception {
 		menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
@@ -114,7 +124,11 @@ public class SBTabMainView extends Application {
 		root.setTop(menuBar);
 		reInit();
 	}
-
+	
+	/**
+	 * Loads default aspects of the GUI (locked menu bar)
+	 * @throws Exception
+	 */
 	public void setViewDefault() throws Exception {
 		menuLoader.setLocation(getClass().getResource("SBTabMenu.fxml"));
 		menuLoader.setController(new SBTabMenuController(this, controller));
@@ -124,12 +138,12 @@ public class SBTabMainView extends Application {
 
 	}
 
-	// TODO: to be removed after redundant static field are eliminated and
-	// concurrency in
-	// handleOpen() fixed
+	/**
+	 * Loads missing aspects of the default view once a file was loaded.
+	 */
 	public void reInit() {
 		if (doc != null) {
-			tableProducer = new SBTabTableProducer(doc);
+			tableProducer = new SBTabTableProducer(doc.getTempDoc());
 			assignStatusBar("Ready.", 0D);
 			try {
 				treeLoader = new FXMLLoader();
@@ -143,6 +157,10 @@ public class SBTabMainView extends Application {
 			}
 		}
 	}
+	/**
+	 * Resets view to default.
+	 * @param message Status Bar Message
+	 */
 
 	public void clearView(String message) {
 		root.setLeft(null);
@@ -157,14 +175,37 @@ public class SBTabMainView extends Application {
 	public String getTheProjectName() {
 		return THE_PROJECT_NAME;
 	}
+	/**
+	 * Sets a new document constructed from a given SBMLDocument as the current document
+	 * @param doc
+	 */
 
 	public void setDoc(SBMLDocument doc) {
-		this.doc = doc;
+		this.doc= new SBTabDocument<SBMLDocument>(doc,null);
+		this.doc.setTempDoc(doc);
 		this.controller.setDoc(doc);
 	}
-
+	/**
+	 * Sets the current documents file property to a given file
+	 * @param file
+	 */
+	public void setFile(File file) {
+		this.doc.setFile(file);
+	}
+	
+	/**
+	 * Sets the current documents TempDoc property to a given document
+	 * @param SBMLDocument
+	 */
+	public void setDocument (SBTabDocument<SBMLDocument> document) {
+		doc= document;
+		this.controller.setDocument(document);
+	}
+	/**
+	 * Returns the TempDoc property of doc
+	 */
 	public SBMLDocument getDoc() {
-		return doc;
+		return doc.getTempDoc();
 	}
 	
 	public SBTabTableProducer getTableProducer(){
@@ -177,6 +218,12 @@ public class SBTabMainView extends Application {
 		sb.setProgress(progressState);
 		this.root.setBottom(sb);
 	}
+	
+	/**
+	 * Information whether a file is currently loaded.
+	 * 
+	 * @return
+	 */
 
 	public boolean isDocumentLoaded() {
 		return doc != null;
@@ -193,14 +240,21 @@ public class SBTabMainView extends Application {
 	public BorderPane getRoot(){
 		return root;
 	}
-
-	public void setFilePath(String filePath) {
-		controller.setFilePath(filePath);	
+	
+	public SBTabDocument<SBMLDocument> getDocument() {
+		return doc;
 	}
 	
+	/**
+	 * Updates the stage title to display file name.
+	 */
 	public void updateTitle() {
 		if (isDocumentLoaded()) {
-		    thisStage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + doc.getName());
+			if (doc.getFile()!=null) {
+		    thisStage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + doc.getFile().getName());
+		} else {
+			thisStage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION + " - " + "new file");
+		}
 		}
 		else {
 			thisStage.setTitle(THE_PROJECT_NAME + " " + THE_VERSION);	

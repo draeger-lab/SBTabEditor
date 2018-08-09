@@ -10,10 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 /**
- * Generates TableView of JSBML Reaction by using
- * <p>
- * SBTabReactionWrapper
- * <p/>
+ * Generates TableView of JSBML Reaction by using {@code SBTabReactionWrapper}
  */
 public class SBTabReactionTable extends SBTabViewAbstractTable
 		implements SBTabTableFactory<Reaction, SBTabReactionWrapper> {

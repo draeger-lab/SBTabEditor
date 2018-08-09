@@ -26,7 +26,13 @@ public class SBTabSpeciesWrapper implements SBTabElement {
 		speciesCompartment = new SimpleStringProperty(species.getCompartment());
 		
 	}
-	
+
+	@Override
+	public void saveData() {
+		species.setName(speciesName.getValueSafe());
+		species.setId(speciesId.getValueSafe());
+		species.setCompartment(speciesCompartment.getValueSafe());
+	}
 
 	public Species getSpecies() {
 		return species;
@@ -42,6 +48,7 @@ public class SBTabSpeciesWrapper implements SBTabElement {
 
 	public void setSpeciesName(StringProperty speciesName) {
 		this.speciesName = speciesName;
+		saveData();
 	}
 
 	public StringProperty getSpeciesId() {
@@ -50,6 +57,7 @@ public class SBTabSpeciesWrapper implements SBTabElement {
 
 	public void setSpeciesId(StringProperty speciesId) {
 		this.speciesId = speciesId;
+		saveData();
 	}
 
 	public StringProperty getSpeciesCompartment() {
@@ -58,5 +66,6 @@ public class SBTabSpeciesWrapper implements SBTabElement {
 
 	public void setSpeciesCompartment(StringProperty speciesCompartment) {
 		this.speciesCompartment = speciesCompartment;
+		saveData();
 	}
 }

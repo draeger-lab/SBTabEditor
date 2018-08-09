@@ -25,7 +25,13 @@ public class SBTabParameterWrapper implements SBTabElement {
 		parameterId = new SimpleStringProperty(parameter.getId());
 		parameterSBOTerm = new SimpleStringProperty(parameter.getSBOTermID());
 	}
-	
+
+	@Override
+	public void saveData() {
+		parameter.setName(parameterName.getValueSafe());
+		parameter.setId(parameterId.getValueSafe());
+		parameter.setSBOTerm(parameterSBOTerm.getValueSafe());
+	}
 
 	public Parameter getParameter() {
 		return parameter;
@@ -41,6 +47,7 @@ public class SBTabParameterWrapper implements SBTabElement {
 
 	public void setParameterName(StringProperty ParameterName) {
 		this.parameterName = ParameterName;
+		saveData();
 	}
 
 	public StringProperty getParameterId() {
@@ -49,6 +56,7 @@ public class SBTabParameterWrapper implements SBTabElement {
 
 	public void setParameterId(StringProperty parameterId) {
 		this.parameterId = parameterId;
+		saveData();
 	}
 
 	public StringProperty getParameterSBOTerm() {
@@ -57,5 +65,6 @@ public class SBTabParameterWrapper implements SBTabElement {
 
 	public void setParameterSBOTerm(StringProperty parameterSBOTerm) {
 		this.parameterSBOTerm = parameterSBOTerm;
+		saveData();
 	}
 }
