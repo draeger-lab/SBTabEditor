@@ -621,7 +621,6 @@ public class SBTabMenuController implements Initializable {
 	 * 
 	 * @return String filePath
 	 */
-
 	private String chooseSaveLocation() {
 		Preferences thePreferences = Preferences.userNodeForPackage(SBTabController.class);
 		FileChooser fileChooser = new FileChooser();
@@ -646,9 +645,9 @@ public class SBTabMenuController implements Initializable {
 	}
 
 	/**
-	 * Chooses file from file dialog and gets the file path.
-	 * 
-	 * @return String filePath
+	 * Choose file from file dialog and get the file path.
+	 * @return filePath 
+	 * Returns absolute path of the choosen file.
 	 */
 	private String chooseFile() {
 		Preferences thePreferences = Preferences.userNodeForPackage(SBTabController.class);
@@ -790,7 +789,9 @@ public class SBTabMenuController implements Initializable {
 		stage.setScene(scene);
 		stage.show();
 	}
-
+	/**
+	 * Open the documentation of the application.
+	 */
 	private void handleDocumentation() {
 		String localDocumentationPath = System.getProperty("user.dir") + "/docs/.html";
 		String theDocumentationURL = "https://draeger-lab.github.io/SBTabEditor/";

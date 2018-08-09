@@ -1,8 +1,6 @@
-# SBTabEditor<sup>0.1.4</sup>
-[![License (MIT)](https://img.shields.io/badge/license-MIT-blue.svg?style=plastic)](http://opensource.org/licenses/MIT)
+# SBTabEditor
+![Version](https://img.shields.io/badge/version-0.1.4-yellow.svg) [![License (MIT)](https://img.shields.io/github/license/mashape/apistatus.svg)](http://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.com/draeger-lab/SBTabEditor.svg?token=ByDn1ybpoXpKvMHXpZD4&branch=master)](https://travis-ci.com/draeger-lab/SBTabEditor)
 <img align="right" src="src/main/resources/de/sbtab/view/Icon_256.png"/>
-
-[![Build Status](https://travis-ci.com/draeger-lab/SBTabEditor.svg?token=ByDn1ybpoXpKvMHXpZD4&branch=master)](https://travis-ci.com/draeger-lab/SBTabEditor)
 
 **Free, open-source application to help you read, write, manipulate and validate SBML files**
 
@@ -15,7 +13,6 @@ amounts of data. For this reason the table based data<br> format SBtab was devel
 there is no proper editor designed explicitly for SBtab, the aim of this project solves this problem
 by developing an extensible editor which can read, write and save SBtab and SBML data
 and display them in table form.
-___________________________________________________________________________________________________________
 
 ## Authors
 [Franziska Daumueller](https://github.com/FranziskaDaumueller),
@@ -31,21 +28,26 @@ Supervisor:
 ## How to start
 In order to run JavaFX application, a valid JRE 8+ needed.
 
-**Packaging into an executable Jar file**
+_Packaging into an executable Jar file:_
 
 To create executable jar, call `mvn jfx:jar`. Target jar-file will be placed at: target/jfx/app.
 
 To run: `java -jar sbmltab-x.x.x-jfx.jar`
 
 
-**Assembling into platform-specific bundle**
+_Assembling into platform-specific bundle:_
 
 To create os-specific launcher/installer, call `mvn jfx:native`. Target folder: target/jfx/native
 
 Running process is platform specific. Example `./sbmltab-x.x.x` (running on Unix-like system)
  
+## Documentation
+All relevant information you can find on GitHub [Wiki](https://github.com/draeger-lab/SBTabEditor/wiki).
 
-## Third-party libraries, which we are using:
+## Third-party libraries, which we are using
 
-[JSBML](https://github.com/sbmlteam/jsbml)
+[JSBML](https://github.com/sbmlteam/jsbml): Pure Java library for reading, writing, and manipulating SBML files and data streams.
 
+[JUnit](https://github.com/junit-team/junit5/): Test framework which uses annotations to identify methods that specify a test. 
+
+[Log4j](https://logging.apache.org/log4j/2.x/): Java-based logging utility.
