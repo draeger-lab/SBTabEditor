@@ -37,7 +37,7 @@ public class SBTabMainView extends Application {
 	private static final String WINDOW_WIDTH = "Window_Width";
 	private static final String WINDOW_HEIGHT = "Window_Height";
 	private static final String THE_PROJECT_NAME = "TabMod";
-	private static final String THE_VERSION = "1.4";
+	private static final String THE_VERSION = "1.6";
 	
 	
 	private SBTabController controller = new SBTabController();
