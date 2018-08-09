@@ -31,6 +31,13 @@ public class SBTabTreeController implements Initializable {
 	private SBTabMainView mainView;
 	private SBTabTableHandler handler;
 	
+	/**
+	 * Constructor for SBTabTreeController
+	 * 
+	 * @param controller
+	 * @param handler
+	 * @param mainView
+	 */
 	public SBTabTreeController(SBTabController controller, SBTabTableHandler handler, SBTabMainView mainView) {
 		this.controller = controller;
 		this.handler = handler;
@@ -50,6 +57,9 @@ public class SBTabTreeController implements Initializable {
 
 	public Boolean expanded = false;
 
+	/**
+	 * initializes tree 
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle value) {
 		bundle = ResourceManager.getBundle("de.sbtab.view.SBTabTreeElementNames");
@@ -162,8 +172,7 @@ public class SBTabTreeController implements Initializable {
 			if (bundle.containsKey(names[0])) {
 				treeElementName = bundle.getString(names[0]);
 
-				// check if for example name= is specified and split String
-				// where name is
+				// check if for example name= is specified and split String where name is
 				if (name.contains("name=\"")) {
 					treeElementName += cutString("name=\"", name);
 				} else if (name.contains("id=\"")) {
@@ -182,7 +191,7 @@ public class SBTabTreeController implements Initializable {
 	/**
 	 * cuts name at position and "
 	 * 
-	 * @param position
+	 * @param position string, where name will be cut
 	 * @param name
 	 * @return rightName
 	 */
@@ -193,6 +202,11 @@ public class SBTabTreeController implements Initializable {
 		return rightName;
 	}
 	
+	/**
+	 * expands tree at ActionEvent, calls {@link SBTabTreeController#expandTree2()} and sets boolean expanded on opposite
+	 * 
+	 * @param event clicking on expand-button
+	 */
 	@FXML
 	void doExpandTree(ActionEvent event) {
 		Task<Void> task = new Task<Void>() {
@@ -202,7 +216,7 @@ public class SBTabTreeController implements Initializable {
 					@Override
 					public void run() {
 						expanded ^= true;
-						ExpandTree2();
+						expandTree2();
 					}
 				});
 				return null;
@@ -218,7 +232,7 @@ public class SBTabTreeController implements Initializable {
 	 * expands tree recursive with help of tree method depends on variable
 	 * expanded
 	 */
-	private void ExpandTree2() {
+	private void expandTree2() {
 		SBase document = controller.getDoc();
 		TreeNode root = document.getRoot();
 		TreeItem<String> root2 = new TreeItem<String>(String.valueOf(root));

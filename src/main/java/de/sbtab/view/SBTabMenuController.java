@@ -53,12 +53,20 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
+/**
+ * A class which executes certain methods of the controller class depending on menu bar actions.
+ * contains methods modifying the menu bar and displaying alert dialogs and file chooser dialogs
+ *
+ *
+ */
 public class SBTabMenuController implements Initializable {
 	private SBTabMainView mainView;
 	private SBTabController controller;
 	private boolean newFile;
 
+	/**
+	 * Contains all column names. Add column names, when new columns are added. 
+	 */
 	private String[] checkBoxNames = { "Name", "Id", "SBO Term", "Compartment" };
 
 	public SBTabMenuController() {
@@ -81,7 +89,7 @@ public class SBTabMenuController implements Initializable {
 		// TODO: prevent closing of stage
 		mainView.getStage().setOnCloseRequest(event -> {
 			event.consume();
-			handleClose();
+			handleQuit();
 		});
 	}
 
@@ -383,13 +391,26 @@ public class SBTabMenuController implements Initializable {
 
 	}
 
+	/**
+	 * Values in checked are changed, when checkbox is clicked. Add new value, when a new column is added.
+	 */
 	private boolean[] checked = { true, true, true, true };
 
+	/**
+	 * Opens new window with checkboxes for each column. Unchecked columns are hidden.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void doHideColumns(ActionEvent event) {
 		handleHideColumns();
 	}
 
+	/**
+	 * shows all hidden columns 
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void doShowHiddenColumns(ActionEvent event) {
 		for (int i = 0; i < checked.length; i++) {
@@ -597,6 +618,8 @@ public class SBTabMenuController implements Initializable {
 	}
 	/**
 	 * Chooses directory from file dialog and gets the file path.
+	 * 
+	 * @return String filePath
 	 */
 
 	private String chooseSaveLocation() {
@@ -624,6 +647,8 @@ public class SBTabMenuController implements Initializable {
 
 	/**
 	 * Chooses file from file dialog and gets the file path.
+	 * 
+	 * @return String filePath
 	 */
 	private String chooseFile() {
 		Preferences thePreferences = Preferences.userNodeForPackage(SBTabController.class);
@@ -706,7 +731,11 @@ public class SBTabMenuController implements Initializable {
 		thread.start();
 	}
 
-
+	/**
+	 * Opens new scene with checkboxes for each column. 
+	 * New columns must be added to {@link SBTabMenuController#checkBoxNames}. 
+	 * Calls {@link SBTabMenuController#handleChecked()} to hide checked columns.
+	 */
 	private void handleHideColumns() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -721,6 +750,11 @@ public class SBTabMenuController implements Initializable {
 		VBox vBox = new VBox();
 		vBox.setSpacing(5);
 		vBox.setPadding(new Insets(10));
+		
+		boolean oldChecked[] = new boolean[checked.length];
+		for (int k = 0; k < checked.length; k++) {
+			oldChecked[k] = checked[k];
+		}
 
 		for (int i = 0; i < checkBoxNames.length; i++) {
 			CheckBox cb = new CheckBox(checkBoxNames[i]);
@@ -739,25 +773,13 @@ public class SBTabMenuController implements Initializable {
 
 		Button buttonOk = new Button("Ok");
 		buttonOk.setPrefWidth(110);
+		buttonOk.setOnAction(event -> {handleChecked(); stage.hide();});
+		
 		Button buttonCancel = new Button("Cancel");
 		buttonCancel.setPrefWidth(110);
+		buttonCancel.setOnAction(event -> {stage.hide(); checked = oldChecked;});
 
 		hBox.getChildren().addAll(buttonOk, buttonCancel);
-
-		buttonOk.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				handleChecked();
-				stage.hide();
-			}
-		});
-
-		buttonCancel.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				stage.hide();
-			}
-		});
 
 		BorderPane root = new BorderPane();
 		root.setTop(text);
@@ -792,6 +814,9 @@ public class SBTabMenuController implements Initializable {
 		stage.show();
 	}
 
+	/**
+	 * goes through all columns to hide unchecked columns
+	 */
 	private void handleChecked() {
 		TableType[] TableNames = TableType.values();
 		for (int k = 0; k < TableNames.length; k++) {
@@ -819,7 +844,10 @@ public class SBTabMenuController implements Initializable {
 	 * 
 	 */
 	private boolean isDocChanged() {
+		if (mainView.getDocument()!=null) {
 		return mainView.getDocument().getChanged();
+		}
+		return false;
 	}
 	/**
 	 * This method is called to set the documents property Changed to false
